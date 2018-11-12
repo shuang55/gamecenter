@@ -17,3 +17,4 @@ carlos will work on making sure every slidingtiles board is solvable
 ##we will decide later who writes which Junit tests
 
 **make sure to refactor frequently!!
+**make sure to make your own subdirectories for each game!!!
