@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="fall2018.csc2017">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="GameCentre"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".slidingtiles.StartingActivity" />
+        <activity android:name=".slidingtiles.GameActivity" />
+        <activity android:name=".gamecentre.LogInActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".gamecentre.GameCentreActivity" />
+        <activity android:name=".gamecentre.HighScoreActivity" />
+        <activity android:name=".gamecentre.SavedGamesActivity" />
+        <activity android:name=".gamecentre.YouWinActivity"></activity>
+    </application>
+
+</manifest>

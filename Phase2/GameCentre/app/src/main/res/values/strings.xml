@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SlidingTiles</string>
+    <string name="title_activity_game_centre">GameCentreActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string-array name="sortBy">
+        <item>User</item>
+        <item>Sliding Tile</item>
+        <item>Sliding Tile (All)</item>
+    </string-array>
+    <string-array name="complexity">
+        <item>3 by 3</item>
+        <item>4 by 4 </item>
+        <item>5 by 5 </item>
+    </string-array>
+</resources>
