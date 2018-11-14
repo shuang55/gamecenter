@@ -32,13 +32,20 @@ public class Card implements Comparable<Card>, Serializable {
     private boolean paired;
 
     /**
-     * Return the background id.
+     * Return the card face id.
      *
-     * @return the background id
+     * @return id of card face
      */
     public int getcardFace() {
         return cardFace;
     }
+
+    /**
+     * Return the id of the card back.
+     *
+     * @return id of card back
+     */
+    public int getCardBack() { return cardBack; }
 
     /**
      * Return the card id.

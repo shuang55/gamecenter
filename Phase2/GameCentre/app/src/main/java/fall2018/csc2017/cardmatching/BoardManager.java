@@ -46,13 +46,13 @@ public class BoardManager implements Serializable, GameManager {
      * @param numCardPair the size of the board.
      */
     BoardManager(int numCardPair) {
-        List<Card> tiles = new ArrayList<>();
+        List<Card> cards = new ArrayList<>();
         final int numCards = numCardPair * 2;
         for (int cardNum = 0; cardNum != numCards; cardNum++) {
-            tiles.add(new Card(cardNum));
+            cards.add(new Card(cardNum));
         }
-        Collections.shuffle(tiles);
-        this.board = new Board(tiles, numCardPair);
+        Collections.shuffle(cards);
+        this.board = new Board(cards, numCardPair);
     }
 
     /**
@@ -60,7 +60,7 @@ public class BoardManager implements Serializable, GameManager {
      *
      * @return whether the tiles are in row-major order
      */
-    boolean puzzleSolved() {
+    public boolean puzzleSolved() {
         boolean solved = true;
         for (Card card : board) {
             if (!(card.isPaired())) {
@@ -76,7 +76,7 @@ public class BoardManager implements Serializable, GameManager {
      * @param position the Card to check
      * @return whether the Card is not paired or paired.
      */
-    boolean isValidTap(int position) {
+    public boolean isValidTap(int position) {
         int row = position / board.numCardPerRow;
         int col = position % board.numCardPerRow;
         return board.getCard(row, col).isPaired();
@@ -87,7 +87,7 @@ public class BoardManager implements Serializable, GameManager {
      *
      * @param position the position
      */
-    void touchMove(int position) {
+    public void touchMove(int position) {
         int row = position / board.numCardPerRow;
         int col = position % board.numCardPerRow;
         if (isValidTap(position)) {
