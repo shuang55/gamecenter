@@ -36,7 +36,7 @@ public class Card implements Comparable<Card>, Serializable {
      *
      * @return id of card face
      */
-    public int getcardFace() {
+    public int getCardFace() {
         return cardFace;
     }
 
