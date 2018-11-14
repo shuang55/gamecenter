@@ -35,4 +35,10 @@ public interface GameManager extends Serializable {
      * @return the game difficulty
      */
     String getGameDifficulty();
+
+    boolean isValidTap(int position);
+
+    boolean puzzleSolved();
+
+    void touchMove(int position);
 }
