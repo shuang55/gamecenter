@@ -1,4 +1,4 @@
-package fall2018.csc2017.slidingtiles;
+package fall2018.csc2017.gamecentre;
 
 /*
 Adapted from:
@@ -91,7 +91,7 @@ public class GestureDetectGridView extends GridView {
         return gDetector.onTouchEvent(ev);
     }
 
-    public void setBoardManager(BoardManager boardManager) {
-        mController.setBoardManager(boardManager);
+    public void setGameManager(GameManager gameManager) {
+        mController.setBoardManager(gameManager);
     }
 }

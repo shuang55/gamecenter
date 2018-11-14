@@ -1,23 +1,23 @@
-package fall2018.csc2017.slidingtiles;
+package fall2018.csc2017.gamecentre;
 
 import android.content.Context;
 import android.widget.Toast;
 
 class MovementController {
 
-    private BoardManager boardManager = null;
+    private GameManager gameManager = null;
 
     MovementController() {
     }
 
-    void setBoardManager(BoardManager boardManager) {
-        this.boardManager = boardManager;
+    void setBoardManager(GameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
     void processTapMovement(Context context, int position) {
-        if (boardManager.isValidTap(position)) {
-            boardManager.touchMove(position);
-            if (boardManager.puzzleSolved()) {
+        if (gameManager.isValidTap(position)) {
+            gameManager.touchMove(position);
+            if (gameManager.puzzleSolved()) {
                 Toast.makeText(context, "YOU WIN!", Toast.LENGTH_SHORT).show();
             }
         } else {
