@@ -6,18 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
@@ -26,7 +24,7 @@ import fall2018.csc2017.gamecentre.UserManager;
 /**
  * The initial activity for the sliding puzzle tile game.
  */
-public class StartingActivity extends AppCompatActivity {
+public class StartingActivity1 extends AppCompatActivity {
 // https://www.vectorstock.com/royalty-free-vector/pink-star-with-a-smile-logo-vector-21368236
 // star photo
 
@@ -48,22 +46,22 @@ public class StartingActivity extends AppCompatActivity {
     /**
      * Level of difficulty chosen.
      */
-    private String complexitySelected;
+    private String complexitySelected1;
 
     /**
-     * Size of the board chosen.
+     * Number of card pairs chosen.
      */
-    public int boardSize;
+    public int numCardPairs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_starting_);
+        setContentView(R.layout.activity_starting_card_matching);
         loadManager();
         userManager.setCurrentUserFile();
         addStartButtonListener();
         addLoadButtonListener();
-//        addComplexityButton();
+        addComplexityButton1();
     }
 
 
@@ -71,7 +69,7 @@ public class StartingActivity extends AppCompatActivity {
      * Loads userManager
      */
     private void loadManager() {
-        Context context = StartingActivity.this;
+        Context context = StartingActivity1.this;
         GameCentre gameCentre = new GameCentre(context);
         gameCentre.loadManager(UserManager.USERS);
         userManager = gameCentre.getUserManager();
@@ -81,11 +79,11 @@ public class StartingActivity extends AppCompatActivity {
      * Activate the start button.
      */
     private void addStartButtonListener() {
-        Button startButton = findViewById(R.id.StartButton);
+        Button startButton = findViewById(R.id.StartButton1);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boardManager = new BoardManager(boardSize);
+                boardManager = new BoardManager(numCardPairs);
                 switchToGame();
             }
         });
@@ -95,7 +93,7 @@ public class StartingActivity extends AppCompatActivity {
      * Activate the load button.
      */
     private void addLoadButtonListener() {
-        Button loadButton = findViewById(R.id.LoadButton);
+        Button loadButton = findViewById(R.id.LoadButton1);
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,23 +175,23 @@ public class StartingActivity extends AppCompatActivity {
 
 
     /**
-     * Add more complexities , 3 by 3, 4 by 4, 5 by 5.
-     *//*
-    public void addComplexityButton() {
-        final Spinner complexity = findViewById(R.id.complexity);
-        complexity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+     * Add more complexities , 8 pairs, 10 pairs, 12 pairs.
+     */
+    public void addComplexityButton1() {
+        final Spinner complexity1 = findViewById(R.id.complexity1);
+        complexity1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                complexitySelected = complexity.getItemAtPosition(i).toString();
-                switch (complexitySelected) {
-                    case "3 by 3":
-                        boardSize = 3;
+                complexitySelected1 = complexity1.getItemAtPosition(i).toString();
+                switch (complexitySelected1) {
+                    case "10 pairs":
+                        numCardPairs = 10;
                         break;
-                    case "4 by 4":
-                        boardSize = 4;
+                    case "12 pairs":
+                        numCardPairs = 12;
                         break;
                     default:
-                        boardSize = 5;
+                        numCardPairs = 8;
                         break;
                 }
             }
@@ -203,5 +201,5 @@ public class StartingActivity extends AppCompatActivity {
 
             }
         });
-    }*/
+    }
 }
