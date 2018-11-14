@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".cardmatching.GameActivity" />
-        <activity android:name=".cardmatching.StartingActivity" />
+        <activity android:name=".cardmatching.StartingActivity1" />
         <activity android:name=".gamecentre.GameCentreActivity" />
         <activity android:name=".gamecentre.HighScoreActivity" />
         <activity android:name=".gamecentre.SavedGamesActivity" />
