@@ -79,7 +79,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         addSaveButtonListener();
         // Add View to activity
         gridView = findViewById(R.id.grid1);
-        gridView.setNumColumns(boardManager.getBoard().numCardPerCol);
+        gridView.setNumColumns(boardManager.getBoard().numCardPerRow);
         gridView.setGameManager(boardManager);
         boardManager.getBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
@@ -92,8 +92,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                        columnWidth = displayWidth / boardManager.getBoard().numCardPerCol;
-                        columnHeight = displayHeight / boardManager.getBoard().numCardPerRow;
+                        columnWidth = displayWidth / boardManager.getBoard().numCardPerRow;
+                        columnHeight = displayHeight / boardManager.getBoard().numCardPerCol;
 
                         display();
                     }
