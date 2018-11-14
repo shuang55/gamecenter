@@ -21,9 +21,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import fall2018.csc2017.R;
+import fall2018.csc2017.gamecentre.CustomAdapter;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
 import fall2018.csc2017.gamecentre.GameToSave;
+import fall2018.csc2017.gamecentre.GestureDetectGridView;
 import fall2018.csc2017.gamecentre.SavedGames;
 import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
@@ -75,7 +77,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         loadFromFile();
         createTileButtons(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sliding_tiles);
         loadManagers();
         userManager.setCurrentUserFile();
         //Activate undo button
@@ -84,7 +86,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         // Add View to activity
         gridView = findViewById(R.id.grid);
         gridView.setNumColumns(boardManager.getBoard().boardSize);
-        gridView.setBoardManager(boardManager);
+        gridView.setGameManager(boardManager);
         boardManager.getBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
