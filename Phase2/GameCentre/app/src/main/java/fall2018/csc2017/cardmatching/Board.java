@@ -40,20 +40,20 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
      */
     Board(List<Card> cards, int numCardPair) {
         this.numCardPair = numCardPair;
-        this.numCardPerRow = 4;
+        this.numCardPerCol = 4;
 
         switch(numCardPair){
             case 8:
-                this.numCardPerCol = 4;
+                this.numCardPerRow = 4;
                 break;
             case 10:
-                this.numCardPerCol = 5;
+                this.numCardPerRow = 5;
                 break;
             case 12:
-                this.numCardPerCol = 6;
+                this.numCardPerRow = 6;
                 break;
             default:
-                this.numCardPerCol = 4;
+                this.numCardPerRow = 4;
         }
 
         this.cards = new Card[numCardPerRow][numCardPerCol];
@@ -69,11 +69,14 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
     /**
      * Flip the card at (row, col).
      *
+     * Mode 0 is to cover the card, Mode 1 is to open the card.
+     *
      * @param row the first tile row
      * @param col the first tile col
      */
     void flipCard(int row, int col, int mode) {
         int[] operation = {row, col, mode};
+        getCard(row, col).setOpened(mode);
         setChanged();
         notifyObservers(operation);
     }
@@ -89,13 +92,13 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
         return cards[row][col];
     }
 
-    /**
-     * Finds the card with id cardID
-     *
-     * @param cardID the id of the tile
-     * @return the position of the tile
-     */
-    int findCard(int cardID) {
+//    /**
+//     * Finds the card with id cardID
+//     *
+//     * @param cardID the id of the tile
+//     * @return the position of the tile
+//     */
+    /*int findCard(int cardID) {
         int position = 0;
         for (Card[] c1 : cards) {
             for (Card c2 : c1) {
@@ -106,7 +109,7 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
             }
         }
         return position;
-    }
+    }*/
 
     @Override
     public String toString() {

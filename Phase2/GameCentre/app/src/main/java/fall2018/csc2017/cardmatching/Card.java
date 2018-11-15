@@ -27,6 +27,11 @@ public class Card implements Comparable<Card>, Serializable {
     public int id;
 
     /**
+     * Whether the card is opened or not.
+     */
+    private int opened;
+
+    /**
      * If the card is paired.
      */
     private boolean paired;
@@ -146,8 +151,44 @@ public class Card implements Comparable<Card>, Serializable {
         paired = false;
     }
 
+    /**
+     * Get whether or not this card is paired.
+     *
+     * @return true if card is paired, false otherwise
+     */
     boolean isPaired(){
         return paired;
+    }
+
+    /**
+     * Set the card to paired or not paired.
+     *
+     * @param paired whether the card is paired or not
+     */
+    public void setPaired(boolean paired) {
+        this.paired = paired;
+    }
+
+    /**
+     * Set the card to opened or not opened;
+     *
+     * 1 means card is opened, 0 means card is covered.
+     *
+     * @param opened whether the card is opened or not
+     */
+    void setOpened(int opened) {
+        this.opened = opened;
+    }
+
+    /**
+     * Get whether or not this card is opened.
+     *
+     * 1 means card is opened, 0 means card is covered.
+     *
+     * @return true if card is opened, false otherwise
+     */
+    int isOpen(){
+        return opened;
     }
 
     @Override

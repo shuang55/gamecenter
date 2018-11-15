@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
@@ -31,7 +32,7 @@ import fall2018.csc2017.gamecentre.YouWinActivity;
 
 import static fall2018.csc2017.cardmatching.StartingActivity1.TEMP_SAVE_FILENAME;
 
-public class GameActivity extends AppCompatActivity implements Observer {
+public class GameActivity1 extends AppCompatActivity implements Observer {
 
     /**
      * The board manager.
@@ -64,7 +65,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     public void display() {
         gridView.setAdapter(new CustomAdapter(cardButtons, columnWidth, columnHeight));
-//        setMoveCountText();
+        setMoveCountText();
     }
 
     @Override
@@ -79,7 +80,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         addSaveButtonListener();
         // Add View to activity
         gridView = findViewById(R.id.grid1);
-        gridView.setNumColumns(boardManager.getBoard().numCardPerRow);
+        gridView.setNumColumns(boardManager.getBoard().numCardPerCol);
         gridView.setGameManager(boardManager);
         boardManager.getBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
@@ -92,8 +93,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                        columnWidth = displayWidth / boardManager.getBoard().numCardPerRow;
-                        columnHeight = displayHeight / boardManager.getBoard().numCardPerCol;
+                        columnWidth = displayWidth / boardManager.getBoard().numCardPerCol;
+                        columnHeight = displayHeight / boardManager.getBoard().numCardPerRow;
 
                         display();
                     }
@@ -104,7 +105,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * Loads userManager and savedGames.
      */
     private void loadManagers(){
-        Context game = GameActivity.this;
+        Context game = GameActivity1.this;
         GameCentre gameCentre = new GameCentre(game);
         gameCentre.loadManager(UserManager.USERS);
         userManager = gameCentre.getUserManager();
@@ -187,10 +188,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
         int position = row * 4 + col;
         Button b = this.cardButtons.get(position);
         if (mode == 0){
-            b.setBackgroundResource(board.getCard(row, col).getCardFace());
+            b.setBackgroundResource(board.getCard(row, col).getCardBack());
         }
         else{
-            b.setBackgroundResource(board.getCard(row, col).getCardBack());
+            b.setBackgroundResource(board.getCard(row, col).getCardFace());
         }
     }
 
@@ -280,10 +281,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
 
     /**
      * sets the move count on screen
-     *//*
+     */
     private void setMoveCountText() {
         TextView moves = findViewById(R.id.MoveCount);
         moves.setText(String.format("%s", boardManager.getMove()));
-    }*/
+    }
 }
 
