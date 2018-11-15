@@ -1,6 +1,8 @@
 package fall2018.csc2017.sudoku;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import fall2018.csc2017.gamecentre.GameManager;
 
@@ -22,12 +24,14 @@ public class SudokuBoardManager implements GameManager, Serializable {
 
     @Override
     public String getGameName() {
-        return null;
+        return "Sudoku";
     }
 
     @Override
     public String getTime() {
-        return null;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return dateTimeFormatter.format(now);
     }
 
     @Override

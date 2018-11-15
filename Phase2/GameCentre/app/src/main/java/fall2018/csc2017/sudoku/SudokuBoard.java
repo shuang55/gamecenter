@@ -15,6 +15,9 @@ public class SudokuBoard extends Observable implements Serializable, Iterable<In
      */
     private Integer[][] numbers;
 
+    /**
+     * Constructor for sudokuboard
+     */
     public SudokuBoard() {
         setUpSolvedBoard();
     }
