@@ -58,7 +58,7 @@ public class StartingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_starting_);
+        setContentView(R.layout.activity_starting_sliding_tile);
         loadManager();
         userManager.setCurrentUserFile();
         addStartButtonListener();

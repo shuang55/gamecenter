@@ -2,6 +2,7 @@ package fall2018.csc2017.cardmatching;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -58,11 +59,23 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
         this.cards = new Card[numCardPerRow][numCardPerCol];
         Iterator<Card> iter = cards.iterator();
 
-        for (int row = 0; row != numCardPair; row++) {
-            for (int col = 0; col != numCardPair; col++) {
+        for (int row = 0; row != numCardPerRow; row++) {
+            for (int col = 0; col != numCardPerCol; col++) {
                 this.cards[row][col] = iter.next();
             }
         }
+    }
+
+    /**
+     * Flip the card at (row, col).
+     *
+     * @param row the first tile row
+     * @param col the first tile col
+     */
+    void flipCard(int row, int col, int mode) {
+        int[] operation = {row, col, mode};
+        setChanged();
+        notifyObservers(operation);
     }
 
     /**

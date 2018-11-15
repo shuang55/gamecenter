@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">SlidingTiles</string>
-    <string name="title_activity_game_centre">GameCentreActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <!--<string name="app_name">SlidingTiles</string>-->
+    <!--<string name="title_activity_game_centre">GameCentreActivity</string>-->
+    <!--<string name="title_home">Home</string>-->
+    <!--<string name="title_dashboard">Dashboard</string>-->
+    <!--<string name="title_notifications">Notifications</string>-->
     <string-array name="sortBy">
         <item>User</item>
         <item>Sliding Tile</item>
@@ -11,7 +11,12 @@
     </string-array>
     <string-array name="complexity">
         <item>3 by 3</item>
-        <item>4 by 4 </item>
-        <item>5 by 5 </item>
+        <item>4 by 4</item>
+        <item>5 by 5</item>
+    </string-array>
+    <string-array name="complexity1">
+        <item>8 pairs</item>
+        <item>10 pairs</item>
+        <item>12 pairs</item>
     </string-array>
 </resources>

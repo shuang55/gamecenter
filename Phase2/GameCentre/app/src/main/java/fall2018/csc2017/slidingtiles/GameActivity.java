@@ -77,7 +77,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         loadFromFile();
         createTileButtons(this);
-        setContentView(R.layout.activity_sliding_tiles);
+        setContentView(R.layout.activity_sliding_tile);
         loadManagers();
         userManager.setCurrentUserFile();
         //Activate undo button
