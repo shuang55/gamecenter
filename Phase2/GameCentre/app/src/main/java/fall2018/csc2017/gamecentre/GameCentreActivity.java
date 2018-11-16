@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import fall2018.csc2017.cardmatching.StartingActivity1;
+import fall2018.csc2017.cardmatching.CardStartingActivity;
 import fall2018.csc2017.slidingtiles.StartingActivity;
 import fall2018.csc2017.R;
 
@@ -91,7 +91,7 @@ public class GameCentreActivity extends AppCompatActivity {
      * Switch to card matching starting activity.
      */
     private void switchToCardMatching() {
-        Intent swap = new Intent(this, StartingActivity1.class);
+        Intent swap = new Intent(this, CardStartingActivity.class);
         startActivity(swap);
     }
 

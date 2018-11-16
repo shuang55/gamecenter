@@ -30,9 +30,9 @@ import fall2018.csc2017.gamecentre.SavedGames;
 import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
-import static fall2018.csc2017.cardmatching.StartingActivity1.TEMP_SAVE_FILENAME;
+import static fall2018.csc2017.cardmatching.CardStartingActivity.TEMP_SAVE_FILENAME;
 
-public class GameActivity1 extends AppCompatActivity implements Observer {
+public class CardGameActivity extends AppCompatActivity implements Observer {
 
     /**
      * The board manager.
@@ -105,7 +105,7 @@ public class GameActivity1 extends AppCompatActivity implements Observer {
      * Loads userManager and savedGames.
      */
     private void loadManagers(){
-        Context game = GameActivity1.this;
+        Context game = CardGameActivity.this;
         GameCentre gameCentre = new GameCentre(game);
         gameCentre.loadManager(UserManager.USERS);
         userManager = gameCentre.getUserManager();
