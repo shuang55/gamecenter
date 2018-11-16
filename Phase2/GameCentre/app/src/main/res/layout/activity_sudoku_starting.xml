@@ -6,4 +6,17 @@
     android:layout_height="match_parent"
     tools:context="fall2018.csc2017.sudoku.SudokuStartingActivity">
 
+
+    <Button
+        android:id="@+id/sudoku_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="130dp"
+        android:layout_marginEnd="193dp"
+        android:layout_marginBottom="276dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

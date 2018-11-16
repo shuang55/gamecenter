@@ -143,6 +143,8 @@ public class GameCentre {
             case SavedGames.SAVEDGAMES:
                 savedGames = (SavedGames) input.readObject();
                 break;
+            case GameManager.TEMP_SAVE_START:
+                gameManager = (GameManager) input.readObject();
         }
     }
 
@@ -151,7 +153,7 @@ public class GameCentre {
      *
      * @param fileName saves the object save onto a file with filename
      */
-    void saveManager(String fileName, Object save) {
+    public void saveManager(String fileName, Object save) {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     context.openFileOutput(fileName, AppCompatActivity.MODE_PRIVATE));
@@ -178,5 +180,13 @@ public class GameCentre {
      */
     public SavedGames getSavedGames() {
         return savedGames;
+    }
+
+    /**
+     * get game manager
+     * @return gameManager
+     */
+    public GameManager getGameManager() {
+        return gameManager;
     }
 }

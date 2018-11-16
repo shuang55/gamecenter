@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import fall2018.csc2017.cardmatching.StartingActivity1;
 import fall2018.csc2017.slidingtiles.StartingActivity;
 import fall2018.csc2017.R;
+import fall2018.csc2017.sudoku.SudokuStartingActivity;
 
 /**
  * Activity for GameCentre.
@@ -25,6 +26,7 @@ public class GameCentreActivity extends AppCompatActivity {
         addHighScoreButtonListener();
         addSavedGamesButtonListener();
         addCardMatchingButtonListener();
+        addSudokuButtonListener();
     }
 
     /**
@@ -52,6 +54,21 @@ public class GameCentreActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Activate the card matching image button.
+     */
+    private void addSudokuButtonListener() {
+        ImageButton sudokuPlay = findViewById(R.id.SudokuPlay);
+        sudokuPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToSudoku();
+            }
+        });
+    }
+
+
 
     /**
      * Activate the high score button.
@@ -88,6 +105,14 @@ public class GameCentreActivity extends AppCompatActivity {
     }
 
     /**
+     * Switch to sliding tile starting activity.
+     */
+    private void switchToSudoku() {
+        Intent swap = new Intent(this,  SudokuStartingActivity.class);
+        startActivity(swap);
+    }
+
+    /**
      * Switch to card matching starting activity.
      */
     private void switchToCardMatching() {
@@ -110,5 +135,7 @@ public class GameCentreActivity extends AppCompatActivity {
         Intent savedGame = new Intent(this, SavedGamesActivity.class);
         startActivity(savedGame);
     }
+
+
 
 }

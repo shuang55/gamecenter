@@ -13,6 +13,11 @@ public interface GameManager extends Serializable {
     String TEMP_SAVE_WIN = "temp_save_win.ser";
 
     /**
+     * Game for starting from starting activity
+     */
+    String TEMP_SAVE_START = "temp_save_start.ser";
+
+    /**
      * Abstract method for calculating the score of a game
      * @return the score
      */

@@ -102,10 +102,4 @@ public class SudokuBoardManager implements GameManager, Serializable {
         return false;
     }
 
-    public static void main(String[] args) {
-        SudokuBoardManager manager = new SudokuBoardManager();
-        System.out.println(manager.getActiveBoard());
-        System.out.println(manager.getHiddenBoard());
-        System.out.println(manager.solvedRow());
-    }
 }
