@@ -76,7 +76,6 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_card_matching);
         loadManagers();
         userManager.setCurrentUserFile();
-        //Activate undo button
         addSaveButtonListener();
         // Add View to activity
         gridView = findViewById(R.id.grid1);
@@ -178,7 +177,8 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
     /**
      * Update the backgrounds on the buttons to match the tiles.
      *
-     * Mode 0 is to cover the card, Mode 1 is to open the card.
+     * * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
+     *                    mode 0 is to close the card, mode 1 is to open the card.
      */
     private void changeCardDisplay(int[] operation) {
         Board board = boardManager.getBoard();
