@@ -20,8 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".cardmatching.GameActivity" />
-        <activity android:name=".cardmatching.StartingActivity1" />
+        <activity android:name=".cardmatching.CardGameActivity" />
+        <activity android:name=".cardmatching.CardStartingActivity" />
         <activity android:name=".gamecentre.GameCentreActivity" />
         <activity android:name=".gamecentre.HighScoreActivity" />
         <activity android:name=".gamecentre.SavedGamesActivity" />

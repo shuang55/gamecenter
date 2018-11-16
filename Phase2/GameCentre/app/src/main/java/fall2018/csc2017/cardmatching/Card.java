@@ -12,14 +12,14 @@ import fall2018.csc2017.R;
 public class Card implements Comparable<Card>, Serializable {
 
     /**
-     * The id to find the card back.
+     * The id of the card back.
      */
-    private int cardBack;
+    private int cardBackId;
 
     /**
      * The id to find the card face.
      */
-    private int cardFace;
+    private int cardFaceId;
 
     /**
      * The unique id.
@@ -27,17 +27,22 @@ public class Card implements Comparable<Card>, Serializable {
     public int id;
 
     /**
+     * 1 if card is opened, 0 otherwise
+     */
+    private int opened;
+
+    /**
      * If the card is paired.
      */
-    private boolean paired;
+    private boolean isPaired;
 
     /**
      * Return the card face id.
      *
      * @return id of card face
      */
-    public int getCardFace() {
-        return cardFace;
+    public int getCardFaceId() {
+        return cardFaceId;
     }
 
     /**
@@ -45,7 +50,7 @@ public class Card implements Comparable<Card>, Serializable {
      *
      * @return id of card back
      */
-    public int getCardBack() { return cardBack; }
+    public int getCardBackId() { return cardBackId; }
 
     /**
      * Return the card id.
@@ -65,89 +70,125 @@ public class Card implements Comparable<Card>, Serializable {
         id = backgroundId + 1;
         switch ((int) Math.ceil(((double) id)/2)) {
             case 1:
-                cardFace = R.drawable.tile_1;
+                cardFaceId = R.drawable.tile_1;
                 break;
             case 2:
-                cardFace = R.drawable.tile_2;
+                cardFaceId = R.drawable.tile_2;
                 break;
             case 3:
-                cardFace = R.drawable.tile_3;
+                cardFaceId = R.drawable.tile_3;
                 break;
             case 4:
-                cardFace = R.drawable.tile_4;
+                cardFaceId = R.drawable.tile_4;
                 break;
             case 5:
-                cardFace = R.drawable.tile_5;
+                cardFaceId = R.drawable.tile_5;
                 break;
             case 6:
-                cardFace = R.drawable.tile_6;
+                cardFaceId = R.drawable.tile_6;
                 break;
             case 7:
-                cardFace = R.drawable.tile_7;
+                cardFaceId = R.drawable.tile_7;
                 break;
             case 8:
-                cardFace = R.drawable.tile_8;
+                cardFaceId = R.drawable.tile_8;
                 break;
             case 9:
-                cardFace = R.drawable.tile_9;
+                cardFaceId = R.drawable.tile_9;
                 break;
             case 10:
-                cardFace = R.drawable.tile_10;
+                cardFaceId = R.drawable.tile_10;
                 break;
             case 11:
-                cardFace = R.drawable.tile_11;
+                cardFaceId = R.drawable.tile_11;
                 break;
             case 12:
-                cardFace = R.drawable.tile_12;
+                cardFaceId = R.drawable.tile_12;
                 break;
 //            case 13:
-//                cardFace = R.drawable.tile_13;
+//                cardFaceId = R.drawable.tile_13;
 //                break;
 //            case 14:
-//                cardFace = R.drawable.tile_14;
+//                cardFaceId = R.drawable.tile_14;
 //                break;
 //            case 15:
-//                cardFace = R.drawable.tile_15;
+//                cardFaceId = R.drawable.tile_15;
 //                break;
 //            case 16:
-//                cardFace = R.drawable.tile_16;
+//                cardFaceId = R.drawable.tile_16;
 //                break;
 //            case 17:
-//                cardFace = R.drawable.tile_17;
+//                cardFaceId = R.drawable.tile_17;
 //                break;
 //            case 18:
-//                cardFace = R.drawable.tile_18;
+//                cardFaceId = R.drawable.tile_18;
 //                break;
 //            case 19:
-//                cardFace = R.drawable.tile_19;
+//                cardFaceId = R.drawable.tile_19;
 //                break;
 //            case 20:
-//                cardFace = R.drawable.tile_20;
+//                cardFaceId = R.drawable.tile_20;
 //                break;
 //            case 21:
-//                cardFace = R.drawable.tile_21;
+//                cardFaceId = R.drawable.tile_21;
 //                break;
 //            case 22:
-//                cardFace = R.drawable.tile_22;
+//                cardFaceId = R.drawable.tile_22;
 //                break;
 //            case 23:
-//                cardFace = R.drawable.tile_23;
+//                cardFaceId = R.drawable.tile_23;
 //                break;
 //            case 24:
-//                cardFace = R.drawable.tile_24;
+//                cardFaceId = R.drawable.tile_24;
 //                break;
 //            case 25:
-//                cardFace = R.drawable.blank_tile;
+//                cardFaceId = R.drawable.blank_tile;
 //                break;
             default:
-                cardFace = R.drawable.blank_tile;
+                cardFaceId = R.drawable.blank_tile;
         }
-        cardBack = R.drawable.star_photo;
-        paired = false;
+        cardBackId = R.drawable.star_photo;
+        isPaired = false;
     }
 
+    /**
+     * Get whether or not this card is isPaired.
+     *
+     * @return true if card is isPaired, false otherwise
+     */
     boolean isPaired(){
-        return paired;
+        return isPaired;
+    }
+
+    /**
+     * Set the card to isPaired or not isPaired.
+     *
+     * @param paired whether the card is isPaired or not
+     */
+    public void setPaired(boolean paired) {
+        this.isPaired = paired;
+    }
+
+    /**
+     * Set the card to opened or not opened;
+     *
+     * 1 means card is opened, 0 means card is covered.
+     *
+     * @param opened whether the card is opened or not
+     */
+    void setOpened(int opened) {
+        this.opened = opened;
+    }
+
+    /**
+     * Get whether or not this card is opened.
+     *
+     * 1 means card is opened, 0 means card is covered.
+     *
+     * @return true if card is opened, false otherwise
+     */
+    int isOpen(){
+        return opened;
     }
 
     @Override

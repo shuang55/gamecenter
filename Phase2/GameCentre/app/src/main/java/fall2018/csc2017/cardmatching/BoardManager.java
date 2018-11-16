@@ -47,8 +47,8 @@ public class BoardManager implements Serializable, GameManager {
      */
     BoardManager(int numCardPair) {
         List<Card> cards = new ArrayList<>();
-        final int numCards = numCardPair * 2;
-        for (int cardNum = 0; cardNum != numCards; cardNum++) {
+        final int NUMCARDS = numCardPair * 2;
+        for (int cardNum = 0; cardNum != NUMCARDS; cardNum++) {
             cards.add(new Card(cardNum));
         }
         Collections.shuffle(cards);
@@ -71,38 +71,45 @@ public class BoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Return whether any of the four surrounding tiles is the blank Card.
+     * Return whether the card is a valid tap. True if card isn't flipped, false if already flipped.
      *
      * @param position the Card to check
      * @return whether the Card is not paired or paired.
      */
     public boolean isValidTap(int position) {
-        int row = position / board.numCardPerRow;
-        int col = position % board.numCardPerRow;
-        return board.getCard(row, col).isPaired();
+        int row = position / board.numCardPerCol;
+        int col = position % board.numCardPerCol;
+        Card cardTapped = board.getCard(row, col);
+        return !(cardTapped.isOpen() == 1);
     }
 
     /**
      * Process a touch at position in the board, swapping tiles as appropriate.
+     * <p>
+     * Mode 0 is to cover the card, Mode 1 is to open the card.
      *
      * @param position the position
      */
     public void touchMove(int position) {
-        int row = position / board.numCardPerRow;
-        int col = position % board.numCardPerRow;
-        if (isValidTap(position)) {
-            //does the flip card and match
+        System.out.println(position);
+        int row = position / board.numCardPerCol;
+        int col = position % board.numCardPerCol;
+        if (isValidTap(position) && (move % 2 == 0)) {
+            board.flipCard(row, col, 1);
+            move++;
+        } else if (isValidTap(position)) {
+            board.flipCard(row, col, 1);
+            move++;
         }
 
     }
 
     /**
      * Return the player's score.
-     *
-     * TODO: find an implementation.
+     * TODO: change this implementation.
      */
     public int getScore() {
-        return 100;
+        return 100 - move;
     }
 
     /**
@@ -126,5 +133,9 @@ public class BoardManager implements Serializable, GameManager {
      */
     public String getGameDifficulty() {
         return String.format("%s by %s", board.numCardPerRow, board.numCardPerCol);
+    }
+
+    public int getMove() {
+        return move;
     }
 }

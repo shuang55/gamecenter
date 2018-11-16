@@ -24,7 +24,7 @@ import fall2018.csc2017.gamecentre.UserManager;
 /**
  * The initial activity for the sliding puzzle tile game.
  */
-public class StartingActivity1 extends AppCompatActivity {
+public class CardStartingActivity extends AppCompatActivity {
 // https://www.vectorstock.com/royalty-free-vector/pink-star-with-a-smile-logo-vector-21368236
 // star photo
 
@@ -69,7 +69,7 @@ public class StartingActivity1 extends AppCompatActivity {
      * Loads userManager
      */
     private void loadManager() {
-        Context context = StartingActivity1.this;
+        Context context = CardStartingActivity.this;
         GameCentre gameCentre = new GameCentre(context);
         gameCentre.loadManager(UserManager.USERS);
         userManager = gameCentre.getUserManager();
@@ -126,10 +126,10 @@ public class StartingActivity1 extends AppCompatActivity {
     }
 
     /**
-     * Switch to the GameActivity view to play the game.
+     * Switch to the CardGameActivity view to play the game.
      */
     public void switchToGame() {
-        Intent tmp = new Intent(this, GameActivity.class);
+        Intent tmp = new Intent(this, CardGameActivity.class);
         saveToFile(TEMP_SAVE_FILENAME);
         startActivity(tmp);
     }

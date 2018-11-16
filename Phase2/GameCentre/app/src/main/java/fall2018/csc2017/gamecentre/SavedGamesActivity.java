@@ -163,7 +163,7 @@ public class SavedGamesActivity extends AppCompatActivity {
     private void startActivity(String gameName, GameManager gameManager){
         if (gameName.equals("Sliding Tile")){
             saveToFile(StartingActivity.TEMP_SAVE_FILENAME,gameManager);
-            switchToGame();
+            switchToSlidingTile();
         }
     }
 
@@ -185,9 +185,9 @@ public class SavedGamesActivity extends AppCompatActivity {
     }
 
     /**
-     * Switch to view of GameActivity.
+     * Switch to view of Sliding tile game.
      */
-    public void switchToGame() {
+    public void switchToSlidingTile() {
         Intent tmp = new Intent(this, GameActivity.class);
         startActivity(tmp);
     }
