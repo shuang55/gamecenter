@@ -165,7 +165,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
     private void createTileButtons(Context context) {
         Board board = boardManager.getBoard();
         cardButtons = new ArrayList<>();
-        int cardBackId = board.getCard(0,0).getCardBack();
+        int cardBackId = board.getCard(0,0).getCardBackId();
         for (int row = 0; row != board.numCardPerRow; row++) {
             for (int col = 0; col != board.numCardPerCol; col++) {
                 Button tmp = new Button(context);
@@ -188,10 +188,10 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
         int position = row * 4 + col;
         Button b = this.cardButtons.get(position);
         if (mode == 0){
-            b.setBackgroundResource(board.getCard(row, col).getCardBack());
+            b.setBackgroundResource(board.getCard(row, col).getCardBackId());
         }
         else{
-            b.setBackgroundResource(board.getCard(row, col).getCardFace());
+            b.setBackgroundResource(board.getCard(row, col).getCardFaceId());
         }
     }
 

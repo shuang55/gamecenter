@@ -2,7 +2,6 @@ package fall2018.csc2017.cardmatching;
 
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
