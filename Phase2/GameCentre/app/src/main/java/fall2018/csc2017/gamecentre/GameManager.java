@@ -33,7 +33,7 @@ public interface GameManager extends Serializable {
      * Abstract Method for getting the current time in game
      * @return the time
      */
-    String getTime();
+    String getTime() ;
 
     /**
      * Abstract method for getting the game's difficulty

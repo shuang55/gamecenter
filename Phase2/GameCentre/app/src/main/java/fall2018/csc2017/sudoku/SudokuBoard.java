@@ -1,16 +1,11 @@
 package fall2018.csc2017.sudoku;
 
-import android.support.annotation.NonNull;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Observable;
 import java.util.Random;
 
-public class SudokuBoard extends Observable implements Serializable{
+public class SudokuBoard implements Serializable {
 
 
     /**
@@ -27,16 +22,26 @@ public class SudokuBoard extends Observable implements Serializable{
     }
 
     public SudokuBoard(Integer[][] preSolvedBoard) {
-        for (int i = 0; i < 9; i ++) {
+        for (int i = 0; i < 9; i++) {
             sudokuBoard[i] = preSolvedBoard[i].clone();
         }
 
     }
 
+    /**
+     * Gets the sudokuBoard
+     * @return the sudokuBoard
+     */
     public Integer[][] getSudokuBoard() {
         return sudokuBoard;
     }
 
+    /**
+     * Sets the board at [row][col] to be num
+     * @param row row to be updated
+     * @param column column to be updated
+     * @param number number to be updated
+     */
     public void setSudokuBoardNumber(int row, int column, int number) {
         sudokuBoard[row][column] = number;
     }
@@ -110,6 +115,7 @@ public class SudokuBoard extends Observable implements Serializable{
 
     /**
      * swaps the major vertical columns
+     *
      * @param swapMethod
      */
     public void swapVertical(int swapMethod) {
@@ -130,6 +136,9 @@ public class SudokuBoard extends Observable implements Serializable{
         }
     }
 
+    /**
+     * Randomize the board
+     */
     private void randomizeBoard() {
         Random random = new Random();
         // swap the major columns/rows twice
@@ -138,16 +147,27 @@ public class SudokuBoard extends Observable implements Serializable{
             swapVertical(random.nextInt(3));
         }
         //iterate through  the 3 major row/column to swap them
+        randomizeSingleRowColumn(random);
+    }
+
+    /**
+     * Randomizes the rows/columns within each major horizontal/vertical section
+     * @param random a random for randomizing
+     */
+    private void randomizeSingleRowColumn(Random random) {
         for (int i = 0; i < 3; i++) {
             // swapping rows and columns within each major column/row
             for (int j = 0; j < 2; j++) {
                 swapRows(random.nextInt(3) + (3 * j), random.nextInt(3) + (3 * j));
                 swapColumns(random.nextInt(3) + (3 * j), random.nextInt(3) + (3 * j));
             }
-
         }
     }
 
+    /**
+     * String representation of board for debugging purposes
+     * @return the string representation of the board
+     */
     @Override
     public String toString() {
         String s = "{";
@@ -156,49 +176,5 @@ public class SudokuBoard extends Observable implements Serializable{
         }
         return s;
     }
-
-    //    /**
-//     * iterator method for iterable
-//     *
-//     * @return a SudokuBoardIterator
-//     */
-//    @NonNull
-//    @Override
-//    public Iterator<Integer> iterator() {
-//        return new SudokuBoardIterator();
-//    }
-//
-//    /**
-//     * Iterator class that iterates through the board
-//     */
-//    private class SudokuBoardIterator implements Iterator<Integer> {
-//
-//        private int row = 0;
-//        private int column = 0;
-//
-//        @Override
-//        public boolean hasNext() {
-//            return (row != 8 && column != 8);
-//        }
-//
-//        @Override
-//        public Integer next() {
-//
-//            if (!hasNext()) {
-//                throw new NoSuchElementException("out of elements");
-//            } else if (column == 8) {
-//                Integer i = sudokuBoard[row][column];
-//                row++;
-//                column = 0;
-//                return i;
-//            } else {
-//                Integer i = sudokuBoard[row][column];
-//                row++;
-//                column++;
-//                return i;
-//            }
-//
-//        }
-//    }
 
 }

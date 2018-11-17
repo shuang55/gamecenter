@@ -11,17 +11,29 @@ import android.widget.TextView;
 
 import fall2018.csc2017.R;
 
+/**
+ * The adapter that processes a sudokuBoardManager and displays it in a gridview
+ */
 public class SudokuBoardAdapter extends BaseAdapter {
 
+    /**
+     * The sudoku board and boardmanager to be processed
+     */
     private SudokuBoard sudokuBoard;
-    private Context context;
-    private int selected;
+    private SudokuBoardManager sudokuBoardManager;
 
-    public SudokuBoardAdapter (SudokuBoard sudokuBoard, Context context) {
-        this.sudokuBoard = sudokuBoard;
+    /**
+     * Context of the adapter
+     */
+    private Context context;
+
+    public SudokuBoardAdapter (SudokuBoardManager sudokuBoardManager, Context context) {
+        this.sudokuBoardManager = sudokuBoardManager;
+        this.sudokuBoard = sudokuBoardManager.getActiveBoard();
         this.context = context;
 
     }
+
     @Override
     public int getCount() {
         return 81;
@@ -39,34 +51,35 @@ public class SudokuBoardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // Determine the current number
         int row = position / 9;
         int col = position % 9;
         Integer currentNumber = sudokuBoard.getSudokuBoard()[row][col];
 
+        // Inflate the layout
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
             convertView = layoutInflater.inflate(R.layout.layout_sudoku_number, null);
         }
 
+        // Display the number in the layout
         TextView number = convertView.findViewById(R.id.sudoku_number);
-
         if (currentNumber == 0) {
             number.setText("");
         } else {
             number.setText(String.format("%s", currentNumber));
         }
 
-        if (position == selected) {
+        // Display the highlighted grid
+        if (position == sudokuBoardManager.getPositionSelected()) {
             convertView.setBackground(ContextCompat.getDrawable(
                     context,R.drawable.sudoku_border_selected));
         } else {
             convertView.setBackground(ContextCompat.getDrawable(context,R.drawable.sudoku_border));
         }
 
+        // Return the view
         return convertView;
     }
 
-    public void setSelected(int position) {
-        this.selected = position;
-    }
 }
