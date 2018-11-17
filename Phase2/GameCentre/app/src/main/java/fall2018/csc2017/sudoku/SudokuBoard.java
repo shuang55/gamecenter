@@ -25,7 +25,6 @@ public class SudokuBoard implements Serializable {
         for (int i = 0; i < 9; i++) {
             sudokuBoard[i] = preSolvedBoard[i].clone();
         }
-
     }
 
     /**

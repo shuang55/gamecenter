@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
@@ -43,6 +44,10 @@ public class SudokuGameActivity extends AppCompatActivity {
         numberSelectGridView.setAdapter(sudokuNumberSelectAdapter);
         // set up button
         addNumberSelectGridViewClickListener();
+        addEraseButtonListener();
+        addHintButtonListener();
+        addSaveButtonListener();
+        addUndoButtonListener();
 
     }
 
@@ -53,6 +58,8 @@ public class SudokuGameActivity extends AppCompatActivity {
         gridView = findViewById(R.id.game_grid);
         SudokuBoardAdapter sudokuBoardAdapter = new SudokuBoardAdapter(sudokuBoardManager, this);
         gridView.setAdapter(sudokuBoardAdapter);
+        TextView textView = findViewById(R.id.sudoku_moves);
+        textView.setText(String.format("Moves: %s", sudokuBoardManager.getMoves()));
     }
 
     /**
@@ -85,5 +92,48 @@ public class SudokuGameActivity extends AppCompatActivity {
         sudokuBoardManager.updateNumber(num);
         updateDisplay();
     }
+
+    private void addUndoButtonListener() {
+        Button undo = findViewById(R.id.sudoku_undo);
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO something
+            }
+        });
+    }
+
+    private void addSaveButtonListener() {
+        Button save = findViewById(R.id.sudoku_save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO SOMETHING
+            }
+        });
+    }
+
+    private void addEraseButtonListener() {
+        Button erase = findViewById(R.id.sudoku_erase);
+        erase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sudokuBoardManager.erase();
+                updateDisplay();
+            }
+        });
+    }
+
+    private void addHintButtonListener() {
+        Button hint = findViewById(R.id.sudoku_hint);
+        hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sudokuBoardManager.provideHint();
+                updateDisplay();
+            }
+        });
+    }
+
 
 }

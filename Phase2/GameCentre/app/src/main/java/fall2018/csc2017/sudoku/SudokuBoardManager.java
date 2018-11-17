@@ -30,10 +30,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
      * current selected position for activeboard
      */
     private int positionSelected;
-
-    /**
-     * Constructor for sudokuboardmanager
-     */
+    private int moves;
 
     public SudokuBoardManager() {
         SudokuBoardRandomizer randomizer = new SudokuBoardRandomizer(new SudokuBoard());
@@ -133,6 +130,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
             int row = positionSelected / 9;
             int col = positionSelected % 9;
             activeBoard.setSudokuBoardNumber(row, col, num);
+            moves++;
         }
     }
 
@@ -167,5 +165,32 @@ public class SudokuBoardManager implements GameManager, Serializable {
 
     public ArrayList<Integer> getGeneratedNumbers() {
         return generatedNumbers;
+    }
+
+    /**
+     * Erases the number at a certain spot
+     */
+    public void erase() {
+        if (isValidTap(positionSelected)) {
+            activeBoard.setSudokuBoardNumber(
+                    positionSelected / 9, positionSelected % 9, 0);
+        }
+    }
+
+    /**
+     * Gives hint by removing one of the squares needed to fill the board
+     */
+    public void provideHint() {
+        if (generatedNumbers.size() != 0) {
+            int position = generatedNumbers.remove(0);
+            int row = position / 9;
+            int col = position % 9;
+            activeBoard.setSudokuBoardNumber(row, col, hiddenBoard.getSudokuBoard()[row][col]);
+            moves = moves + 5;
+        }
+    }
+
+    public int getMoves() {
+        return moves;
     }
 }
