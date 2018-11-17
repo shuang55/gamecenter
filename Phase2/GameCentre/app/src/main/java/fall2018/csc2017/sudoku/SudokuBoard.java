@@ -91,4 +91,9 @@ public class SudokuBoard implements Serializable {
         return s;
     }
 
+    public SudokuBoard copy() {
+        SudokuBoard temp = new SudokuBoard(sudokuBoard);
+        return temp;
+    }
+
 }

@@ -1,5 +1,6 @@
 package fall2018.csc2017.sudoku;
 
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,8 +12,6 @@ import java.util.Random;
 import fall2018.csc2017.gamecentre.GameManager;
 
 public class SudokuBoardManager implements GameManager, Serializable {
-
-    private static final String TAG = "SudokuBoardManager";
 
     /**
      * the active board for users to solve
@@ -26,6 +25,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
      * Arraylist for keeping track of unchangeable generated numbers
      */
     private ArrayList<Integer> generatedNumbers = new ArrayList<>();
+    private ArrayList<SudokuBoard> undoStack = new ArrayList<>();
     /**
      * current selected position for activeboard
      */
@@ -127,6 +127,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
     public void updateNumber(int num) {
         if (isValidTap(positionSelected)) {
+            undoStack.add(0, activeBoard.copy());
             int row = positionSelected / 9;
             int col = positionSelected % 9;
             activeBoard.setSudokuBoardNumber(row, col, num);
@@ -172,6 +173,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
     public void erase() {
         if (isValidTap(positionSelected)) {
+            undoStack.add(0, activeBoard.copy());
             activeBoard.setSudokuBoardNumber(
                     positionSelected / 9, positionSelected % 9, 0);
         }
@@ -192,5 +194,13 @@ public class SudokuBoardManager implements GameManager, Serializable {
 
     public int getMoves() {
         return moves;
+    }
+
+    public boolean undo() {
+        if (undoStack.size() > 0) {
+            activeBoard = undoStack.remove(0);
+            return true;
+        }
+        return false;
     }
 }

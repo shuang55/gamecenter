@@ -7,10 +7,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
+import fall2018.csc2017.gamecentre.UserManager;
 
 public class SudokuGameActivity extends AppCompatActivity {
 
@@ -25,12 +27,14 @@ public class SudokuGameActivity extends AppCompatActivity {
     private GridView gridView;
     private GridView numberSelectGridView;
 
+    private GameCentre gameCentre;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku_game);
         // set up board
-        GameCentre gameCentre = new GameCentre(this);
+        gameCentre = new GameCentre(this);
         gameCentre.loadManager(GameManager.TEMP_SAVE_START);
         sudokuBoardManager = (SudokuBoardManager) gameCentre.getGameManager();
 
@@ -46,7 +50,6 @@ public class SudokuGameActivity extends AppCompatActivity {
         addNumberSelectGridViewClickListener();
         addEraseButtonListener();
         addHintButtonListener();
-        addSaveButtonListener();
         addUndoButtonListener();
 
     }
@@ -90,6 +93,7 @@ public class SudokuGameActivity extends AppCompatActivity {
      */
     private void updateSudokuBoard(int num) {
         sudokuBoardManager.updateNumber(num);
+        autoSave();
         updateDisplay();
     }
 
@@ -98,17 +102,11 @@ public class SudokuGameActivity extends AppCompatActivity {
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO something
-            }
-        });
-    }
-
-    private void addSaveButtonListener() {
-        Button save = findViewById(R.id.sudoku_save);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO SOMETHING
+                boolean reverted = sudokuBoardManager.undo();
+                updateDisplay();
+                if (!reverted) {
+                    makeToastNoMoreMoves();
+                }
             }
         });
     }
@@ -135,5 +133,14 @@ public class SudokuGameActivity extends AppCompatActivity {
         });
     }
 
+    private void autoSave() {
+        UserManager userManager = gameCentre.getUserManager();
+        userManager.autoSaveGame(sudokuBoardManager);
+        gameCentre.saveManager(UserManager.USERS, userManager);
+    }
+
+    private void makeToastNoMoreMoves() {
+        Toast.makeText(this, "No more moves", Toast.LENGTH_SHORT).show();
+    }
 
 }
