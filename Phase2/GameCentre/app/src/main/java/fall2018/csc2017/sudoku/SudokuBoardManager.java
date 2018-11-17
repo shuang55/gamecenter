@@ -1,14 +1,12 @@
 package fall2018.csc2017.sudoku;
 
-import android.util.Log;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
+
 import java.util.Random;
-import java.util.Set;
+
 
 import fall2018.csc2017.gamecentre.GameManager;
 
@@ -38,7 +36,8 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
 
     public SudokuBoardManager() {
-        this.hiddenBoard = new SudokuBoard();
+        SudokuBoardRandomizer randomizer = new SudokuBoardRandomizer(new SudokuBoard());
+        this.hiddenBoard = randomizer.generateRandomBoard();
         this.activeBoard = new SudokuBoard(hiddenBoard.getSudokuBoard());
         generateActiveBoard();
     }
@@ -110,27 +109,9 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
     @Override
     public boolean puzzleSolved() {
-        return solvedRow();
-
+        return activeBoard.solvedRow();
     }
 
-    /**
-     * Checks whether each row is solved
-     *
-     * @return whether each row is solved
-     */
-    private boolean solvedRow() {
-        boolean solved = true;
-        Set<Integer> solution = new HashSet<>(Arrays.asList(hiddenBoard.getSudokuBoard()[0]));
-        for (int i = 0; i < 9; i++) {
-            Set<Integer> set = new HashSet<>(Arrays.asList(activeBoard.getSudokuBoard()[i]));
-            if (!set.equals(solution)) {
-                solved = false;
-                break;
-            }
-        }
-        return solved;
-    }
 
     /**
      * Updates the currently selected position
@@ -152,7 +133,6 @@ public class SudokuBoardManager implements GameManager, Serializable {
             int row = positionSelected / 9;
             int col = positionSelected % 9;
             activeBoard.setSudokuBoardNumber(row, col, num);
-            Log.v(TAG, "updated number successfully");
         }
     }
 
