@@ -99,75 +99,15 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="20dp">
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/SudokuSelect"
+            android:numColumns="9"
+            android:layout_marginTop="20dp"
+            android:verticalSpacing="5dp">
 
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/sudoku_1"
-                    android:text="1"
-                    />
-                <Button
-                    android:id="@+id/sudoku_2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2"
-                    />
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="3"
-                    android:id="@+id/sudoku_3"
-                    />
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="4"
-                    android:id="@+id/sudoku_4"
-                    />
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="5"
-                    android:id="@+id/sudoku_5"
-                    />
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="6"
-                    android:id="@+id/sudoku_6"
-                    />
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="7"
-                    android:id="@+id/sudoku_7"
-                    />
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="8"
-                    android:id="@+id/sudoku_8"
-                    />
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="9"
-                    android:id="@+id/sudoku_9"
-                    />
-            </LinearLayout>
+        </GridView>
 
 
         </LinearLayout>

@@ -70,13 +70,16 @@ public class SudokuBoardAdapter extends BaseAdapter {
             number.setText(String.format("%s", currentNumber));
         }
 
-        // Display the highlighted grid
+        // Display the highlighted grid and empty grids
         if (position == sudokuBoardManager.getPositionSelected()) {
             convertView.setBackground(ContextCompat.getDrawable(
                     context,R.drawable.sudoku_border_selected));
+        } else if (sudokuBoardManager.getGeneratedNumbers().contains(position)) {
+            convertView.setBackground(ContextCompat.getDrawable(context, R.drawable.sudoku_border_empty));
         } else {
             convertView.setBackground(ContextCompat.getDrawable(context,R.drawable.sudoku_border));
         }
+
 
         // Return the view
         return convertView;

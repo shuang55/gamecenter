@@ -1,9 +1,7 @@
 package fall2018.csc2017.sudoku;
 
-import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,7 +11,7 @@ import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
 
-public class SudokuGameActivity extends AppCompatActivity implements View.OnClickListener {
+public class SudokuGameActivity extends AppCompatActivity {
 
     private static final String TAG = "SudokuGameActivity";
     /**
@@ -24,6 +22,7 @@ public class SudokuGameActivity extends AppCompatActivity implements View.OnClic
      * Gridview
      */
     private GridView gridView;
+    private GridView numberSelectGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +37,12 @@ public class SudokuGameActivity extends AppCompatActivity implements View.OnClic
         updateDisplay();
         addGridViewClickListener();
 
+        // set up number select
+        numberSelectGridView = findViewById(R.id.SudokuSelect);
+        SudokuNumberSelectAdapter sudokuNumberSelectAdapter = new SudokuNumberSelectAdapter(this);
+        numberSelectGridView.setAdapter(sudokuNumberSelectAdapter);
         // set up button
-        addSudokuButtonListener();
+        addNumberSelectGridViewClickListener();
 
     }
 
@@ -65,6 +68,15 @@ public class SudokuGameActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+    private void addNumberSelectGridViewClickListener() {
+        numberSelectGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                updateSudokuBoard(position + 1);
+            }
+        });
+    }
+
     /**
      * Update the sudokuboard
      * @param num number to be updated
@@ -74,66 +86,4 @@ public class SudokuGameActivity extends AppCompatActivity implements View.OnClic
         updateDisplay();
     }
 
-    /**
-     * Add the sudoku number select buttons
-     */
-    private void addSudokuButtonListener() {
-        Button sudoku1 = findViewById(R.id.sudoku_1);
-        sudoku1.setOnClickListener(this);
-        Button sudoku2 = findViewById(R.id.sudoku_2);
-        sudoku2.setOnClickListener(this);
-        Button sudoku3 = findViewById(R.id.sudoku_3);
-        sudoku3.setOnClickListener(this);
-        Button sudoku4 = findViewById(R.id.sudoku_4);
-        sudoku4.setOnClickListener(this);
-        Button sudoku5 = findViewById(R.id.sudoku_5);
-        sudoku5.setOnClickListener(this);
-        Button sudoku6 = findViewById(R.id.sudoku_6);
-        sudoku6.setOnClickListener(this);
-        Button sudoku7 = findViewById(R.id.sudoku_7);
-        sudoku7.setOnClickListener(this);
-        Button sudoku8 = findViewById(R.id.sudoku_8);
-        sudoku8.setOnClickListener(this);
-        Button sudoku9 = findViewById(R.id.sudoku_9);
-        sudoku9.setOnClickListener(this);
-    }
-
-    /**
-     * Select what happens depending on which button was pressed
-     * @param view the current view
-     */
-    @Override
-    public void onClick (View view) {
-        switch (view.getId()) {
-            case R.id.sudoku_1:
-                updateSudokuBoard(1);
-                break;
-            case R.id.sudoku_2:
-                updateSudokuBoard(2);
-                break;
-            case R.id.sudoku_3:
-                updateSudokuBoard(3);
-                break;
-            case R.id.sudoku_4:
-                updateSudokuBoard(4);
-                break;
-            case R.id.sudoku_5:
-                updateSudokuBoard(5);
-                break;
-            case R.id.sudoku_6:
-                updateSudokuBoard(6);
-                break;
-            case R.id.sudoku_7:
-                updateSudokuBoard(7);
-                break;
-            case R.id.sudoku_8:
-                updateSudokuBoard(8);
-                break;
-            case R.id.sudoku_9:
-                updateSudokuBoard(9);
-                break;
-            default:
-                break;
-        }
-    }
 }

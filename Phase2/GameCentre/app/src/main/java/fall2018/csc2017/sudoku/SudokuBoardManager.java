@@ -165,4 +165,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
         return (generatedNumbers.contains(position));
     }
 
+    public ArrayList<Integer> getGeneratedNumbers() {
+        return generatedNumbers;
+    }
 }
