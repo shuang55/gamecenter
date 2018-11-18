@@ -106,7 +106,16 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
     @Override
     public boolean puzzleSolved() {
-        return activeBoard.solvedRow();
+        Integer[][] board = activeBoard.getSudokuBoard();
+        for (int i = 0; i < 81; i++) {
+            Integer value = board[i / 9][i % 9];
+            Integer rowSolved = activeBoard.doubleInRow(value);
+            Integer columnSolved = activeBoard.doubleInColumn(value);
+            Integer boxSolved = activeBoard.doubleInBox(value);
+            if (rowSolved != -1 || columnSolved != -1 || boxSolved != -1)
+                return false;
+        }
+        return true;
     }
 
 
