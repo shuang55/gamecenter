@@ -70,7 +70,7 @@ public class SudokuBoard implements Serializable {
      */
     private int checkForDouble(Integer[] items, Integer value) {
         for (int i = 0; i < 9; i++) {
-            if (items[i] != null && items[i].equals(value))
+            if (items[i] != 0 && items[i].equals(value))
                 return i;
         }
         return -1;
@@ -84,7 +84,7 @@ public class SudokuBoard implements Serializable {
     public int doubleInRow(int index) {
         Integer[] rowToCheck = this.getSudokuBoard()[index/9].clone();
         Integer compare = rowToCheck[index % 9];
-        rowToCheck[index % 9] = null;
+        rowToCheck[index % 9] = 0;
         int indexDouble = checkForDouble(rowToCheck, compare);
         if (indexDouble != -1)
             return indexDouble + (index / 9) * 9;
@@ -102,7 +102,7 @@ public class SudokuBoard implements Serializable {
             columnToCheck[i] = this.getSudokuBoard()[i][index/9];
         }
         Integer compare = columnToCheck[index/9];
-        columnToCheck[index / 9] = null;
+        columnToCheck[index / 9] = 0;
         int indexDouble = checkForDouble(columnToCheck, compare);
         if (indexDouble != -1)
             return indexDouble*9 + index%9;
@@ -124,7 +124,7 @@ public class SudokuBoard implements Serializable {
             boxToCheck[i + 6] = this.getSudokuBoard()[row + 2][column + i];
         }
         Integer compare = boxToCheck[(index / 9) * 3 + index % 3];
-        boxToCheck[(index / 9) * 3 + index % 3] = null;
+        boxToCheck[(index / 9) * 3 + index % 3] = 0;
         int indexDouble = checkForDouble(boxToCheck, compare);
         if (indexDouble != -1)
             return (indexDouble / 3 + row) * 9 + indexDouble % 3 + column;
