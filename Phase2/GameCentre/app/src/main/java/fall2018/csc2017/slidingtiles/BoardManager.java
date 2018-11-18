@@ -70,6 +70,19 @@ public class BoardManager implements Serializable, GameManager {
         }
 
         Collections.shuffle(tiles);
+
+
+
+        int inv_count = 0;
+        for (int i = 0; i < tiles.size() - 1; i++)
+            for (int j = i + 1; j < tiles.size(); j++)
+                if (tiles.get(i).getId() > tiles.get(j).getId())
+                    inv_count ++;
+
+
+
+
+
         this.board = new Board(tiles, boardSize);
     }
 
