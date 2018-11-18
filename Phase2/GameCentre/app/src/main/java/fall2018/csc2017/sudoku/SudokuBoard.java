@@ -62,22 +62,91 @@ public class SudokuBoard implements Serializable {
     }
 
     /**
-     * Checks whether each row is solved
+     * Checks whether the int at index is the same value as another int in the array.
      *
-     * @return whether each row is solved
+     * @param items the array to check for a duplicate
+     * @param value the value to check for a duplicate of in items
+     * @return the index of the duplicate if there is one else -1
      */
-    public boolean solvedRow() {
+    private int checkForDouble(Integer[] items, Integer value) {
+        for (int i = 0; i < 9; i++) {
+            if (items[i] != null && items[i].equals(value))
+                return i;
+        }
+        return -1;
+    }
+
+    /**
+     * Return the index of the duplicate in the row if there is one else -1.
+     * @param index the index of the value of the board to find the duplicate of.
+     * @return the index of the duplicate if there is one else -1.
+     */
+    public int doubleInRow(int index) {
+        Integer[] rowToCheck = this.getSudokuBoard()[index/9].clone();
+        Integer compare = rowToCheck[index % 9];
+        rowToCheck[index % 9] = null;
+        int indexDouble = checkForDouble(rowToCheck, compare);
+        if (indexDouble != -1)
+            return indexDouble + (index / 9) * 9;
+        return indexDouble;
+    }
+
+    /**
+     * Return the index of the duplicate in the column if there is one else -1.
+     * @param index the index of the value of the board to find the duplicate of.
+     * @return the index of the duplicate if there is one else -1.
+     */
+    public int doubleInColumn(int index) {
+        Integer[] columnToCheck = new Integer[9];
+        for (int i = 0; i < 9; i++) {
+            columnToCheck[i] = this.getSudokuBoard()[i][index/9];
+        }
+        Integer compare = columnToCheck[index/9];
+        columnToCheck[index / 9] = null;
+        int indexDouble = checkForDouble(columnToCheck, compare);
+        if (indexDouble != -1)
+            return indexDouble*9 + index%9;
+        return indexDouble;
+    }
+
+    /**
+     * Return the index of the duplicate in the box if there is one else -1.
+     * @param index the index of the value of the board to find a duplicate of.
+     * @return the index of the duplicate if there is one else -1.
+     */
+    public int doubleInBox(int index) {
+        Integer[] boxToCheck = new Integer[9];
+        Integer row = (index / 9 / 3);
+        Integer column = (index % 9 / 3) * 3;
+        for (int i = 0; i < 3; i++) {
+            boxToCheck[i] = this.getSudokuBoard()[row][column + i];
+            boxToCheck[i + 3] = this.getSudokuBoard()[row + 1][column + i];
+            boxToCheck[i + 6] = this.getSudokuBoard()[row + 2][column + i];
+        }
+        Integer compare = boxToCheck[(index / 9) * 3 + index % 3];
+        boxToCheck[(index / 9) * 3 + index % 3] = null;
+        int indexDouble = checkForDouble(boxToCheck, compare);
+        if (indexDouble != -1)
+            return (indexDouble / 3 + row) * 9 + indexDouble % 3 + column;
+        return indexDouble;
+    }
+
+    /**
+     * Checks whether each column is solved.
+     *
+     * @return whether each column is solved.
+     */
+    public boolean solvedColumn() {
         boolean solved = true;
         Set<Integer> solution = new HashSet<>(Arrays.asList(sudokuBoard[0]));
         for (int i = 0; i < 9; i++) {
-            Set<Integer> set = new HashSet<>(Arrays.asList(sudokuBoard[i]));
-            if (!set.equals(solution)) {
-                solved = false;
-                break;
-            }
+
         }
         return solved;
     }
+
+
+
     /**
      * String representation of board for debugging purposes
      * @return the string representation of the board
