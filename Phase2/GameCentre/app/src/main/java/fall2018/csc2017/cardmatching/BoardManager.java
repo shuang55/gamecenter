@@ -6,6 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import fall2018.csc2017.gamecentre.GameManager;
 
@@ -13,7 +16,7 @@ import fall2018.csc2017.gamecentre.GameManager;
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
 public class BoardManager implements Serializable, GameManager {
-
+//TODO: make boardmanager an interface
     /**
      * The board being managed.
      */
@@ -96,6 +99,12 @@ public class BoardManager implements Serializable, GameManager {
         int col = position % board.numCardPerCol;
         if (isValidTap(position) && (move % 2 == 0)) {
             board.flipCard(row, col, 1);
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            board.flipCard(row, col, 0);
             move++;
         } else if (isValidTap(position)) {
             board.flipCard(row, col, 1);
