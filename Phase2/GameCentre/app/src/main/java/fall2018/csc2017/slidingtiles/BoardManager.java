@@ -71,26 +71,26 @@ public class BoardManager implements Serializable, GameManager {
         }
 
         Collections.shuffle(tiles);
-
+        this.board = new Board(tiles,boardSize);
 
 
         int inv_count = 0;
         int blankId = 25;
         int blankRow = board.findTile(blankId) / boardSize;
-        for (int i = 0; i < tiles.size() - 1; i++)
-            for (int j = i + 1; j < tiles.size(); j++)
-                if (tiles.get(i).getId() > tiles.get(j).getId())
+        for (int p = 0; p < tiles.size() - 1; p++)
+            for (int k = p + 1; k < tiles.size(); k++)
+                if (tiles.get(p).getId() > tiles.get(k).getId())
                     inv_count ++;
         if (inv_count % 2 == 0 && boardSize % 2 == 1)
             this.board = new Board(tiles, boardSize);
         if (inv_count % 2 ==1 && boardSize % 2 ==1){
             if (tiles.get(0).getId() == 25 || tiles.get(1).getId() ==25){
-                Collections.swap(Arrays.asList(tiles), tiles.size()-1, tiles.size()-2
+                Collections.swap(tiles, tiles.size()-1, tiles.size()-2
                 );
 
             }
             else {
-               Collections.swap(Arrays.asList(tiles), 0, 1 );
+               Collections.swap(tiles, 0, 1 );
             }
             this.board = new Board(tiles,boardSize);
 
@@ -99,11 +99,11 @@ public class BoardManager implements Serializable, GameManager {
             this.board = new Board(tiles, boardSize);
         else{
             if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
-                Collections.swap(Arrays.asList(tiles), tiles.size()-1, tiles.size()-2
+                Collections.swap(tiles, tiles.size()-1, tiles.size()-2
                 );
             }
             else{
-                Collections.swap(Arrays.asList(tiles), 0, 1 );
+                Collections.swap(tiles, 0, 1 );
             }
             this.board = new Board(tiles,boardSize);
         }
@@ -112,7 +112,7 @@ public class BoardManager implements Serializable, GameManager {
 
 
 
-        //this.board = new Board(tiles, boardSize);
+
     }
 
     /**
