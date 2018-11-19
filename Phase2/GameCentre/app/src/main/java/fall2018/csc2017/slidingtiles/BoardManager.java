@@ -75,6 +75,8 @@ public class BoardManager implements Serializable, GameManager {
 
 
         int inv_count = 0;
+        int blankId = 25;
+        int blankRow = board.findTile(blankId) / boardSize;
         for (int i = 0; i < tiles.size() - 1; i++)
             for (int j = i + 1; j < tiles.size(); j++)
                 if (tiles.get(i).getId() > tiles.get(j).getId())
@@ -93,7 +95,18 @@ public class BoardManager implements Serializable, GameManager {
             this.board = new Board(tiles,boardSize);
 
         }
-
+        if (boardSize %2 == 0 && (inv_count + boardSize -1 - blankRow) % 2 ==0)
+            this.board = new Board(tiles, boardSize);
+        //else{
+            if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
+                Collections.swap(Arrays.asList(tiles), tiles.size()-1, tiles.size()-2
+                );
+            }
+            else{
+                Collections.swap(Arrays.asList(tiles), 0, 1 );
+            }
+            this.board = new Board(tiles,boardSize);
+        //}
 
 
 
