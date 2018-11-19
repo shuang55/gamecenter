@@ -1,13 +1,13 @@
-package fall2018.csc2017.slidingtiles;
+package fall2018.csc2017.cardmatching;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,12 +30,9 @@ import fall2018.csc2017.gamecentre.SavedGames;
 import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
-import static fall2018.csc2017.slidingtiles.StartingActivity.TEMP_SAVE_FILENAME;
+import static fall2018.csc2017.cardmatching.CardStartingActivity.TEMP_SAVE_FILENAME;
 
-/**
- * The game activity.
- */
-public class GameActivity extends AppCompatActivity implements Observer {
+public class CardGameActivity extends AppCompatActivity implements Observer {
 
     /**
      * The board manager.
@@ -45,7 +42,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     /**
      * The buttons to display.
      */
-    private ArrayList<Button> tileButtons;
+    private ArrayList<Button> cardButtons;
 
     // Grid View and calculated column height and width based on device size
     private GestureDetectGridView gridView;
@@ -67,8 +64,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * of positions, and then call the adapter to set the view.
      */
     public void display() {
-        updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
+        gridView.setAdapter(new CustomAdapter(cardButtons, columnWidth, columnHeight));
         setMoveCountText();
     }
 
@@ -77,15 +73,13 @@ public class GameActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         loadFromFile();
         createTileButtons(this);
-        setContentView(R.layout.activity_sliding_tile);
+        setContentView(R.layout.activity_card_matching);
         loadManagers();
         userManager.setCurrentUserFile();
-        //Activate undo button
-        addUndoButtonListener();
         addSaveButtonListener();
         // Add View to activity
-        gridView = findViewById(R.id.grid);
-        gridView.setNumColumns(boardManager.getBoard().boardSize);
+        gridView = findViewById(R.id.grid1);
+        gridView.setNumColumns(boardManager.getBoard().numCardPerCol);
         gridView.setGameManager(boardManager);
         boardManager.getBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
@@ -98,8 +92,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                         columnWidth = displayWidth / boardManager.getBoard().boardSize;
-                        columnHeight = displayHeight / boardManager.getBoard().boardSize;
+                        columnWidth = displayWidth / boardManager.getBoard().numCardPerCol;
+                        columnHeight = displayHeight / boardManager.getBoard().numCardPerRow;
 
                         display();
                     }
@@ -110,7 +104,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * Loads userManager and savedGames.
      */
     private void loadManagers(){
-        Context game = GameActivity.this;
+        Context game = CardGameActivity.this;
         GameCentre gameCentre = new GameCentre(game);
         gameCentre.loadManager(UserManager.USERS);
         userManager = gameCentre.getUserManager();
@@ -129,7 +123,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 String userName = userManager.getCurrentUser().getUsername();
                 String timeSaved = boardManager.getTime();
                 String gameDifficulty = boardManager.getGameDifficulty();
-                GameToSave gameToSave = new GameToSave(timeSaved, "Sliding Tile", gameDifficulty, boardManager);
+                GameToSave gameToSave = new GameToSave(timeSaved, "Card Matching", gameDifficulty, boardManager);
                 savedGames.updateSavedGames(gameToSave, userName);
                 saveGameToFile(SavedGames.SAVEDGAMES);
                 String currentUserFile = userManager.getCurrentUserFile();
@@ -169,27 +163,35 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     private void createTileButtons(Context context) {
         Board board = boardManager.getBoard();
-        tileButtons = new ArrayList<>();
-        for (int row = 0; row != board.boardSize; row++) {
-            for (int col = 0; col != board.boardSize; col++) {
+        cardButtons = new ArrayList<>();
+        int cardBackId = board.getCard(0,0).getCardBackId();
+        for (int row = 0; row != board.numCardPerRow; row++) {
+            for (int col = 0; col != board.numCardPerCol; col++) {
                 Button tmp = new Button(context);
-                tmp.setBackgroundResource(board.getTile(row, col).getBackground());
-                this.tileButtons.add(tmp);
+                tmp.setBackgroundResource(cardBackId);
+                this.cardButtons.add(tmp);
             }
         }
     }
 
     /**
      * Update the backgrounds on the buttons to match the tiles.
+     *
+     * * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
+     *                    mode 0 is to close the card, mode 1 is to open the card.
      */
-    private void updateTileButtons() {
+    private void changeCardDisplay(int[] operation) {
         Board board = boardManager.getBoard();
-        int nextPos = 0;
-        for (Button b : tileButtons) {
-            int row = nextPos / boardManager.getBoard().boardSize;
-            int col = nextPos % boardManager.getBoard().boardSize;
-            b.setBackgroundResource(board.getTile(row, col).getBackground());
-            nextPos++;
+        int row = operation[0];
+        int col = operation[1];
+        int mode = operation[2];
+        int position = row * 4 + col;
+        Button b = this.cardButtons.get(position);
+        if (mode == 0){
+            b.setBackgroundResource(board.getCard(row, col).getCardBackId());
+        }
+        else{
+            b.setBackgroundResource(board.getCard(row, col).getCardFaceId());
         }
     }
 
@@ -259,6 +261,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     public void update(Observable o, Object arg) {
         if (!boardManager.puzzleSolved()) {
             String currentUserFile = userManager.getCurrentUserFile();
+            changeCardDisplay((int[]) arg);
             saveToFile(currentUserFile);
             display();
         }
@@ -277,29 +280,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
-     * adds an undo button and undoes the previous move when clicked.
-     */
-    private void addUndoButtonListener() {
-        Button undo = findViewById(R.id.Undo);
-        undo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean undo = boardManager.undoMove();
-                if (!undo) {
-                    makeToastNoMoreUndo();
-                }
-            }
-        });
-    }
-
-    /**
-     * give the text no more moves are available
-     */
-    private void makeToastNoMoreUndo() {
-        Toast.makeText(this, "No more moves are available", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
      * sets the move count on screen
      */
     private void setMoveCountText() {
@@ -307,3 +287,4 @@ public class GameActivity extends AppCompatActivity implements Observer {
         moves.setText(String.format("%s", boardManager.getMove()));
     }
 }
+

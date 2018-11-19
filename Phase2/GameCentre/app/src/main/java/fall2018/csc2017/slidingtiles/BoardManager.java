@@ -123,7 +123,7 @@ public class BoardManager implements Serializable, GameManager {
      *
      * @return whether the tiles are in row-major order
      */
-    boolean puzzleSolved() {
+    public boolean puzzleSolved() {
         boolean solved = true;
         int start = 1;
         for (Tile tile : board) {
@@ -141,7 +141,7 @@ public class BoardManager implements Serializable, GameManager {
      * @param position the tile to check
      * @return whether the tile at position is surrounded by a blank tile
      */
-    boolean isValidTap(int position) {
+    public boolean isValidTap(int position) {
 
         int row = position / board.boardSize;
         int col = position % board.boardSize;
@@ -164,7 +164,7 @@ public class BoardManager implements Serializable, GameManager {
      *
      * @param position the position
      */
-    void touchMove(int position) {
+    public void touchMove(int position) {
 
         int row = position / board.boardSize;
         int col = position % board.boardSize;

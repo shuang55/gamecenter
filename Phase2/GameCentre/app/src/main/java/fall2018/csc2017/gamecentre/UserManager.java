@@ -1,7 +1,9 @@
 package fall2018.csc2017.gamecentre;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
 
 /**
  * Manages all the users for the gameCentre.
@@ -146,4 +148,12 @@ public class UserManager implements Serializable {
         return currentUserFile;
     }
 
+    public void autoSaveGame(GameManager gameManager) {
+        currentUser.addSavedGame(gameManager);
+    }
+
+    public GameManager getSelectedGame (String gameName) {
+        GameManager tempGame = currentUser.getSelectedGame(gameName);
+        return tempGame;
+    }
 }

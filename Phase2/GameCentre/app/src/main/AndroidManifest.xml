@@ -20,10 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".cardmatching.CardGameActivity" />
+        <activity android:name=".cardmatching.CardStartingActivity" />
         <activity android:name=".gamecentre.GameCentreActivity" />
         <activity android:name=".gamecentre.HighScoreActivity" />
         <activity android:name=".gamecentre.SavedGamesActivity" />
-        <activity android:name=".gamecentre.YouWinActivity"></activity>
+        <activity android:name=".gamecentre.YouWinActivity" />
+        <activity android:name=".sudoku.SudokuGameActivity" />
+        <activity android:name=".sudoku.SudokuStartingActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package fall2018.csc2017.gamecentre;
 
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class User implements Serializable {
 
@@ -13,6 +15,10 @@ public class User implements Serializable {
      * Password of the user.
      */
     private String password;
+    /**
+     * list of auto-saved games for the user
+     */
+    private ArrayList<GameManager> savedGames = new ArrayList<>();
 
     /**
      * Initializes new instance of user.
@@ -47,5 +53,23 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "username= " + username;
+    }
+
+    public void addSavedGame(GameManager gameManager) {
+        for (GameManager game: savedGames) {
+            if (game.getGameName().equals(gameManager.getGameName())) {
+                savedGames.remove(game);
+            }
+        }
+        savedGames.add(gameManager);
+    }
+
+    public GameManager getSelectedGame(String gameName) {
+        for (GameManager game : savedGames) {
+            if (game.getGameName().equals(gameName)) {
+                return game;
+            }
+        }
+        return null;
     }
 }

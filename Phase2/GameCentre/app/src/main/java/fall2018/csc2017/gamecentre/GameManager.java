@@ -13,6 +13,11 @@ public interface GameManager extends Serializable {
     String TEMP_SAVE_WIN = "temp_save_win.ser";
 
     /**
+     * Game for starting from starting activity
+     */
+    String TEMP_SAVE_START = "temp_save_start.ser";
+
+    /**
      * Abstract method for calculating the score of a game
      * @return the score
      */
@@ -28,11 +33,17 @@ public interface GameManager extends Serializable {
      * Abstract Method for getting the current time in game
      * @return the time
      */
-    String getTime();
+    String getTime() ;
 
     /**
      * Abstract method for getting the game's difficulty
      * @return the game difficulty
      */
     String getGameDifficulty();
+
+    boolean isValidTap(int position);
+
+    boolean puzzleSolved();
+
+    void touchMove(int position);
 }
