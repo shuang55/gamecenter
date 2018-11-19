@@ -97,7 +97,7 @@ public class BoardManager implements Serializable, GameManager {
         }
         if (boardSize %2 == 0 && (inv_count + boardSize -1 - blankRow) % 2 ==0)
             this.board = new Board(tiles, boardSize);
-        //else{
+        else{
             if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
                 Collections.swap(Arrays.asList(tiles), tiles.size()-1, tiles.size()-2
                 );
@@ -106,7 +106,7 @@ public class BoardManager implements Serializable, GameManager {
                 Collections.swap(Arrays.asList(tiles), 0, 1 );
             }
             this.board = new Board(tiles,boardSize);
-        //}
+        }
 
 
 
