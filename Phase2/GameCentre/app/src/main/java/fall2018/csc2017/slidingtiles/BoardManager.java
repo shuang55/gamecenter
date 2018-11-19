@@ -2,6 +2,7 @@ package fall2018.csc2017.slidingtiles;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
@@ -78,12 +79,27 @@ public class BoardManager implements Serializable, GameManager {
             for (int j = i + 1; j < tiles.size(); j++)
                 if (tiles.get(i).getId() > tiles.get(j).getId())
                     inv_count ++;
+        if (inv_count % 2 == 0 && boardSize % 2 == 1)
+            this.board = new Board(tiles, boardSize);
+        //if (inv_count % 2 ==1 && boardSize % 2 ==1){
+            if (tiles.get(0).getId() == 25 || tiles.get(1).getId() ==25){
+                Collections.swap(Arrays.asList(tiles), tiles.size()-1, tiles.size()-2
+                );
+
+            }
+            else {
+               Collections.swap(Arrays.asList(tiles), 0, 1 );
+            }
+            this.board = new Board(tiles,boardSize);
+
+        }
 
 
 
 
 
-        this.board = new Board(tiles, boardSize);
+
+        //this.board = new Board(tiles, boardSize);
     }
 
     /**
