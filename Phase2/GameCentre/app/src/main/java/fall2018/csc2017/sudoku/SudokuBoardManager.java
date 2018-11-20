@@ -6,9 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import java.util.Random;
-
-
 import fall2018.csc2017.gamecentre.GameManager;
 
 public class SudokuBoardManager implements GameManager, Serializable {
@@ -36,25 +33,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
         SudokuBoardRandomizer randomizer = new SudokuBoardRandomizer(new SudokuBoard());
         this.hiddenBoard = randomizer.generateRandomBoard();
         this.activeBoard = new SudokuBoard(hiddenBoard.getSudokuBoard());
-        generateActiveBoard();
-    }
-
-    /**
-     * Creates an active board by removing 36 random numbers from the board
-     */
-    private void generateActiveBoard() {
-        Random random = new Random();
-        int i = 0;
-        while (i < 36) {
-            int position = random.nextInt(81);
-            int rowPosition = position / 9;
-            int columnPosition = position % 9;
-            if (!(activeBoard.getSudokuBoard()[rowPosition][columnPosition] == 0)) {
-                activeBoard.setSudokuBoardNumber(rowPosition, columnPosition, 0);
-                generatedNumbers.add(position);
-                i++;
-            }
-        }
+        randomizer.generateActiveBoard(activeBoard, generatedNumbers);
     }
 
     /**
@@ -64,7 +43,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
     @Override
     public int getScore() {
-        return 0;
+        return 1000 - (2 * (moves - 36));
     }
 
     /**

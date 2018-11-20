@@ -1,5 +1,6 @@
 package fall2018.csc2017.sudoku;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,10 +10,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
 import fall2018.csc2017.gamecentre.UserManager;
+import fall2018.csc2017.gamecentre.YouWinActivity;
 
 public class SudokuGameActivity extends AppCompatActivity {
 
@@ -63,6 +67,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         gridView.setAdapter(sudokuBoardAdapter);
         TextView textView = findViewById(R.id.sudoku_moves);
         textView.setText(String.format("Moves: %s", sudokuBoardManager.getMoves()));
+        checkComplete();
     }
 
     /**
@@ -76,6 +81,41 @@ public class SudokuGameActivity extends AppCompatActivity {
                 updateDisplay();
             }
         });
+    }
+
+    /**
+     * Checks the activeBoard to see if the board is filled
+     */
+    private void checkComplete() {
+        boolean containZero = false;
+        for (Integer[] row : sudokuBoardManager.getActiveBoard().getSudokuBoard()) {
+            for (Integer num : row) {
+                if (num == 0) {
+                    containZero = true;
+                }
+            }
+        }
+        checkSolved(containZero);
+    }
+
+    /**
+     * Check the activeBoard to see if it is solved
+     * @param containZero whether the board contains 0 ==> not complete
+     */
+    private void checkSolved(boolean containZero) {
+        if (!containZero) {
+            if (sudokuBoardManager.puzzleSolved()) {
+                gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, sudokuBoardManager);
+                gameCentre.getUserManager().getCurrentUser().removeSavedGame("Sudoku");
+                gameCentre.saveManager(UserManager.USERS, gameCentre.getUserManager());
+                swapToYouWin();
+            }
+        }
+    }
+
+    private void swapToYouWin() {
+        Intent youWin = new Intent(this, YouWinActivity.class);
+        startActivity(youWin);
     }
 
     private void addNumberSelectGridViewClickListener() {

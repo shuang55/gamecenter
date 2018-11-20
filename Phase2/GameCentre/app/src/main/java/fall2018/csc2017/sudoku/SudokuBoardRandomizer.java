@@ -1,5 +1,6 @@
 package fall2018.csc2017.sudoku;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SudokuBoardRandomizer {
@@ -115,6 +116,24 @@ public class SudokuBoardRandomizer {
             for (int j = 0; j < 2; j++) {
                 swapRows(random.nextInt(3) + (3 * j), random.nextInt(3) + (3 * j));
                 swapColumns(random.nextInt(3) + (3 * j), random.nextInt(3) + (3 * j));
+            }
+        }
+    }
+
+    /**
+     * Creates an active board by removing 36 random numbers from the board
+     */
+    public void generateActiveBoard(SudokuBoard board, ArrayList<Integer> numbers) {
+        Random random = new Random();
+        int i = 0;
+        while (i < 36) {
+            int position = random.nextInt(81);
+            int rowPosition = position / 9;
+            int columnPosition = position % 9;
+            if (!(board.getSudokuBoard()[rowPosition][columnPosition] == 0)) {
+                board.setSudokuBoardNumber(rowPosition, columnPosition, 0);
+                numbers.add(position);
+                i++;
             }
         }
     }

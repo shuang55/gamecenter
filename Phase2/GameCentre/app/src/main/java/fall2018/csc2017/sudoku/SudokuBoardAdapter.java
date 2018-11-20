@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import fall2018.csc2017.R;
 
 /**
@@ -68,6 +72,13 @@ public class SudokuBoardAdapter extends BaseAdapter {
             number.setText("");
         } else {
             number.setText(String.format("%s", currentNumber));
+        }
+        number.setTextColor(ContextCompat.getColor(context, R.color.black));
+
+        for (ArrayList<Integer> group : sudokuBoard.getRepeats()) {
+            if (group.contains(position)) {
+                number.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            }
         }
 
         // Display the highlighted grid and empty grids

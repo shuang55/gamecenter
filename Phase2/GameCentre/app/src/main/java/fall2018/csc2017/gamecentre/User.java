@@ -72,4 +72,12 @@ public class User implements Serializable {
         }
         return null;
     }
+
+    public void removeSavedGame(String gameName) {
+        for (GameManager game : savedGames) {
+            if (game.getGameName().equals(gameName)) {
+                savedGames.remove(game);
+            }
+        }
+    }
 }

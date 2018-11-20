@@ -68,7 +68,7 @@ public class SudokuStartingActivity extends AppCompatActivity {
     }
 
     private void makeToastNoAutoSavedGame() {
-        Toast.makeText(this, "No autosaved game", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "No autosaved game", Toast.LENGTH_SHORT).show();
     }
 
 }
