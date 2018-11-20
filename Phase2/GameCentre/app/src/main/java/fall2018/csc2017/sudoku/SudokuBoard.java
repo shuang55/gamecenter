@@ -154,7 +154,7 @@ public class SudokuBoard implements Serializable {
     public int doubleInColumn(int index) {
         Integer[] columnToCheck = new Integer[9];
         for (int i = 0; i < 9; i++) {
-            columnToCheck[i] = this.getSudokuBoard()[i][index / 9];
+            columnToCheck[i] = this.getSudokuBoard()[i][index % 9];
         }
         Integer compare = columnToCheck[index / 9];
         columnToCheck[index / 9] = 0;
@@ -179,8 +179,8 @@ public class SudokuBoard implements Serializable {
             boxToCheck[i + 3] = this.getSudokuBoard()[row + 1][column + i];
             boxToCheck[i + 6] = this.getSudokuBoard()[row + 2][column + i];
         }
-        Integer compare = boxToCheck[(index / 9) / 3 + index % 3];
-        boxToCheck[(index / 9) / 3 + index % 3] = 0;
+        Integer compare = boxToCheck[(index - row * 9) / 9 * 3 + index % 3];
+        boxToCheck[(index - row * 9) / 9 * 3 + index % 3] = 0;
         int indexDouble = checkForDouble(boxToCheck, compare);
         if (indexDouble != -1)
             return (indexDouble / 3 + row) * 9 + indexDouble % 3 + column;
