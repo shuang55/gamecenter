@@ -172,7 +172,7 @@ public class SudokuBoard implements Serializable {
      */
     public int doubleInBox(int index) {
         Integer[] boxToCheck = new Integer[9];
-        Integer row = (index / 9 / 3);
+        Integer row = (index / 9 / 3) * 3;
         Integer column = (index % 9 / 3) * 3;
         for (int i = 0; i < 3; i++) {
             boxToCheck[i] = this.getSudokuBoard()[row][column + i];
