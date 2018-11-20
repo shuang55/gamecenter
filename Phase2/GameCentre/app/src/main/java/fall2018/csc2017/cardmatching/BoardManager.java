@@ -1,14 +1,14 @@
 package fall2018.csc2017.cardmatching;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import fall2018.csc2017.gamecentre.GameManager;
 
@@ -26,6 +26,8 @@ public class BoardManager implements Serializable, GameManager {
      * The current number of moves that the player has made.
      */
     private int move = 0;
+
+    private int[] lastMove = new int[2];
 
     /**
      * Manage a board that has been pre-populated.
@@ -91,14 +93,24 @@ public class BoardManager implements Serializable, GameManager {
      * <p>
      * Mode 0 is to cover the card, Mode 1 is to open the card.
      *
-     * @param position the position of the tile that is tapped
+     * @param position the position
      */
     public void touchMove(int position) {
-        System.out.println(position);
-        int row = position / board.numCardPerCol;
-        int col = position % board.numCardPerCol;
+        final int row = position / board.numCardPerCol;
+        final int col = position % board.numCardPerCol;
         move++;
         board.flipCard(row, col, 1);
+        if (move % 2 == 0 && move > 1){
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    board.flipCard(lastMove[0], lastMove[1], 0);
+                    board.flipCard(row , col , 0);
+                }
+            }, 3000);
+        }
+        lastMove[0] = row;
+        lastMove[1] = col;
     }
     /**
      * Return the player's score.
