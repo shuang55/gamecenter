@@ -86,10 +86,7 @@ public class BoardManager implements Serializable, GameManager {
         int row = position / board.numCardPerCol;
         int col = position % board.numCardPerCol;
         Card cardTapped = board.getCard(row, col);
-        if (openPairExists) {
-            return false;
-        }
-        return !(cardTapped.isOpen() == 1);
+        return !(cardTapped.isOpen() == 1 || openPairExists) ;
     }
 
     /**
@@ -106,22 +103,28 @@ public class BoardManager implements Serializable, GameManager {
         board.flipCard(row, col, 1);
         if (move % 2 == 0) {
             openPairExists = true;
-        }
-        if (move % 2 == 0) {
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    board.flipCard(lastMove[0], lastMove[1], 0);
-                    board.flipCard(row, col, 0);
-                    openPairExists = false;
-                }
-            }, 1500);
+            final Card card1 = board.getCard(lastMove[0], lastMove[1]);
+            Card card2 = board.getCard(row, col);
+            if (checkMatch(card1, card2)){
+                card1.setPaired(true);
+                card2.setPaired(true);
+                openPairExists = false;
+            }
+            else{
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        board.flipCard(lastMove[0], lastMove[1], 0);
+                        board.flipCard(row, col, 0);
+                        openPairExists = false;
+                    }
+                }, 1500);
+            }
         }
         if (move % 2 != 0) {
             lastMove[0] = row;
             lastMove[1] = col;
         }
-
     }
 
     /**
@@ -130,6 +133,10 @@ public class BoardManager implements Serializable, GameManager {
      */
     public int getScore() {
         return 100 - move;
+    }
+
+    boolean checkMatch(Card card1, Card card2){
+        return card1.getCardFaceId() == card2.getCardFaceId();
     }
 
     /**
