@@ -27,7 +27,7 @@ public class BoardManager implements Serializable, GameManager {
      */
     private int move = 0;
 
-    private int[] lastMove = new int[4];
+    private int[] lastMove = new int[2];
     private boolean openPairExists;
 
     /**
@@ -86,6 +86,9 @@ public class BoardManager implements Serializable, GameManager {
         int row = position / board.numCardPerCol;
         int col = position % board.numCardPerCol;
         Card cardTapped = board.getCard(row, col);
+        if (openPairExists) {
+            return false;
+        }
         return !(cardTapped.isOpen() == 1);
     }
 
@@ -101,37 +104,26 @@ public class BoardManager implements Serializable, GameManager {
         final int col = position % board.numCardPerCol;
         move++;
         board.flipCard(row, col, 1);
-        if (openPairExists){
-            board.flipCard(lastMove[0], lastMove[1], 0);
-            board.flipCard(lastMove[2], lastMove[3] , 0);
-            openPairExists = false;
-        }else {
-            if (move % 2 == 0) {
-                openPairExists = true;
-            }
-            if (move % 2 == 0 && move > 1) {
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        final int row1 = lastMove[0];
-                        final int col1 = lastMove[1];
-                        final int row2 = lastMove[2];
-                        final int col2 = lastMove[3];
-                        board.flipCard(row1, col1, 0);
-                        board.flipCard(row2, col2, 0);
-                        openPairExists = false;
-                    }
-                }, 3000);
-            }
+        if (move % 2 == 0) {
+            openPairExists = true;
+        }
+        if (move % 2 == 0) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    board.flipCard(lastMove[0], lastMove[1], 0);
+                    board.flipCard(row, col, 0);
+                    openPairExists = false;
+                }
+            }, 1500);
         }
         if (move % 2 != 0) {
             lastMove[0] = row;
             lastMove[1] = col;
-        } else{
-            lastMove[2] = row;
-            lastMove[3] = col;
         }
+
     }
+
     /**
      * Return the player's score.
      * TODO: change this implementation.
