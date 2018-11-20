@@ -103,25 +103,16 @@ public class BoardManager implements Serializable, GameManager {
         board.flipCard(row, col, 1);
         if (move % 2 == 0) {
             openPairExists = true;
-            final Card card1 = board.getCard(lastMove[0], lastMove[1]);
+            Card card1 = board.getCard(lastMove[0], lastMove[1]);
             Card card2 = board.getCard(row, col);
             if (checkMatch(card1, card2)){
-                card1.setPaired(true);
-                card2.setPaired(true);
                 openPairExists = false;
             }
             else{
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        board.flipCard(lastMove[0], lastMove[1], 0);
-                        board.flipCard(row, col, 0);
-                        openPairExists = false;
-                    }
-                }, 1500);
+                coverCardAfterFixedDelay(row, col);
             }
         }
-        if (move % 2 != 0) {
+        else{
             lastMove[0] = row;
             lastMove[1] = col;
         }
@@ -129,14 +120,35 @@ public class BoardManager implements Serializable, GameManager {
 
     /**
      * Return the player's score.
-     * TODO: change this implementation.
      */
     public int getScore() {
-        return 100 - move;
+        int score = 1000 - move * 2 * (13 - board.numCardPair);
+        if (score < 0){
+            return 0;
+        }
+        return score;
     }
 
-    boolean checkMatch(Card card1, Card card2){
-        return card1.getCardFaceId() == card2.getCardFaceId();
+    private boolean checkMatch(Card card1, Card card2){
+        if (card1.getCardFaceId() == card2.getCardFaceId()){
+            card1.setPaired(true);
+            card2.setPaired(true);
+            return true;
+        }
+        return false;
+    }
+
+    private void coverCardAfterFixedDelay(int row, int col){
+        final int rowOfCard = row;
+        final int colOfCard = col;
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                board.flipCard(lastMove[0], lastMove[1], 0);
+                board.flipCard(rowOfCard, colOfCard, 0);
+                openPairExists = false;
+            }
+        }, 1500);
     }
 
     /**
