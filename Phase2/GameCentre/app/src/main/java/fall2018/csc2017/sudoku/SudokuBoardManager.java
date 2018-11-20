@@ -1,6 +1,8 @@
 package fall2018.csc2017.sudoku;
 
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,27 +15,24 @@ public class SudokuBoardManager implements GameManager, Serializable {
     /**
      * the active board for users to solve
      */
-    private SudokuBoard activeBoard;
+    private SudokuPlayBoard activeBoard;
     /**
      * the hidden board for giving hints
      */
     private SudokuBoard hiddenBoard;
-    /**
-     * Arraylist for keeping track of unchangeable generated numbers
-     */
-    private ArrayList<Integer> generatedNumbers = new ArrayList<>();
-    private ArrayList<SudokuBoard> undoStack = new ArrayList<>();
+
+    private ArrayList<SudokuPlayBoard> undoStack = new ArrayList<>();
     /**
      * current selected position for activeboard
      */
     private int positionSelected;
     private int moves;
 
-    public SudokuBoardManager() {
+    SudokuBoardManager() {
         SudokuBoardRandomizer randomizer = new SudokuBoardRandomizer(new SudokuBoard());
         this.hiddenBoard = randomizer.generateRandomBoard();
-        this.activeBoard = new SudokuBoard(hiddenBoard.getSudokuBoard());
-        randomizer.generateActiveBoard(activeBoard, generatedNumbers);
+        this.activeBoard = new SudokuPlayBoard(hiddenBoard.getSudokuBoard());
+        randomizer.generateActiveBoard(activeBoard);
     }
 
     /**
@@ -113,7 +112,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
      *
      * @param num number to be updated
      */
-    public void updateNumber(int num) {
+    void updateNumber(int num) {
         if (isValidTap(positionSelected)) {
             undoStack.add(0, activeBoard.copy());
             int row = positionSelected / 9;
@@ -128,7 +127,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
      *
      * @return the selected position
      */
-    public int getPositionSelected() {
+    int getPositionSelected() {
         return positionSelected;
     }
 
@@ -137,7 +136,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
      *
      * @return the activeBoard
      */
-    public SudokuBoard getActiveBoard() {
+    SudokuPlayBoard getActiveBoard() {
         return activeBoard;
     }
 
@@ -149,17 +148,13 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
     @Override
     public boolean isValidTap(int position) {
-        return (generatedNumbers.contains(position));
-    }
-
-    public ArrayList<Integer> getGeneratedNumbers() {
-        return generatedNumbers;
+        return activeBoard.getRemovedNumbers().contains(position);
     }
 
     /**
      * Erases the number at a certain spot
      */
-    public void erase() {
+    void erase() {
         if (isValidTap(positionSelected)) {
             undoStack.add(0, activeBoard.copy());
             activeBoard.setSudokuBoardNumber(
@@ -170,23 +165,26 @@ public class SudokuBoardManager implements GameManager, Serializable {
     /**
      * Gives hint by removing one of the squares needed to fill the board
      */
-    public void provideHint() {
-        if (generatedNumbers.size() != 0) {
-            int position = generatedNumbers.remove(0);
+    void provideHint() {
+        if (activeBoard.getRemovedNumbers().size() != 0) {
+            int position = activeBoard.popRemovedNumber();
             int row = position / 9;
             int col = position % 9;
             activeBoard.setSudokuBoardNumber(row, col, hiddenBoard.getSudokuBoard()[row][col]);
+            Log.v(activeBoard.getRemovedNumbers().toString(), "bleh");
             moves = moves + 5;
+
         }
     }
 
-    public int getMoves() {
+    int getMoves() {
         return moves;
     }
 
     public boolean undo() {
         if (undoStack.size() > 0) {
             activeBoard = undoStack.remove(0);
+            Log.v(String.valueOf(activeBoard.getRemovedNumbers().size()), "bleh");
             return true;
         }
         return false;

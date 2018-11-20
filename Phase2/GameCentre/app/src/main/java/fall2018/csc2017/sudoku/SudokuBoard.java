@@ -1,9 +1,6 @@
 package fall2018.csc2017.sudoku;
 
-import android.util.Log;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SudokuBoard implements Serializable {
@@ -11,21 +8,12 @@ public class SudokuBoard implements Serializable {
     /**
      * array of ints in sudoku board
      */
-    private Integer[][] sudokuBoard = new Integer[9][9];
-
-    private ArrayList<ArrayList<Integer>> repeats = new ArrayList<>();
-
+    Integer[][] sudokuBoard = new Integer[9][9];
     /**
      * Constructor for sudokuboard
      */
-    public SudokuBoard() {
+    SudokuBoard() {
         setUpSolvedBoard();
-    }
-
-    public SudokuBoard(Integer[][] preSolvedBoard) {
-        for (int i = 0; i < 9; i++) {
-            sudokuBoard[i] = preSolvedBoard[i].clone();
-        }
     }
 
     /**
@@ -33,69 +21,8 @@ public class SudokuBoard implements Serializable {
      *
      * @return the sudokuBoard
      */
-    public Integer[][] getSudokuBoard() {
+    Integer[][] getSudokuBoard() {
         return sudokuBoard;
-    }
-
-    /**
-     * Sets the board at [row][col] to be num
-     *
-     * @param row    row to be updated
-     * @param column column to be updated
-     * @param number number to be updated
-     */
-    public void setSudokuBoardNumber(int row, int column, int number) {
-        sudokuBoard[row][column] = number;
-        if (number != 0) {
-            updateRepeatsArrayList(row, column);
-        }
-    }
-
-    /**
-     * Updates the repeats list if it the position contains any repeats
-     *
-     * @param row
-     * @param column
-     */
-    private void updateRepeatsArrayList(int row, int column) {
-        int position = (row * 9) + column;
-        Log.v(String.format("%s, %s", row, column), String.valueOf(position));
-        ArrayList<Integer> repeats = new ArrayList<>(Arrays.asList(position,
-                doubleInRow(position), doubleInColumn(position), doubleInBox(position)));
-        repeats.add(position);
-        repeats.add(doubleInRow(position));
-        repeats.add(doubleInColumn(position));
-        repeats.add(doubleInBox(position));
-        Log.v(String.valueOf(repeats), "b");
-        // check if it contains atleast 1 repeats
-        if ((repeats.get(1) != -1) | (repeats.get(2) != -1) | (repeats.get(3) != -1)) {
-            // check if this.repeats already contains position
-            if (checkRepeat(position) != -1) {
-                this.repeats.remove(checkRepeat(position));
-            }
-            this.repeats.add(repeats);
-        } else {
-            // remove repeat if it is in this.repeats
-            if (checkRepeat(position) != -1) {
-                this.repeats.remove(checkRepeat(position));
-            }
-        }
-        Log.v(String.valueOf(this.repeats), "b");
-    }
-
-    /**
-     * Check if position is already in the repeat list
-     *
-     * @param position
-     * @return
-     */
-    private int checkRepeat(int position) {
-        for (int i = 0; i < this.repeats.size(); i++) {
-            if (repeats.get(i).contains(position)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     /**
@@ -135,7 +62,7 @@ public class SudokuBoard implements Serializable {
      * @param index the index of the value of the board to find the duplicate of.
      * @return the index of the duplicate if there is one else -1.
      */
-    public int doubleInRow(int index) {
+    int doubleInRow(int index) {
         Integer[] rowToCheck = this.getSudokuBoard()[index / 9].clone();
         Integer compare = rowToCheck[index % 9];
         rowToCheck[index % 9] = 0;
@@ -151,7 +78,7 @@ public class SudokuBoard implements Serializable {
      * @param index the index of the value of the board to find the duplicate of.
      * @return the index of the duplicate if there is one else -1.
      */
-    public int doubleInColumn(int index) {
+    int doubleInColumn(int index) {
         Integer[] columnToCheck = new Integer[9];
         for (int i = 0; i < 9; i++) {
             columnToCheck[i] = this.getSudokuBoard()[i][index % 9];
@@ -170,7 +97,7 @@ public class SudokuBoard implements Serializable {
      * @param index the index of the value of the board to find a duplicate of.
      * @return the index of the duplicate if there is one else -1.
      */
-    public int doubleInBox(int index) {
+    int doubleInBox(int index) {
         Integer[] boxToCheck = new Integer[9];
         Integer row = (index / 9 / 3) * 3;
         Integer column = (index % 9 / 3) * 3;
@@ -201,12 +128,5 @@ public class SudokuBoard implements Serializable {
         return s;
     }
 
-    public SudokuBoard copy() {
-        SudokuBoard temp = new SudokuBoard(sudokuBoard);
-        return temp;
-    }
 
-    public ArrayList<ArrayList<Integer>> getRepeats() {
-        return repeats;
-    }
 }

@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import fall2018.csc2017.R;
 
+/**
+ * Adapter that displays the number select buttons from 1-9
+ */
 public class SudokuNumberSelectAdapter extends BaseAdapter {
 
     private Context context;

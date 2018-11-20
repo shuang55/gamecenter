@@ -10,8 +10,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
@@ -26,11 +24,16 @@ public class SudokuGameActivity extends AppCompatActivity {
      */
     private SudokuBoardManager sudokuBoardManager;
     /**
-     * Gridview
+     * Gridview for sudokuboard
      */
     private GridView gridView;
+    /**
+     * Gridview for number buttons
+     */
     private GridView numberSelectGridView;
-
+    /**
+     * Gamecentre for managing files
+     */
     private GameCentre gameCentre;
 
     @Override
@@ -100,6 +103,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
     /**
      * Check the activeBoard to see if it is solved
+     *
      * @param containZero whether the board contains 0 ==> not complete
      */
     private void checkSolved(boolean containZero) {
@@ -113,11 +117,17 @@ public class SudokuGameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Transitions to YouWinActivity
+     */
     private void swapToYouWin() {
         Intent youWin = new Intent(this, YouWinActivity.class);
         startActivity(youWin);
     }
 
+    /**
+     * Activates number select clicks in gridview
+     */
     private void addNumberSelectGridViewClickListener() {
         numberSelectGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -129,6 +139,7 @@ public class SudokuGameActivity extends AppCompatActivity {
 
     /**
      * Update the sudokuboard
+     *
      * @param num number to be updated
      */
     private void updateSudokuBoard(int num) {
@@ -137,6 +148,9 @@ public class SudokuGameActivity extends AppCompatActivity {
         updateDisplay();
     }
 
+    /**
+     * Activate undo button
+     */
     private void addUndoButtonListener() {
         Button undo = findViewById(R.id.sudoku_undo);
         undo.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +165,9 @@ public class SudokuGameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Activate Erase button
+     */
     private void addEraseButtonListener() {
         Button erase = findViewById(R.id.sudoku_erase);
         erase.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +179,9 @@ public class SudokuGameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Activate hint button
+     */
     private void addHintButtonListener() {
         Button hint = findViewById(R.id.sudoku_hint);
         hint.setOnClickListener(new View.OnClickListener() {
@@ -173,12 +193,18 @@ public class SudokuGameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Autosaves the board
+     */
     private void autoSave() {
         UserManager userManager = gameCentre.getUserManager();
         userManager.autoSaveGame(sudokuBoardManager);
         gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
+    /**
+     * Creates toast with msg "no more move"
+     */
     private void makeToastNoMoreMoves() {
         Toast.makeText(this, "No more moves", Toast.LENGTH_SHORT).show();
     }
