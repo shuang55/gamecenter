@@ -97,21 +97,29 @@ public class BoardManager implements Serializable, GameManager {
         System.out.println(position);
         int row = position / board.numCardPerCol;
         int col = position % board.numCardPerCol;
-        if (isValidTap(position) && (move % 2 == 0)) {
-            board.flipCard(row, col, 1);
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            board.flipCard(row, col, 0);
-            move++;
-        } else if (isValidTap(position)) {
-            board.flipCard(row, col, 1);
+        if (isValidTap(position)){
             move++;
         }
+        if (isValidTap(position) && (move % 2 == 0)) {
+            board.flipCard(row, col, 1);
+        } else if (isValidTap(position)) {
+            board.flipCard(row, col, 1);
+        }
+
+       //flipBack(row, col);
 
     }
+
+//    private void flipBack(final int rowToFlip, final int colToFlip) {
+//        if (move % 2 == 0) {
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            board.flipCard(rowToFlip, colToFlip, 0);
+//        }
+//    }
 
     /**
      * Return the player's score.
