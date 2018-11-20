@@ -93,7 +93,7 @@ public class BoardManager implements Serializable, GameManager {
      * <p>
      * Mode 0 is to cover the card, Mode 1 is to open the card.
      *
-     * @param position the position
+     * @param position the position of the tile that is tapped
      */
     public void touchMove(int position) {
         final int row = position / board.numCardPerCol;
@@ -109,8 +109,10 @@ public class BoardManager implements Serializable, GameManager {
                 }
             }, 3000);
         }
-        lastMove[0] = row;
-        lastMove[1] = col;
+        if (move % 2 != 0) {
+            lastMove[0] = row;
+            lastMove[1] = col;
+        }
     }
     /**
      * Return the player's score.
