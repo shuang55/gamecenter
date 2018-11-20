@@ -91,36 +91,15 @@ public class BoardManager implements Serializable, GameManager {
      * <p>
      * Mode 0 is to cover the card, Mode 1 is to open the card.
      *
-     * @param position the position
+     * @param position the position of the tile that is tapped
      */
     public void touchMove(int position) {
         System.out.println(position);
         int row = position / board.numCardPerCol;
         int col = position % board.numCardPerCol;
-        if (isValidTap(position)){
-            move++;
-        }
-        if (isValidTap(position) && (move % 2 == 0)) {
-            board.flipCard(row, col, 1);
-        } else if (isValidTap(position)) {
-            board.flipCard(row, col, 1);
-        }
-
-       //flipBack(row, col);
-
+        move++;
+        board.flipCard(row, col, 1);
     }
-
-//    private void flipBack(final int rowToFlip, final int colToFlip) {
-//        if (move % 2 == 0) {
-//            try {
-//                Thread.sleep(3000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            board.flipCard(rowToFlip, colToFlip, 0);
-//        }
-//    }
-
     /**
      * Return the player's score.
      * TODO: change this implementation.
