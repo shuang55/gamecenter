@@ -3,6 +3,7 @@ package fall2018.csc2017.sudoku;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -98,6 +99,7 @@ public class SudokuGameActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.v(TAG, String.valueOf(containZero));
         checkSolved(containZero);
     }
 
@@ -109,6 +111,7 @@ public class SudokuGameActivity extends AppCompatActivity {
     private void checkSolved(boolean containZero) {
         if (!containZero) {
             if (sudokuBoardManager.puzzleSolved()) {
+                Log.v(TAG, "BOOP");
                 gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, sudokuBoardManager);
                 gameCentre.getUserManager().getCurrentUser().removeSavedGame("Sudoku");
                 gameCentre.saveManager(UserManager.USERS, gameCentre.getUserManager());

@@ -1,6 +1,7 @@
 package fall2018.csc2017.sudoku;
 
 
+import android.support.design.widget.TabLayout;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -20,14 +21,22 @@ public class SudokuBoardManager implements GameManager, Serializable {
      * the hidden board for giving hints
      */
     private SudokuBoard hiddenBoard;
-
+    /**
+     * A stack of boards for undo
+     */
     private ArrayList<SudokuPlayBoard> undoStack = new ArrayList<>();
     /**
      * current selected position for activeboard
      */
     private int positionSelected;
+    /**
+     * Number of moves made
+     */
     private int moves;
 
+    /**
+     * Constructor for SudokuBoardManager
+     */
     SudokuBoardManager() {
         SudokuBoardRandomizer randomizer = new SudokuBoardRandomizer(new SudokuBoard());
         this.hiddenBoard = randomizer.generateRandomBoard();
@@ -84,13 +93,11 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
     @Override
     public boolean puzzleSolved() {
-        Integer[][] board = activeBoard.getSudokuBoard();
         for (int i = 0; i < 81; i++) {
-            Integer value = board[i / 9][i % 9];
-            Integer rowSolved = activeBoard.doubleInRow(value);
-            Integer columnSolved = activeBoard.doubleInColumn(value);
-            Integer boxSolved = activeBoard.doubleInBox(value);
-            if (rowSolved != -1 || columnSolved != -1 || boxSolved != -1)
+            Integer rowSolved = activeBoard.doubleInRow(i);
+            Integer columnSolved = activeBoard.doubleInColumn(i);
+            Integer boxSolved = activeBoard.doubleInBox(i);
+            if (rowSolved != -1 | columnSolved != -1 | boxSolved != -1)
                 return false;
         }
         return true;
@@ -152,7 +159,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
     }
 
     /**
-     * Erases the number at a certain spot
+     * Erases the number at the current selected position
      */
     void erase() {
         if (isValidTap(positionSelected)) {
@@ -171,20 +178,28 @@ public class SudokuBoardManager implements GameManager, Serializable {
             int row = position / 9;
             int col = position % 9;
             activeBoard.setSudokuBoardNumber(row, col, hiddenBoard.getSudokuBoard()[row][col]);
-            Log.v(activeBoard.getRemovedNumbers().toString(), "bleh");
             moves = moves + 5;
 
         }
     }
 
+    /**
+     * Getter for number of moves
+     *
+     * @return moves
+     */
     int getMoves() {
         return moves;
     }
 
+    /**
+     * Pops the first element in undoStack and set activeBoard to it
+     *
+     * @return whether the stack was non empty
+     */
     public boolean undo() {
         if (undoStack.size() > 0) {
             activeBoard = undoStack.remove(0);
-            Log.v(String.valueOf(activeBoard.getRemovedNumbers().size()), "bleh");
             return true;
         }
         return false;

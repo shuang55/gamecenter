@@ -17,7 +17,7 @@ public class SudokuBoard implements Serializable {
     }
 
     /**
-     * Gets the sudokuBoard
+     * Getter for the sudokuBoard
      *
      * @return the sudokuBoard
      */
@@ -121,11 +121,11 @@ public class SudokuBoard implements Serializable {
      */
     @Override
     public String toString() {
-        String s = "{";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < 9; i++) {
-            s = s + Arrays.toString(sudokuBoard[i]) + "\n";
+            s.append(Arrays.toString(sudokuBoard[i]) + "\n");
         }
-        return s;
+        return s.toString();
     }
 
 

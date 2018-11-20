@@ -10,7 +10,7 @@ import java.util.Arrays;
 class SudokuPlayBoard extends SudokuBoard implements Serializable {
 
     /**
-     * Arraylist of a list of repeats on the board
+     * Arraylist of an arraylist of repeats on the board
      */
     private ArrayList<ArrayList<Integer>> repeats = new ArrayList<>();
     /**
@@ -20,6 +20,7 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
 
     /**
      * Constructor for SudokuPlayBoard
+     *
      * @param preSolvedBoard a solved board
      */
     SudokuPlayBoard(Integer[][] preSolvedBoard) {
@@ -45,22 +46,22 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
     /**
      * Updates the repeats list if it the position contains any repeats
      *
-     * @param row the row of the position to be updated
+     * @param row    the row of the position to be updated
      * @param column the column of the position to be updated
      */
     private void updateRepeatsArrayList(int row, int column) {
         int position = (row * 9) + column;
         ArrayList<Integer> repeats = new ArrayList<>(Arrays.asList(position,
                 doubleInRow(position), doubleInColumn(position), doubleInBox(position)));
-        // method call for doing adding / removing
         int repeatPosition = checkRepeat(position);
         addOrRemoveFromRepeats(repeatPosition, repeats);
     }
 
     /**
      * Add or removes arraylists from this.repeats depending on whether it prev exists
+     *
      * @param repeatPosition the position to be checked
-     * @param repeats the arraylist that contains the repeated positions for one set of repeat
+     * @param repeats        the arraylist that contains the repeated positions for one set of repeat
      */
     private void addOrRemoveFromRepeats(int repeatPosition, ArrayList<Integer> repeats) {
         if ((repeats.get(1) != -1) | (repeats.get(2) != -1) | (repeats.get(3) != -1)) {
@@ -95,14 +96,15 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
 
     /**
      * Creates a copy of the current sudokuPlayBoard
+     *
      * @return a copy of the sudokuplayboard
      */
     SudokuPlayBoard copy() {
         SudokuPlayBoard temp = new SudokuPlayBoard(sudokuBoard);
-        for (Integer i: removedNumbers) {
+        for (Integer i : removedNumbers) {
             temp.removedNumbers.add(0, i);
         }
-        for (ArrayList<Integer> i: repeats) {
+        for (ArrayList<Integer> i : repeats) {
             temp.repeats.add(0, i);
         }
         return temp;
@@ -110,6 +112,7 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
 
     /**
      * Getter for arraylist of repeats
+     *
      * @return arraylist of repeats
      */
     ArrayList<ArrayList<Integer>> getRepeats() {
@@ -118,6 +121,7 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
 
     /**
      * Adds a number to the arraylist of removedNumbers
+     *
      * @param position the position to be added
      */
     void addRemovedNumber(Integer position) {
@@ -126,6 +130,7 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
 
     /**
      * Remove and Return the first index of removedNumbers
+     *
      * @return the first index of removedNumbers
      */
     Integer popRemovedNumber() {
@@ -134,6 +139,7 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
 
     /**
      * Getter for removedNumbers
+     *
      * @return removedNumbers
      */
     ArrayList<Integer> getRemovedNumbers() {
