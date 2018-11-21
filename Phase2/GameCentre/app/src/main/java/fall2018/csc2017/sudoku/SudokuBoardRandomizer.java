@@ -7,11 +7,21 @@ class SudokuBoardRandomizer {
     private SudokuBoard sudokuBoard;
     private Integer[][] sudokuBoardNumbers;
 
-    SudokuBoardRandomizer (SudokuBoard sudokuBoard) {
+    /**
+     * Constructor for SudokuBoardRandomizer
+     *
+     * @param sudokuBoard the sudokuBoard to be randomized
+     */
+    SudokuBoardRandomizer(SudokuBoard sudokuBoard) {
         this.sudokuBoard = sudokuBoard;
         this.sudokuBoardNumbers = sudokuBoard.getSudokuBoard();
     }
 
+    /**
+     * Generates a random SudokuBoard
+     *
+     * @return a randomized sudokuboard
+     */
     SudokuBoard generateRandomBoard() {
         randomizeBoard();
         return sudokuBoard;
@@ -101,12 +111,13 @@ class SudokuBoardRandomizer {
             swapHorizontal(random.nextInt(3));
             swapVertical(random.nextInt(3));
         }
-        //iterate through  the 3 major row/column to swap them
+        //iterate through the 3 major row/column to swap rows and columns within them
         randomizeSingleRowColumn(random);
     }
 
     /**
      * Randomizes the rows/columns within each major horizontal/vertical section
+     *
      * @param random a random for randomizing
      */
     private void randomizeSingleRowColumn(Random random) {
@@ -120,7 +131,9 @@ class SudokuBoardRandomizer {
     }
 
     /**
-     * Creates an active board by removing 36 random numbers from the board
+     * Remove numbers from the board
+     *
+     * @param board the board to remove from
      */
     void generateActiveBoard(SudokuPlayBoard board) {
         Random random = new Random();

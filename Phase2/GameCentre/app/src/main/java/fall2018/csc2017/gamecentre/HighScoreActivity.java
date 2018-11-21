@@ -70,8 +70,8 @@ public class HighScoreActivity extends AppCompatActivity {
         TextView textScore = findViewById(R.id.score_2);
         TextView textName = findViewById(R.id.score_1);
         if (select.equals("User")) {
-            textScore.setText(perUserListGenerator(false));
-            textName.setText(perUserListGenerator(true));
+            textScore.setText(perUserListGenerator(true));
+            textName.setText(perUserListGenerator(false));
         } else {
             textName.setText(perGameListGenerator(select, false));
             textScore.setText(perGameListGenerator(select, true));

@@ -1,8 +1,5 @@
 package fall2018.csc2017.sudoku;
 
-
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,9 +38,8 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
      */
     void setSudokuBoardNumber(int row, int column, int number) {
         sudokuBoard[row][column] = number;
-        if (number != 0) {
-            updateRepeatsArrayList(row, column);
-        }
+        updateRepeatsArrayList(row, column);
+
     }
 
     /**
