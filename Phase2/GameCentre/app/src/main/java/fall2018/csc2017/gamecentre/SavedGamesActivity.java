@@ -121,13 +121,13 @@ public class SavedGamesActivity extends AppCompatActivity {
         ArrayList<String> nameArray = new ArrayList<>();
         String currentUser = userManager.getCurrentUser().getUsername();
         nameArray.add("Select a Saved Game");
-        if (savedGames.get(currentUser) != null) {
-            ArrayList<GameToSave> listOfSavedGame = savedGames.get(currentUser).get(gameName);
+        HashMap<String, ArrayList<GameToSave>> savedGamesByGameType = savedGames.get(currentUser);
+        if (savedGamesByGameType != null && savedGamesByGameType.get(gameName) != null) {
+            ArrayList<GameToSave> listOfSavedGame = savedGamesByGameType.get(gameName);
             for (int i = 0; i < listOfSavedGame.size(); i++) {
                 String gameDifficulty = listOfSavedGame.get(i).getGameDifficulty();
                 nameArray.add(listOfSavedGame.get(i).getSavedTime() + " (" + gameDifficulty + ") ");
             }
-            return nameArray;
         }
         return nameArray;
     }
