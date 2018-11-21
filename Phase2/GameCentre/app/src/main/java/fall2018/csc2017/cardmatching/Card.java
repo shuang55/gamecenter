@@ -50,7 +50,9 @@ public class Card implements Comparable<Card>, Serializable {
      *
      * @return id of card back
      */
-    public int getCardBackId() { return cardBackId; }
+    public int getCardBackId() {
+        return cardBackId;
+    }
 
     /**
      * Return the card id.
@@ -67,48 +69,50 @@ public class Card implements Comparable<Card>, Serializable {
      * @param backgroundId ID of the background
      */
     Card(int backgroundId) {
-        id = backgroundId + 1;
-        switch ((int) Math.ceil(((double) id)/2)) {
+        id = backgroundId + 1;/*
+        int firstCardPictureId = R.drawable.hearthstone_card1;
+        cardFaceId = firstCardPictureId + backgroundId;*/
+        switch ((int) Math.ceil(((double) id) / 2)) {
             case 1:
-                cardFaceId = R.drawable.alakir_the_windlord;
+                cardFaceId = R.drawable.hearthstone_card1;
                 break;
             case 2:
-                cardFaceId = R.drawable.angry_chicken;
+                cardFaceId = R.drawable.hearthstone_card2;
                 break;
             case 3:
-                cardFaceId = R.drawable.archmage_antonidas;
+                cardFaceId = R.drawable.hearthstone_card3;
                 break;
             case 4:
-                cardFaceId = R.drawable.deathwing_dragonlord;
+                cardFaceId = R.drawable.hearthstone_card4;
                 break;
             case 5:
-                cardFaceId = R.drawable.king_krush;
+                cardFaceId = R.drawable.hearthstone_card5;
                 break;
             case 6:
-                cardFaceId = R.drawable.malygos;
+                cardFaceId = R.drawable.hearthstone_card6;
                 break;
             case 7:
-                cardFaceId = R.drawable.nozdormu;
+                cardFaceId = R.drawable.hearthstone_card7;
                 break;
             case 8:
-                cardFaceId = R.drawable.patches_the_pirate;
+                cardFaceId = R.drawable.hearthstone_card8;
                 break;
             case 9:
-                cardFaceId = R.drawable.ragnaros_lightlord;
+                cardFaceId = R.drawable.hearthstone_card9;
                 break;
             case 10:
-                cardFaceId = R.drawable.the_darkness;
+                cardFaceId = R.drawable.hearthstone_card10;
                 break;
             case 11:
-                cardFaceId = R.drawable.ysera;
+                cardFaceId = R.drawable.hearthstone_card11;
                 break;
             case 12:
-                cardFaceId = R.drawable.xaril_poisoned_mind;
+                cardFaceId =R.drawable.hearthstone_card12;
                 break;
             default:
                 cardFaceId = R.drawable.star_photo;
         }
-        cardBackId = R.drawable.legend_card_back;
+        cardBackId = R.drawable.hearthstone_card13;
         isPaired = false;
     }
 
@@ -117,7 +121,7 @@ public class Card implements Comparable<Card>, Serializable {
      *
      * @return true if card is isPaired, false otherwise
      */
-    boolean isPaired(){
+    boolean isPaired() {
         return isPaired;
     }
 
@@ -132,7 +136,7 @@ public class Card implements Comparable<Card>, Serializable {
 
     /**
      * Set the card to opened or not opened;
-     *
+     * <p>
      * 1 means card is opened, 0 means card is covered.
      *
      * @param opened whether the card is opened or not
@@ -143,12 +147,12 @@ public class Card implements Comparable<Card>, Serializable {
 
     /**
      * Get whether or not this card is opened.
-     *
+     * <p>
      * 1 means card is opened, 0 means card is covered.
      *
      * @return true if card is opened, false otherwise
      */
-    int isOpen(){
+    int isOpen() {
         return opened;
     }
 
