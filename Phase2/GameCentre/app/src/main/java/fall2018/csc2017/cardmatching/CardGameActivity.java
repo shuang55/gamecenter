@@ -72,7 +72,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadFromFile();
-        createTileButtons(this);
+        createCardButtons(this);
         setContentView(R.layout.activity_card_matching);
         loadManagers();
         userManager.setCurrentUserFile();
@@ -161,14 +161,22 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
      *
      * @param context the context
      */
-    private void createTileButtons(Context context) {
+    private void createCardButtons(Context context) {
         Board board = boardManager.getBoard();
         cardButtons = new ArrayList<>();
         int cardBackId = board.getCard(0,0).getCardBackId();
         for (int row = 0; row != board.numCardPerRow; row++) {
             for (int col = 0; col != board.numCardPerCol; col++) {
                 Button tmp = new Button(context);
-                tmp.setBackgroundResource(cardBackId);
+                Card currentCard = boardManager.getBoard().getCard(row, col);
+                if (currentCard.isPaired()){
+                    tmp.setBackgroundResource(currentCard.getCardFaceId());
+                }
+                else{
+                    currentCard.setOpened(0);
+                    tmp.setBackgroundResource(cardBackId);
+                }
+                boardManager.setOpenPairExists(false);
                 this.cardButtons.add(tmp);
             }
         }

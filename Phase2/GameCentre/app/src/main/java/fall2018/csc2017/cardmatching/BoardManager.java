@@ -28,6 +28,11 @@ public class BoardManager implements Serializable, GameManager {
     private int move = 0;
 
     private int[] lastMove = new int[2];
+
+    public void setOpenPairExists(boolean openPairExists) {
+        this.openPairExists = openPairExists;
+    }
+
     private boolean openPairExists;
 
     /**
