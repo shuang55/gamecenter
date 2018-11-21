@@ -105,49 +105,10 @@ public class Card implements Comparable<Card>, Serializable {
             case 12:
                 cardFaceId = R.drawable.tile_12;
                 break;
-//            case 13:
-//                cardFaceId = R.drawable.tile_13;
-//                break;
-//            case 14:
-//                cardFaceId = R.drawable.tile_14;
-//                break;
-//            case 15:
-//                cardFaceId = R.drawable.tile_15;
-//                break;
-//            case 16:
-//                cardFaceId = R.drawable.tile_16;
-//                break;
-//            case 17:
-//                cardFaceId = R.drawable.tile_17;
-//                break;
-//            case 18:
-//                cardFaceId = R.drawable.tile_18;
-//                break;
-//            case 19:
-//                cardFaceId = R.drawable.tile_19;
-//                break;
-//            case 20:
-//                cardFaceId = R.drawable.tile_20;
-//                break;
-//            case 21:
-//                cardFaceId = R.drawable.tile_21;
-//                break;
-//            case 22:
-//                cardFaceId = R.drawable.tile_22;
-//                break;
-//            case 23:
-//                cardFaceId = R.drawable.tile_23;
-//                break;
-//            case 24:
-//                cardFaceId = R.drawable.tile_24;
-//                break;
-//            case 25:
-//                cardFaceId = R.drawable.blank_tile;
-//                break;
             default:
                 cardFaceId = R.drawable.blank_tile;
         }
-        cardBackId = R.drawable.star_photo;
+        cardBackId = R.drawable.legend_cardback;
         isPaired = false;
     }
 
