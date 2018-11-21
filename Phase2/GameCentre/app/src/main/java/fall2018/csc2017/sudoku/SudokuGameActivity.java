@@ -11,19 +11,36 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
+import fall2018.csc2017.gamecentre.GameToSave;
+import fall2018.csc2017.gamecentre.SavedGames;
 import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
 public class SudokuGameActivity extends AppCompatActivity {
 
     private static final String TAG = "SudokuGameActivity";
+
     /**
      * SudokubBoardManager
      */
     private SudokuBoardManager sudokuBoardManager;
+
+    /**
+     * User Manager
+     */
+    private UserManager userManager;
+
+    /**
+     * all saved games.
+     */
+    private SavedGames savedGames;
+
     /**
      * Gridview for sudokuboard
      */
@@ -42,9 +59,13 @@ public class SudokuGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku_game);
         // set up board
+        // load managers
         gameCentre = new GameCentre(this);
         gameCentre.loadManager(GameManager.TEMP_SAVE_START);
         sudokuBoardManager = (SudokuBoardManager) gameCentre.getGameManager();
+        userManager = gameCentre.getUserManager();
+        userManager.setCurrentUserFile();
+        savedGames = gameCentre.getSavedGames();
 
         // set up gridview
         updateDisplay();
@@ -59,7 +80,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         addEraseButtonListener();
         addHintButtonListener();
         addUndoButtonListener();
-
+        addSaveButtonListener();
     }
 
     /**
@@ -194,6 +215,66 @@ public class SudokuGameActivity extends AppCompatActivity {
                 updateDisplay();
             }
         });
+    }
+
+    /**
+     * Activate save button
+     */
+    private void addSaveButtonListener() {
+        Button save = findViewById(R.id.sudoku_save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userName = userManager.getCurrentUser().getUsername();
+                String timeSaved = sudokuBoardManager.getTime();
+                String gameDifficulty = sudokuBoardManager.getGameDifficulty();
+                GameToSave gameToSave = new GameToSave(timeSaved, "Sudoku", gameDifficulty, sudokuBoardManager);
+                savedGames.updateSavedGames(gameToSave, userName);
+                saveGameToFile(SavedGames.SAVEDGAMES);
+                String currentUserFile = userManager.getCurrentUserFile();
+                saveToFile(currentUserFile);
+                makeToastSavedText();
+            }
+        });
+    }
+
+    /**
+     * save game to file
+     *
+     * @param fileName name of file
+     */
+    public void saveGameToFile(String fileName) {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(
+                    this.openFileOutput(fileName, MODE_PRIVATE));
+            outputStream.writeObject(savedGames);
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    /**
+     * Save the board manager to fileName.
+     *
+     * @param fileName the name of the file
+     */
+    public void saveToFile(String fileName) {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(
+                    this.openFileOutput(fileName, MODE_PRIVATE));
+            outputStream.writeObject(sudokuBoardManager);
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    /**
+     * Display that a game was saved successfully.
+     */
+    private void makeToastSavedText() {
+        Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
     }
 
     /**

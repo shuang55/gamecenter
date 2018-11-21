@@ -20,6 +20,8 @@ import fall2018.csc2017.cardmatching.CardGameActivity;
 import fall2018.csc2017.cardmatching.CardStartingActivity;
 import fall2018.csc2017.slidingtiles.GameActivity;
 import fall2018.csc2017.slidingtiles.StartingActivity;
+import fall2018.csc2017.sudoku.SudokuGameActivity;
+import fall2018.csc2017.sudoku.SudokuStartingActivity;
 
 /**
  * Activity for Saved Games.
@@ -160,13 +162,19 @@ public class SavedGamesActivity extends AppCompatActivity {
      * @param gameManager the game state to be loaded
      */
     private void startActivity(String gameName, GameManager gameManager){
-        if (gameName.equals("Sliding Tile")){
-            saveToFile(StartingActivity.TEMP_SAVE_FILENAME,gameManager);
-            switchToSlidingTile();
-        }
-        else if (gameName.equals("Card Matching")){
-            saveToFile(CardStartingActivity.TEMP_SAVE_FILENAME,gameManager);
-            switchToCardMatching();
+        switch(gameName){
+            case "Sliding Tile":
+                saveToFile(StartingActivity.TEMP_SAVE_FILENAME,gameManager);
+                switchToSlidingTile();
+                break;
+            case "Card Matching":
+                saveToFile(CardStartingActivity.TEMP_SAVE_FILENAME,gameManager);
+                switchToCardMatching();
+                break;
+            case "Sudoku":
+                saveToFile(SudokuStartingActivity.SUDOKU_START_FILE,gameManager);
+                switchToSudoku();
+                break;
         }
     }
 
@@ -204,6 +212,14 @@ public class SavedGamesActivity extends AppCompatActivity {
     }
 
     /**
+     * Switch to view of Sudoku game.
+     */
+    public void switchToSudoku() {
+        Intent tmp = new Intent(this, SudokuGameActivity.class);
+        startActivity(tmp);
+    }
+
+    /**
      * Updates the screen on resume.
      */
     @Override
@@ -212,8 +228,10 @@ public class SavedGamesActivity extends AppCompatActivity {
         loadManager();
         int slidingTileSpinnerID = R.id.SlidingTileSpinner;
         int cardMatchingSpinnerID = R.id.cardMatchingSpinner;
+        int sudokuSpinnerID = R.id.sudokuSpinner;
         addLoadGameSpinnerListener("Sliding Tile", slidingTileSpinnerID);
         addLoadGameSpinnerListener("Card Matching", cardMatchingSpinnerID);
+        addLoadGameSpinnerListener("Sudoku", sudokuSpinnerID);
         addBackButtonListener();
     }
 }
