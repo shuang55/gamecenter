@@ -108,7 +108,7 @@ public class Card implements Comparable<Card>, Serializable {
             default:
                 cardFaceId = R.drawable.blank_tile;
         }
-        cardBackId = R.drawable.legend_cardback;
+        cardBackId = R.drawable.legend_card_back;
         isPaired = false;
     }
 
