@@ -3,16 +3,12 @@ package fall2018.csc2017.sudoku;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
@@ -24,22 +20,10 @@ import fall2018.csc2017.gamecentre.YouWinActivity;
 
 public class SudokuGameActivity extends AppCompatActivity {
 
-    private static final String TAG = "SudokuGameActivity";
-
     /**
      * SudokubBoardManager
      */
     private SudokuBoardManager sudokuBoardManager;
-
-    /**
-     * User Manager
-     */
-    private UserManager userManager;
-
-    /**
-     * all saved games.
-     */
-    private SavedGames savedGames;
 
     /**
      * Gridview for sudokuboard
@@ -58,14 +42,11 @@ public class SudokuGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku_game);
-        // set up board
-        // load managers
+
+        // load the necessary managers
         gameCentre = new GameCentre(this);
         gameCentre.loadManager(GameManager.TEMP_SAVE_START);
         sudokuBoardManager = (SudokuBoardManager) gameCentre.getGameManager();
-        userManager = gameCentre.getUserManager();
-        userManager.setCurrentUserFile();
-        savedGames = gameCentre.getSavedGames();
 
         // set up gridview
         updateDisplay();
@@ -75,6 +56,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         numberSelectGridView = findViewById(R.id.SudokuSelect);
         SudokuNumberSelectAdapter sudokuNumberSelectAdapter = new SudokuNumberSelectAdapter(this);
         numberSelectGridView.setAdapter(sudokuNumberSelectAdapter);
+
         // set up button
         addNumberSelectGridViewClickListener();
         addEraseButtonListener();
@@ -92,7 +74,19 @@ public class SudokuGameActivity extends AppCompatActivity {
         gridView.setAdapter(sudokuBoardAdapter);
         TextView textView = findViewById(R.id.sudoku_moves);
         textView.setText(String.format("Moves: %s", sudokuBoardManager.getMoves()));
-        checkComplete();
+        checkSolved();
+    }
+
+    /**
+     * Checks if board is solved, and swap to YouWin if it is
+     */
+    private void checkSolved() {
+        if (sudokuBoardManager.puzzleSolved()) {
+            gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, sudokuBoardManager);
+            gameCentre.getUserManager().getCurrentUser().removeSavedGame("Sudoku");
+            gameCentre.saveManager(UserManager.USERS, gameCentre.getUserManager());
+            swapToYouWin();
+        }
     }
 
     /**
@@ -106,39 +100,6 @@ public class SudokuGameActivity extends AppCompatActivity {
                 updateDisplay();
             }
         });
-    }
-
-    /**
-     * Checks the activeBoard to see if the board is filled
-     */
-    private void checkComplete() {
-        boolean containZero = false;
-        for (Integer[] row : sudokuBoardManager.getActiveBoard().getSudokuBoard()) {
-            for (Integer num : row) {
-                if (num == 0) {
-                    containZero = true;
-                }
-            }
-        }
-        Log.v(TAG, String.valueOf(containZero));
-        checkSolved(containZero);
-    }
-
-    /**
-     * Check the activeBoard to see if it is solved
-     *
-     * @param containZero whether the board contains 0 ==> not complete
-     */
-    private void checkSolved(boolean containZero) {
-        if (!containZero) {
-            if (sudokuBoardManager.puzzleSolved()) {
-                Log.v(TAG, "BOOP");
-                gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, sudokuBoardManager);
-                gameCentre.getUserManager().getCurrentUser().removeSavedGame("Sudoku");
-                gameCentre.saveManager(UserManager.USERS, gameCentre.getUserManager());
-                swapToYouWin();
-            }
-        }
     }
 
     /**
@@ -162,7 +123,7 @@ public class SudokuGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Update the sudokuboard
+     * Update the sudokuboard with the user input number
      *
      * @param num number to be updated
      */
@@ -213,6 +174,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 sudokuBoardManager.provideHint();
                 updateDisplay();
+                autoSave();
             }
         });
     }
@@ -225,49 +187,16 @@ public class SudokuGameActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userName = userManager.getCurrentUser().getUsername();
-                String timeSaved = sudokuBoardManager.getTime();
-                String gameDifficulty = sudokuBoardManager.getGameDifficulty();
-                GameToSave gameToSave = new GameToSave(timeSaved, "Sudoku", gameDifficulty, sudokuBoardManager);
-                savedGames.updateSavedGames(gameToSave, userName);
-                saveGameToFile(SavedGames.SAVEDGAMES);
-                String currentUserFile = userManager.getCurrentUserFile();
-                saveToFile(currentUserFile);
+                SavedGames savedGames = gameCentre.getSavedGames();
+                UserManager userManager = gameCentre.getUserManager();
+                GameToSave gameToSave = new GameToSave(
+                        sudokuBoardManager.getTime(), "Sudoku",
+                        sudokuBoardManager.getGameDifficulty(), sudokuBoardManager);
+                savedGames.updateSavedGames(gameToSave, userManager.getCurrentUser().getUsername());
+                gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();
             }
         });
-    }
-
-    /**
-     * save game to file
-     *
-     * @param fileName name of file
-     */
-    public void saveGameToFile(String fileName) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(savedGames);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
-    }
-
-    /**
-     * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
-     */
-    public void saveToFile(String fileName) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(sudokuBoardManager);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
     }
 
     /**

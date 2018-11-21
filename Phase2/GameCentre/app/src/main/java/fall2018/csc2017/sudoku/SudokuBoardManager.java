@@ -93,6 +93,9 @@ public class SudokuBoardManager implements GameManager, Serializable {
      */
     @Override
     public boolean puzzleSolved() {
+        if (activeBoard.checkComplete()) {
+            return false;
+        }
         for (int i = 0; i < 81; i++) {
             Integer rowSolved = activeBoard.doubleInRow(i);
             Integer columnSolved = activeBoard.doubleInColumn(i);
