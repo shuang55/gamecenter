@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import fall2018.csc2017.R;
+import fall2018.csc2017.cardmatching.CardGameActivity;
+import fall2018.csc2017.cardmatching.CardStartingActivity;
 import fall2018.csc2017.slidingtiles.GameActivity;
 import fall2018.csc2017.slidingtiles.StartingActivity;
 
@@ -58,11 +60,9 @@ public class SavedGamesActivity extends AppCompatActivity {
      * @param gameName the name of the game
      */
     private void addLoadGameSpinnerListener(String gameName, int IDofSpinner){
-        // Note to marker: Android studio gives a style warning here, but we  will
-        // implement more games in the future, so having parameter gameName makes it more extendable
         final String GAMENAME = gameName;
-        Spinner slidingTileSpinner = findViewById(IDofSpinner);
-        slidingTileSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        Spinner Spinner = findViewById(IDofSpinner);
+        Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selected = parent.getItemAtPosition(position).toString();
@@ -87,7 +87,7 @@ public class SavedGamesActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SavedGamesActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, constructNameArray(GAMENAME));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        slidingTileSpinner.setAdapter(arrayAdapter);
+        Spinner.setAdapter(arrayAdapter);
     }
 
     /**
@@ -123,7 +123,6 @@ public class SavedGamesActivity extends AppCompatActivity {
         nameArray.add("Select a Saved Game");
         if (savedGames.get(currentUser) != null) {
             ArrayList<GameToSave> listOfSavedGame = savedGames.get(currentUser).get(gameName);
-            System.out.println(currentUser);
             for (int i = 0; i < listOfSavedGame.size(); i++) {
                 String gameDifficulty = listOfSavedGame.get(i).getGameDifficulty();
                 nameArray.add(listOfSavedGame.get(i).getSavedTime() + " (" + gameDifficulty + ") ");
@@ -165,6 +164,10 @@ public class SavedGamesActivity extends AppCompatActivity {
             saveToFile(StartingActivity.TEMP_SAVE_FILENAME,gameManager);
             switchToSlidingTile();
         }
+        else if (gameName.equals("Card Matching")){
+            saveToFile(CardStartingActivity.TEMP_SAVE_FILENAME,gameManager);
+            switchToCardMatching();
+        }
     }
 
     /**
@@ -193,6 +196,14 @@ public class SavedGamesActivity extends AppCompatActivity {
     }
 
     /**
+     * Switch to view of Card Matching game.
+     */
+    public void switchToCardMatching() {
+        Intent tmp = new Intent(this, CardGameActivity.class);
+        startActivity(tmp);
+    }
+
+    /**
      * Updates the screen on resume.
      */
     @Override
@@ -200,7 +211,9 @@ public class SavedGamesActivity extends AppCompatActivity {
         super.onResume();
         loadManager();
         int slidingTileSpinnerID = R.id.SlidingTileSpinner;
+        int cardMatchingSpinnerID = R.id.cardMatchingSpinner;
         addLoadGameSpinnerListener("Sliding Tile", slidingTileSpinnerID);
+        addLoadGameSpinnerListener("Card Matching", cardMatchingSpinnerID);
         addBackButtonListener();
     }
 }
