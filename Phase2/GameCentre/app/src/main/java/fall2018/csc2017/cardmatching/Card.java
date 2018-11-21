@@ -70,43 +70,43 @@ public class Card implements Comparable<Card>, Serializable {
         id = backgroundId + 1;
         switch ((int) Math.ceil(((double) id)/2)) {
             case 1:
-                cardFaceId = R.drawable.tile_1;
+                cardFaceId = R.drawable.alakir_the_windlord;
                 break;
             case 2:
-                cardFaceId = R.drawable.tile_2;
+                cardFaceId = R.drawable.angry_chicken;
                 break;
             case 3:
-                cardFaceId = R.drawable.tile_3;
+                cardFaceId = R.drawable.archmage_antonidas;
                 break;
             case 4:
-                cardFaceId = R.drawable.tile_4;
+                cardFaceId = R.drawable.deathwing_dragonlord;
                 break;
             case 5:
-                cardFaceId = R.drawable.tile_5;
+                cardFaceId = R.drawable.king_krush;
                 break;
             case 6:
-                cardFaceId = R.drawable.tile_6;
+                cardFaceId = R.drawable.malygos;
                 break;
             case 7:
-                cardFaceId = R.drawable.tile_7;
+                cardFaceId = R.drawable.nozdormu;
                 break;
             case 8:
-                cardFaceId = R.drawable.tile_8;
+                cardFaceId = R.drawable.patches_the_pirate;
                 break;
             case 9:
-                cardFaceId = R.drawable.tile_9;
+                cardFaceId = R.drawable.ragnaros_lightlord;
                 break;
             case 10:
-                cardFaceId = R.drawable.tile_10;
+                cardFaceId = R.drawable.the_darkness;
                 break;
             case 11:
-                cardFaceId = R.drawable.tile_11;
+                cardFaceId = R.drawable.ysera;
                 break;
             case 12:
-                cardFaceId = R.drawable.tile_12;
+                cardFaceId = R.drawable.xaril_poisoned_mind;
                 break;
             default:
-                cardFaceId = R.drawable.blank_tile;
+                cardFaceId = R.drawable.star_photo;
         }
         cardBackId = R.drawable.legend_card_back;
         isPaired = false;
