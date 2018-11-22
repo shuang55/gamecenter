@@ -55,8 +55,8 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
      */
     public void display() {
         gridView.setAdapter(new CustomAdapter(cardButtons, columnWidth, columnHeight));
-        autoSave();
         setMoveCountText();
+        autoSave();
     }
 
     @Override
@@ -64,7 +64,6 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_matching);
         loadManagers();
-        createCardButtons(this);
 
         // activate button
         addSaveButtonListener();
@@ -173,6 +172,10 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         else{
             b.setBackgroundResource(cardMatchingBoard.getCard(row, col).getCardFaceId());
         }
+        if (operation[3] == 1) {
+            saveToFile(GameManager.TEMP_SAVE_WIN);
+            switchToWinActivity();
+        }
     }
 
     /**
@@ -231,6 +234,12 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
     private void setMoveCountText() {
         TextView moves = findViewById(R.id.MoveCount);
         moves.setText(String.format("%s", cardMatchingBoardManager.getMove()));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        createCardButtons(this);
     }
 }
 

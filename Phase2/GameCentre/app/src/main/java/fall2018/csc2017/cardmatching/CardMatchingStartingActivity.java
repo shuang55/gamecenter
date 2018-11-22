@@ -67,7 +67,7 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 cardMatchingBoardManager = new CardMatchingBoardManager(numCardPairs);
                 gameCentre.saveManager(GameManager.TEMP_SAVE_START, cardMatchingBoardManager);
-                swapToCarcMatching();
+                swapToCardMatching();
             }
         });
     }
@@ -96,7 +96,7 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
         if (tempBoard != null) {
             cardMatchingBoardManager = tempBoard;
             gameCentre.saveManager(GameManager.TEMP_SAVE_START, cardMatchingBoardManager);
-            swapToCarcMatching();
+            swapToCardMatching();
         } else {
             makeToastNoAutoSavedGame();
         }
@@ -112,7 +112,7 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
     /**
      * Switch to the CardMatchingGameActivity view to play the game.
      */
-    public void swapToCarcMatching() {
+    public void swapToCardMatching() {
         Intent tmp = new Intent(this, CardMatchingGameActivity.class);
         startActivity(tmp);
     }

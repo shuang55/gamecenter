@@ -29,6 +29,8 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     private int[] lastMove = new int[2];
 
+    private int pairsMatched;
+
     public void setOpenPairExists(boolean openPairExists) {
         this.openPairExists = openPairExists;
     }
@@ -55,6 +57,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
         }
         Collections.shuffle(cards);
         this.cardMatchingBoard = new CardMatchingBoard(cards, numCardPair);
+        pairsMatched = numCardPair;
     }
 
     /**
@@ -103,6 +106,10 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
             Card card2 = cardMatchingBoard.getCard(row, col);
             if (checkMatch(card1, card2)){
                 openPairExists = false;
+                if (pairsMatched == 0){
+                    cardMatchingBoard.setIsSolved(1);
+                    cardMatchingBoard.flipCard(row, col, 1);
+                }
             }
             else{
                 coverCardAfterFixedDelay(row, col);
@@ -129,6 +136,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
         if (card1.getCardFaceId() == card2.getCardFaceId()){
             card1.setPaired(true);
             card2.setPaired(true);
+            pairsMatched -= 1;
             return true;
         }
         return false;
