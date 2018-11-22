@@ -33,7 +33,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private CardMatchingBoardManager cardMatchingBoardManager;
 
     /**
      * Gamecentre for managing files
@@ -65,14 +65,14 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_card_matching);
         gameCentre = new GameCentre(this);
         gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        boardManager = (BoardManager) gameCentre.getGameManager();
+        cardMatchingBoardManager = (CardMatchingBoardManager) gameCentre.getGameManager();
         createCardButtons(this);
         addSaveButtonListener();
         // Add View to activity
         gridView = findViewById(R.id.grid1);
-        gridView.setNumColumns(boardManager.getBoard().numCardPerCol);
-        gridView.setGameManager(boardManager);
-        boardManager.getBoard().addObserver(this);
+        gridView.setNumColumns(cardMatchingBoardManager.getCardMatchingBoard().numCardPerCol);
+        gridView.setGameManager(cardMatchingBoardManager);
+        cardMatchingBoardManager.getCardMatchingBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -83,8 +83,8 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                        columnWidth = displayWidth / boardManager.getBoard().numCardPerCol;
-                        columnHeight = displayHeight / boardManager.getBoard().numCardPerRow;
+                        columnWidth = displayWidth / cardMatchingBoardManager.getCardMatchingBoard().numCardPerCol;
+                        columnHeight = displayHeight / cardMatchingBoardManager.getCardMatchingBoard().numCardPerRow;
 
                         display();
                     }
@@ -102,7 +102,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
                 UserManager userManager = gameCentre.getUserManager();
                 SavedGames savedGames = gameCentre.getSavedGames();
                 String userName = userManager.getCurrentUser().getUsername();
-                GameToSave gameToSave = new GameToSave(boardManager);
+                GameToSave gameToSave = new GameToSave(cardMatchingBoardManager);
                 savedGames.updateSavedGames(gameToSave, userName);
                 gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();
@@ -123,13 +123,13 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
      * @param context the context
      */
     private void createCardButtons(Context context) {
-        Board board = boardManager.getBoard();
+        CardMatchingBoard cardMatchingBoard = cardMatchingBoardManager.getCardMatchingBoard();
         cardButtons = new ArrayList<>();
-        int cardBackId = board.getCard(0,0).getCardBackId();
-        for (int row = 0; row != board.numCardPerRow; row++) {
-            for (int col = 0; col != board.numCardPerCol; col++) {
+        int cardBackId = cardMatchingBoard.getCard(0,0).getCardBackId();
+        for (int row = 0; row != cardMatchingBoard.numCardPerRow; row++) {
+            for (int col = 0; col != cardMatchingBoard.numCardPerCol; col++) {
                 Button tmp = new Button(context);
-                Card currentCard = boardManager.getBoard().getCard(row, col);
+                Card currentCard = cardMatchingBoardManager.getCardMatchingBoard().getCard(row, col);
                 if (currentCard.isPaired()){
                     tmp.setBackgroundResource(currentCard.getCardFaceId());
                 }
@@ -137,7 +137,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
                     currentCard.setOpened(0);
                     tmp.setBackgroundResource(cardBackId);
                 }
-                boardManager.setOpenPairExists(false);
+                cardMatchingBoardManager.setOpenPairExists(false);
                 this.cardButtons.add(tmp);
             }
         }
@@ -150,17 +150,17 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
      *                    mode 0 is to close the card, mode 1 is to open the card.
      */
     private void changeCardDisplay(int[] operation) {
-        Board board = boardManager.getBoard();
+        CardMatchingBoard cardMatchingBoard = cardMatchingBoardManager.getCardMatchingBoard();
         int row = operation[0];
         int col = operation[1];
         int mode = operation[2];
         int position = row * 4 + col;
         Button b = this.cardButtons.get(position);
         if (mode == 0){
-            b.setBackgroundResource(board.getCard(row, col).getCardBackId());
+            b.setBackgroundResource(cardMatchingBoard.getCard(row, col).getCardBackId());
         }
         else{
-            b.setBackgroundResource(board.getCard(row, col).getCardFaceId());
+            b.setBackgroundResource(cardMatchingBoard.getCard(row, col).getCardFaceId());
         }
     }
 
@@ -173,7 +173,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(boardManager);
+            outputStream.writeObject(cardMatchingBoardManager);
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
@@ -187,7 +187,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (!boardManager.puzzleSolved()) {
+        if (!cardMatchingBoardManager.puzzleSolved()) {
             changeCardDisplay((int[]) arg);
             display();
         }
@@ -202,7 +202,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
      */
     private void autoSave() {
         UserManager userManager = gameCentre.getUserManager();
-        userManager.autoSaveGame(boardManager);
+        userManager.autoSaveGame(cardMatchingBoardManager);
         gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
@@ -219,7 +219,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
      */
     private void setMoveCountText() {
         TextView moves = findViewById(R.id.MoveCount);
-        moves.setText(String.format("%s", boardManager.getMove()));
+        moves.setText(String.format("%s", cardMatchingBoardManager.getMove()));
     }
 }
 

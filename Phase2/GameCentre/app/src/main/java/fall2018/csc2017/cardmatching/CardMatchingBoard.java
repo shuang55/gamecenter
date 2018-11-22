@@ -12,7 +12,7 @@ import java.util.Iterator;
 /**
  * The card matching board.
  */
-public class Board extends Observable implements Serializable, Iterable<Card> {
+public class CardMatchingBoard extends Observable implements Serializable, Iterable<Card> {
 
     /**
      * The board size
@@ -29,7 +29,7 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
     private Card[][] cards;
 
     /**
-     * Initializes the Board for game.
+     * Initializes the CardMatchingBoard for game.
      *
      * Choice of number of card pairs are: 8, 10, 12
      * BoardSize are: 4 X 4, 4 X 5, 4 X 6 (respectively)
@@ -37,7 +37,7 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
      * @param cards     list of tiles
      * @param numCardPair the number of pairs there are
      */
-    Board(List<Card> cards, int numCardPair) {
+    CardMatchingBoard(List<Card> cards, int numCardPair) {
         this.numCardPair = numCardPair;
         this.numCardPerCol = 4;
 
@@ -91,28 +91,9 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
         return cards[row][col];
     }
 
-//    /**
-//     * Finds the card with id cardID
-//     *
-//     * @param cardID the id of the tile
-//     * @return the position of the tile
-//     */
-    /*int findCard(int cardID) {
-        int position = 0;
-        for (Card[] c1 : cards) {
-            for (Card c2 : c1) {
-                if (c2.getId() == cardID) {
-                    return position;
-                }
-                position++;
-            }
-        }
-        return position;
-    }*/
-
     @Override
     public String toString() {
-        return "Board{" +
+        return "CardMatchingBoard{" +
                 "cards=" + Arrays.toString(cards) +
                 '}';
     }
@@ -124,7 +105,7 @@ public class Board extends Observable implements Serializable, Iterable<Card> {
     }
 
     /**
-     * An iterator that iterates through Board
+     * An iterator that iterates through CardMatchingBoard
      */
     private class BoardIterator implements Iterator<Card> {
 

@@ -33,7 +33,7 @@ public class CardStartingActivity extends AppCompatActivity {
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private CardMatchingBoardManager cardMatchingBoardManager;
 
     /**
      * Level of difficulty chosen.
@@ -50,7 +50,7 @@ public class CardStartingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starting_card_matching);
         gameCentre = new GameCentre(this);
-        gameCentre.saveManager(CARD_MATCHING_START_FILE, boardManager);
+        gameCentre.saveManager(CARD_MATCHING_START_FILE, cardMatchingBoardManager);
 
         addStartButtonListener();
         addLoadAutoSaveButtonListener();
@@ -65,8 +65,8 @@ public class CardStartingActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boardManager = new BoardManager(numCardPairs);
-                gameCentre.saveManager(GameManager.TEMP_SAVE_START, boardManager);
+                cardMatchingBoardManager = new CardMatchingBoardManager(numCardPairs);
+                gameCentre.saveManager(GameManager.TEMP_SAVE_START, cardMatchingBoardManager);
                 swapToCarcMatching();
             }
         });
@@ -81,7 +81,7 @@ public class CardStartingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 gameCentre.loadManager(UserManager.USERS);
-                BoardManager tempBoard = (BoardManager) gameCentre.getUserManager().
+                CardMatchingBoardManager tempBoard = (CardMatchingBoardManager) gameCentre.getUserManager().
                         getSelectedGame("Card Matching");
                 checkValidAutoSavedGame(tempBoard);
             }
@@ -92,10 +92,10 @@ public class CardStartingActivity extends AppCompatActivity {
      * Checks if a game has been autosaved, and transition into game if it has.
      * @param tempBoard the sudokuBoardManager
      */
-    private void checkValidAutoSavedGame(BoardManager tempBoard) {
+    private void checkValidAutoSavedGame(CardMatchingBoardManager tempBoard) {
         if (tempBoard != null) {
-            boardManager = tempBoard;
-            gameCentre.saveManager(GameManager.TEMP_SAVE_START, boardManager);
+            cardMatchingBoardManager = tempBoard;
+            gameCentre.saveManager(GameManager.TEMP_SAVE_START, cardMatchingBoardManager);
             swapToCarcMatching();
         } else {
             makeToastNoAutoSavedGame();
