@@ -21,6 +21,7 @@ import java.util.List;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
+import fall2018.csc2017.gamecentre.GameManager;
 import fall2018.csc2017.gamecentre.UserManager;
 
 /**
@@ -31,19 +32,19 @@ public class StartingActivity extends AppCompatActivity {
 // star photo
 
     /**
-     * A temporary save file. (For Loading Games)
+     * Temp save file for starting sudoku game
      */
-    public static final String TEMP_SAVE_FILENAME = "save_file_tmp.ser";
+    public static final String SLIDING_TILE_START_FILE = GameManager.TEMP_SAVE_START;
 
     /**
-     * The board manager.
+     * Gamecentre for managing files
+     */
+    private GameCentre gameCentre;
+
+    /**
+     * Sliding Tile BoardManager to be used in game
      */
     private BoardManager boardManager;
-
-    /**
-     * The User Manager.
-     */
-    private UserManager userManager;
 
     /**
      * Level of difficulty chosen.
@@ -59,23 +60,13 @@ public class StartingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starting_sliding_tile);
-        loadManager();
-        userManager.setCurrentUserFile();
+        gameCentre = new GameCentre(this);
+        gameCentre.saveManager(SLIDING_TILE_START_FILE, boardManager);
+
         addStartButtonListener();
-        addLoadButtonListener();
+        addLoadAutoSaveButtonListener();
         addEzWinButtonListener();
         addComplexityButton();
-    }
-
-
-    /**
-     * Loads userManager
-     */
-    private void loadManager() {
-        Context context = StartingActivity.this;
-        GameCentre gameCentre = new GameCentre(context);
-        gameCentre.loadManager(UserManager.USERS);
-        userManager = gameCentre.getUserManager();
     }
 
     /**
@@ -87,44 +78,46 @@ public class StartingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boardManager = new BoardManager(boardSize);
-                switchToGame();
+                gameCentre.saveManager(GameManager.TEMP_SAVE_START, boardManager);
+                swapToSlidingTileGame();
             }
         });
     }
 
     /**
-     * Activate the load button.
+     * Activates LoadAutoSaveButton
      */
-    private void addLoadButtonListener() {
-        Button loadButton = findViewById(R.id.LoadButton);
-        loadButton.setOnClickListener(new View.OnClickListener() {
+    private void addLoadAutoSaveButtonListener() {
+        Button slidingTileAutoSave = findViewById(R.id.SlidingTileAutoSave);
+        slidingTileAutoSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentUserFile = userManager.getCurrentUserFile();
-                loadFromFile(currentUserFile);
-                if (boardManager != null){
-                    saveToFile(TEMP_SAVE_FILENAME);
-                    makeToastLoadedText();
-                    switchToGame();
-                }
-                else {
-                    makeToastNoPreviousGameText();
-                }
+                gameCentre.loadManager(UserManager.USERS);
+                BoardManager tempBoard = (BoardManager) gameCentre.getUserManager().
+                        getSelectedGame("Sliding Tile");
+                checkValidAutoSavedGame(tempBoard);
             }
         });
     }
 
     /**
-     * Display that a game was loaded successfully.
+     * Checks if a game has been autosaved, and transition into game if it has.
+     * @param tempBoard the sudokuBoardManager
      */
-    private void makeToastLoadedText() {
-        Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
+    private void checkValidAutoSavedGame(BoardManager tempBoard) {
+        if (tempBoard != null) {
+            boardManager = tempBoard;
+            gameCentre.saveManager(GameManager.TEMP_SAVE_START, boardManager);
+            swapToSlidingTileGame();
+        } else {
+            makeToastNoAutoSavedGame();
+        }
     }
 
     /**
      * Display that a game was loaded successfully.
      */
-    private void makeToastNoPreviousGameText() {
+    private void makeToastNoAutoSavedGame() {
         Toast.makeText(this, "No AutoSave History", Toast.LENGTH_SHORT).show();
     }
 
@@ -137,8 +130,8 @@ public class StartingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setEzWin();
-                saveToFile(TEMP_SAVE_FILENAME);
-                switchToGame();
+                gameCentre.saveManager(GameManager.TEMP_SAVE_START, boardManager);
+                swapToSlidingTileGame();
             }
         });
     }
@@ -146,49 +139,9 @@ public class StartingActivity extends AppCompatActivity {
     /**
      * Switch to the GameActivity view to play the game.
      */
-    public void switchToGame() {
+    public void swapToSlidingTileGame() {
         Intent tmp = new Intent(this, GameActivity.class);
-        saveToFile(TEMP_SAVE_FILENAME);
         startActivity(tmp);
-    }
-
-    /**
-     * Load the board manager from fileName.
-     *
-     * @param fileName the name of the file
-     */
-    private void loadFromFile(String fileName) {
-
-        try {
-            InputStream inputStream = this.openFileInput(fileName);
-            if (inputStream != null) {
-                ObjectInputStream input = new ObjectInputStream(inputStream);
-                boardManager = (BoardManager) input.readObject();
-                inputStream.close();
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
-        }
-    }
-
-    /**
-     * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
-     */
-    public void saveToFile(String fileName) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(boardManager);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
     }
 
     /**

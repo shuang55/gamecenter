@@ -30,8 +30,6 @@ import fall2018.csc2017.gamecentre.SavedGames;
 import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
-import static fall2018.csc2017.slidingtiles.StartingActivity.TEMP_SAVE_FILENAME;
-
 /**
  * The game activity.
  */
@@ -43,6 +41,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private BoardManager boardManager;
 
     /**
+     * Gamecentre for managing files
+     */
+    private GameCentre gameCentre;
+
+    /**
      * The buttons to display.
      */
     private ArrayList<Button> tileButtons;
@@ -50,17 +53,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
     // Grid View and calculated column height and width based on device size
     private GestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
-
-
-    /**
-     * User manager that manages all users.
-     */
-    private UserManager userManager;
-
-    /**
-     * Manages all saved games.
-     */
-    private SavedGames savedGames;
 
     /**
      * Set up the background image for each button based on the master list
@@ -75,11 +67,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadFromFile();
-        createTileButtons(this);
         setContentView(R.layout.activity_sliding_tile);
-        loadManagers();
-        userManager.setCurrentUserFile();
+        gameCentre = new GameCentre(this);
+        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+        boardManager = (BoardManager) gameCentre.getGameManager();
+        createTileButtons(this);
+
         //Activate undo button
         addUndoButtonListener();
         addSaveButtonListener();
@@ -107,18 +100,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
-     * Loads userManager and savedGames.
-     */
-    private void loadManagers(){
-        Context game = GameActivity.this;
-        GameCentre gameCentre = new GameCentre(game);
-        gameCentre.loadManager(UserManager.USERS);
-        userManager = gameCentre.getUserManager();
-        gameCentre.loadManager(SavedGames.SAVEDGAMES);
-        savedGames = gameCentre.getSavedGames();
-    }
-
-    /**
      * Activate the save button.
      */
     private void addSaveButtonListener() {
@@ -126,33 +107,17 @@ public class GameActivity extends AppCompatActivity implements Observer {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SavedGames savedGames = gameCentre.getSavedGames();
+                UserManager userManager = gameCentre.getUserManager();
                 String userName = userManager.getCurrentUser().getUsername();
                 String timeSaved = boardManager.getTime();
                 String gameDifficulty = boardManager.getGameDifficulty();
                 GameToSave gameToSave = new GameToSave(timeSaved, "Sliding Tile", gameDifficulty, boardManager);
                 savedGames.updateSavedGames(gameToSave, userName);
-                saveGameToFile(SavedGames.SAVEDGAMES);
-                String currentUserFile = userManager.getCurrentUserFile();
-                saveToFile(currentUserFile);
+                gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();
             }
         });
-    }
-
-    /**
-     * save game to file
-     *
-     * @param fileName name of file
-     */
-    public void saveGameToFile(String fileName) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(savedGames);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
     }
 
     /**
@@ -191,47 +156,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
             b.setBackgroundResource(board.getTile(row, col).getBackground());
             nextPos++;
         }
-    }
-
-    /**
-     * Dispatch onPause() to fragments.
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        String currentUserFile = userManager.getCurrentUserFile();
-        saveToFile(currentUserFile);
-    }
-
-    /**
-     * Dispatch onPause() to fragments.
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        String currentUserFile = userManager.getCurrentUserFile();
-        saveToFile(currentUserFile);
-    }
-
-    /**
-     * Load the board manager from fileName.
-     */
-    private void loadFromFile() {
-
-        try {
-            InputStream inputStream = this.openFileInput(TEMP_SAVE_FILENAME);
-            if (inputStream != null) {
-                ObjectInputStream input = new ObjectInputStream(inputStream);
-                boardManager = (BoardManager) input.readObject();
-                inputStream.close();
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
-        }
+        autoSave();
     }
 
     /**
@@ -258,8 +183,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (!boardManager.puzzleSolved()) {
-            String currentUserFile = userManager.getCurrentUserFile();
-            saveToFile(currentUserFile);
             display();
         }
         else {
@@ -285,11 +208,21 @@ public class GameActivity extends AppCompatActivity implements Observer {
             @Override
             public void onClick(View v) {
                 boolean undo = boardManager.undoMove();
+                autoSave();
                 if (!undo) {
                     makeToastNoMoreUndo();
                 }
             }
         });
+    }
+
+    /**
+     * Autosaves the board
+     */
+    private void autoSave() {
+        UserManager userManager = gameCentre.getUserManager();
+        userManager.autoSaveGame(boardManager);
+        gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
     /**
