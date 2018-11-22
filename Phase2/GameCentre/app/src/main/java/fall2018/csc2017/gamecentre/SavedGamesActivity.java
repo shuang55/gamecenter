@@ -164,11 +164,11 @@ public class SavedGamesActivity extends AppCompatActivity {
     private void startActivity(String gameName, GameManager gameManager){
         switch(gameName){
             case "Sliding Tile":
-                saveToFile(StartingActivity.TEMP_SAVE_FILENAME,gameManager);
+                saveToFile(StartingActivity.SLIDING_TILE_START_FILE,gameManager);
                 switchToSlidingTile();
                 break;
             case "Card Matching":
-                saveToFile(CardStartingActivity.TEMP_SAVE_FILENAME,gameManager);
+                saveToFile(CardStartingActivity.CARD_MATCHING_START_FILE,gameManager);
                 switchToCardMatching();
                 break;
             case "Sudoku":
