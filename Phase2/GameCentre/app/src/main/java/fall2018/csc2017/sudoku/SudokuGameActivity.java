@@ -74,6 +74,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         gridView.setAdapter(sudokuBoardAdapter);
         TextView textView = findViewById(R.id.sudoku_moves);
         textView.setText(String.format("Moves: %s", sudokuBoardManager.getMoves()));
+        autoSave();
         checkSolved();
     }
 
@@ -129,7 +130,6 @@ public class SudokuGameActivity extends AppCompatActivity {
      */
     private void updateSudokuBoard(int num) {
         sudokuBoardManager.updateNumber(num);
-        autoSave();
         updateDisplay();
     }
 
@@ -174,7 +174,6 @@ public class SudokuGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 sudokuBoardManager.provideHint();
                 updateDisplay();
-                autoSave();
             }
         });
     }
