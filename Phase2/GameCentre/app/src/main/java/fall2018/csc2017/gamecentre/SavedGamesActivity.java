@@ -1,25 +1,22 @@
 package fall2018.csc2017.gamecentre;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import fall2018.csc2017.R;
-import fall2018.csc2017.cardmatching.CardGameActivity;
-import fall2018.csc2017.cardmatching.CardStartingActivity;
-import fall2018.csc2017.slidingtiles.GameActivity;
-import fall2018.csc2017.slidingtiles.StartingActivity;
+import fall2018.csc2017.cardmatching.CardMatchingGameActivity;
+import fall2018.csc2017.cardmatching.CardMatchingStartingActivity;
+import fall2018.csc2017.slidingtiles.SlidingTileGameActivity;
+import fall2018.csc2017.slidingtiles.SlidingTileStartingActivity;
 import fall2018.csc2017.sudoku.SudokuGameActivity;
 import fall2018.csc2017.sudoku.SudokuStartingActivity;
 
@@ -157,11 +154,11 @@ public class SavedGamesActivity extends AppCompatActivity {
     private void startActivity(String gameName, GameManager gameManager){
         switch(gameName){
             case "Sliding Tile":
-                gameCentre.saveManager(StartingActivity.SLIDING_TILE_START_FILE, gameManager);
+                gameCentre.saveManager(SlidingTileStartingActivity.SLIDING_TILE_START_FILE, gameManager);
                 switchToSlidingTile();
                 break;
             case "Card Matching":
-                gameCentre.saveManager(CardStartingActivity.CARD_MATCHING_START_FILE, gameManager);
+                gameCentre.saveManager(CardMatchingStartingActivity.CARD_MATCHING_START_FILE, gameManager);
                 switchToCardMatching();
                 break;
             case "Sudoku":
@@ -175,7 +172,7 @@ public class SavedGamesActivity extends AppCompatActivity {
      * Switch to view of Sliding tile game.
      */
     public void switchToSlidingTile() {
-        Intent tmp = new Intent(this, GameActivity.class);
+        Intent tmp = new Intent(this, SlidingTileGameActivity.class);
         startActivity(tmp);
     }
 
@@ -183,7 +180,7 @@ public class SavedGamesActivity extends AppCompatActivity {
      * Switch to view of Card Matching game.
      */
     public void switchToCardMatching() {
-        Intent tmp = new Intent(this, CardGameActivity.class);
+        Intent tmp = new Intent(this, CardMatchingGameActivity.class);
         startActivity(tmp);
     }
 

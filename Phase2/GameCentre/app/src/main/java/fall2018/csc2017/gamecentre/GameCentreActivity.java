@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import fall2018.csc2017.cardmatching.CardStartingActivity;
-import fall2018.csc2017.slidingtiles.StartingActivity;
+import fall2018.csc2017.cardmatching.CardMatchingStartingActivity;
+import fall2018.csc2017.slidingtiles.SlidingTileStartingActivity;
 import fall2018.csc2017.R;
 import fall2018.csc2017.sudoku.SudokuStartingActivity;
 
@@ -100,7 +100,7 @@ public class GameCentreActivity extends AppCompatActivity {
      * Switch to sliding tile starting activity.
      */
     private void switchToSlidingTile() {
-        Intent swap = new Intent(this,  StartingActivity.class);
+        Intent swap = new Intent(this,  SlidingTileStartingActivity.class);
         startActivity(swap);
     }
 
@@ -116,7 +116,7 @@ public class GameCentreActivity extends AppCompatActivity {
      * Switch to card matching starting activity.
      */
     private void switchToCardMatching() {
-        Intent swap = new Intent(this, CardStartingActivity.class);
+        Intent swap = new Intent(this, CardMatchingStartingActivity.class);
         startActivity(swap);
     }
 

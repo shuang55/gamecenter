@@ -1,13 +1,13 @@
-package fall2018.csc2017.slidingtiles;
+package fall2018.csc2017.cardmatching;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,15 +27,13 @@ import fall2018.csc2017.gamecentre.SavedGames;
 import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
-/**
- * The game activity.
- */
-public class GameActivity extends AppCompatActivity implements Observer {
+
+public class CardMatchingGameActivity extends AppCompatActivity implements Observer {
 
     /**
      * The board manager.
      */
-    private SlidingTileBoardManager slidingTileBoardManager;
+    private CardMatchingBoardManager cardMatchingBoardManager;
 
     /**
      * Gamecentre for managing files
@@ -45,7 +43,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     /**
      * The buttons to display.
      */
-    private ArrayList<Button> tileButtons;
+    private ArrayList<Button> cardButtons;
 
     // Grid View and calculated column height and width based on device size
     private GestureDetectGridView gridView;
@@ -56,28 +54,25 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * of positions, and then call the adapter to set the view.
      */
     public void display() {
-        updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
+        gridView.setAdapter(new CustomAdapter(cardButtons, columnWidth, columnHeight));
+        autoSave();
         setMoveCountText();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sliding_tile);
+        setContentView(R.layout.activity_card_matching);
         gameCentre = new GameCentre(this);
         gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        slidingTileBoardManager = (SlidingTileBoardManager) gameCentre.getGameManager();
-        createTileButtons(this);
-
-        //Activate undo button
-        addUndoButtonListener();
+        cardMatchingBoardManager = (CardMatchingBoardManager) gameCentre.getGameManager();
+        createCardButtons(this);
         addSaveButtonListener();
         // Add View to activity
-        gridView = findViewById(R.id.grid);
-        gridView.setNumColumns(slidingTileBoardManager.getSlidingTileBoard().boardSize);
-        gridView.setGameManager(slidingTileBoardManager);
-        slidingTileBoardManager.getSlidingTileBoard().addObserver(this);
+        gridView = findViewById(R.id.grid1);
+        gridView.setNumColumns(cardMatchingBoardManager.getCardMatchingBoard().numCardPerCol);
+        gridView.setGameManager(cardMatchingBoardManager);
+        cardMatchingBoardManager.getCardMatchingBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -88,8 +83,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                         columnWidth = displayWidth / slidingTileBoardManager.getSlidingTileBoard().boardSize;
-                        columnHeight = displayHeight / slidingTileBoardManager.getSlidingTileBoard().boardSize;
+                        columnWidth = displayWidth / cardMatchingBoardManager.getCardMatchingBoard().numCardPerCol;
+                        columnHeight = displayHeight / cardMatchingBoardManager.getCardMatchingBoard().numCardPerRow;
 
                         display();
                     }
@@ -104,10 +99,10 @@ public class GameActivity extends AppCompatActivity implements Observer {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SavedGames savedGames = gameCentre.getSavedGames();
                 UserManager userManager = gameCentre.getUserManager();
+                SavedGames savedGames = gameCentre.getSavedGames();
                 String userName = userManager.getCurrentUser().getUsername();
-                GameToSave gameToSave = new GameToSave(slidingTileBoardManager);
+                GameToSave gameToSave = new GameToSave(cardMatchingBoardManager);
                 savedGames.updateSavedGames(gameToSave, userName);
                 gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();
@@ -127,31 +122,46 @@ public class GameActivity extends AppCompatActivity implements Observer {
      *
      * @param context the context
      */
-    private void createTileButtons(Context context) {
-        SlidingTileBoard slidingTileBoard = slidingTileBoardManager.getSlidingTileBoard();
-        tileButtons = new ArrayList<>();
-        for (int row = 0; row != slidingTileBoard.boardSize; row++) {
-            for (int col = 0; col != slidingTileBoard.boardSize; col++) {
+    private void createCardButtons(Context context) {
+        CardMatchingBoard cardMatchingBoard = cardMatchingBoardManager.getCardMatchingBoard();
+        cardButtons = new ArrayList<>();
+        int cardBackId = cardMatchingBoard.getCard(0,0).getCardBackId();
+        for (int row = 0; row != cardMatchingBoard.numCardPerRow; row++) {
+            for (int col = 0; col != cardMatchingBoard.numCardPerCol; col++) {
                 Button tmp = new Button(context);
-                tmp.setBackgroundResource(slidingTileBoard.getTile(row, col).getBackground());
-                this.tileButtons.add(tmp);
+                Card currentCard = cardMatchingBoardManager.getCardMatchingBoard().getCard(row, col);
+                if (currentCard.isPaired()){
+                    tmp.setBackgroundResource(currentCard.getCardFaceId());
+                }
+                else{
+                    currentCard.setOpened(0);
+                    tmp.setBackgroundResource(cardBackId);
+                }
+                cardMatchingBoardManager.setOpenPairExists(false);
+                this.cardButtons.add(tmp);
             }
         }
     }
 
     /**
      * Update the backgrounds on the buttons to match the tiles.
+     *
+     * * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
+     *                    mode 0 is to close the card, mode 1 is to open the card.
      */
-    private void updateTileButtons() {
-        SlidingTileBoard slidingTileBoard = slidingTileBoardManager.getSlidingTileBoard();
-        int nextPos = 0;
-        for (Button b : tileButtons) {
-            int row = nextPos / slidingTileBoardManager.getSlidingTileBoard().boardSize;
-            int col = nextPos % slidingTileBoardManager.getSlidingTileBoard().boardSize;
-            b.setBackgroundResource(slidingTileBoard.getTile(row, col).getBackground());
-            nextPos++;
+    private void changeCardDisplay(int[] operation) {
+        CardMatchingBoard cardMatchingBoard = cardMatchingBoardManager.getCardMatchingBoard();
+        int row = operation[0];
+        int col = operation[1];
+        int mode = operation[2];
+        int position = row * 4 + col;
+        Button b = this.cardButtons.get(position);
+        if (mode == 0){
+            b.setBackgroundResource(cardMatchingBoard.getCard(row, col).getCardBackId());
         }
-        autoSave();
+        else{
+            b.setBackgroundResource(cardMatchingBoard.getCard(row, col).getCardFaceId());
+        }
     }
 
     /**
@@ -163,7 +173,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(slidingTileBoardManager);
+            outputStream.writeObject(cardMatchingBoardManager);
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
@@ -177,13 +187,23 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (!slidingTileBoardManager.puzzleSolved()) {
+        if (!cardMatchingBoardManager.puzzleSolved()) {
+            changeCardDisplay((int[]) arg);
             display();
         }
         else {
             saveToFile(GameManager.TEMP_SAVE_WIN);
             switchToWinActivity();
         }
+    }
+
+    /**
+     * Autosaves the board
+     */
+    private void autoSave() {
+        UserManager userManager = gameCentre.getUserManager();
+        userManager.autoSaveGame(cardMatchingBoardManager);
+        gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
     /**
@@ -195,43 +215,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
-     * adds an undo button and undoes the previous move when clicked.
-     */
-    private void addUndoButtonListener() {
-        Button undo = findViewById(R.id.Undo);
-        undo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean undo = slidingTileBoardManager.undoMove();
-                autoSave();
-                if (!undo) {
-                    makeToastNoMoreUndo();
-                }
-            }
-        });
-    }
-
-    /**
-     * Autosaves the board
-     */
-    private void autoSave() {
-        UserManager userManager = gameCentre.getUserManager();
-        userManager.autoSaveGame(slidingTileBoardManager);
-        gameCentre.saveManager(UserManager.USERS, userManager);
-    }
-
-    /**
-     * give the text no more moves are available
-     */
-    private void makeToastNoMoreUndo() {
-        Toast.makeText(this, "No more moves are available", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
      * sets the move count on screen
      */
     private void setMoveCountText() {
         TextView moves = findViewById(R.id.MoveCount);
-        moves.setText(String.format("%s", slidingTileBoardManager.getMove()));
+        moves.setText(String.format("%s", cardMatchingBoardManager.getMove()));
     }
 }
+
