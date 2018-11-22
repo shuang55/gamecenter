@@ -33,11 +33,11 @@
         android:layout_below="@+id/GameText"
         android:layout_marginTop="-5dp"
         android:layout_marginEnd="-260dp"
-        android:layout_toStartOf="@+id/LoadButton"
+        android:layout_toStartOf="@+id/SlidingTileAutoSave"
         android:text="New Game" />
 
     <Button
-        android:id="@+id/LoadButton"
+        android:id="@+id/SlidingTileAutoSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/GameText"
