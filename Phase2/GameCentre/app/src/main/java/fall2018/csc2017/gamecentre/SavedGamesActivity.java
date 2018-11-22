@@ -34,6 +34,11 @@ public class SavedGamesActivity extends AppCompatActivity {
     private UserManager userManager;
 
     /**
+     * Gamecentre for managing files
+     */
+    private GameCentre gameCentre;
+
+    /**
      * The hashmap that contains all saved games for all users and all games.
      */
     private HashMap<String, HashMap<String, ArrayList<GameToSave>>> savedGames;
@@ -42,18 +47,6 @@ public class SavedGamesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_games);
-    }
-
-    /**
-     * Loads the userManager and savedGames.
-     */
-    private void loadManager(){
-        Context savedGame = SavedGamesActivity.this;
-        GameCentre gameCentre = new GameCentre(savedGame);
-        gameCentre.loadManager(UserManager.USERS);
-        userManager = gameCentre.userManager;
-        gameCentre.loadManager(SavedGames.SAVEDGAMES);
-        savedGames = gameCentre.savedGames.savedGames;
     }
 
     /**
@@ -164,34 +157,17 @@ public class SavedGamesActivity extends AppCompatActivity {
     private void startActivity(String gameName, GameManager gameManager){
         switch(gameName){
             case "Sliding Tile":
-                saveToFile(StartingActivity.SLIDING_TILE_START_FILE,gameManager);
+                gameCentre.saveManager(StartingActivity.SLIDING_TILE_START_FILE, gameManager);
                 switchToSlidingTile();
                 break;
             case "Card Matching":
-                saveToFile(CardStartingActivity.CARD_MATCHING_START_FILE,gameManager);
+                gameCentre.saveManager(CardStartingActivity.CARD_MATCHING_START_FILE, gameManager);
                 switchToCardMatching();
                 break;
             case "Sudoku":
-                saveToFile(SudokuStartingActivity.SUDOKU_START_FILE,gameManager);
+                gameCentre.saveManager(SudokuStartingActivity.SUDOKU_START_FILE, gameManager);
                 switchToSudoku();
                 break;
-        }
-    }
-
-    /**
-     * Save gameManager to fileName.
-     *
-     * @param fileName the destination to save to
-     * @param gameManager the gameManager to be saved
-     */
-    public void saveToFile(String fileName, GameManager gameManager) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameManager);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
         }
     }
 
@@ -225,7 +201,9 @@ public class SavedGamesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadManager();
+        gameCentre = new GameCentre(this);
+        userManager = gameCentre.getUserManager();
+        savedGames = gameCentre.getSavedGames().savedGames;
         int slidingTileSpinnerID = R.id.SlidingTileSpinner;
         int cardMatchingSpinnerID = R.id.cardMatchingSpinner;
         int sudokuSpinnerID = R.id.sudokuSpinner;
