@@ -27,19 +27,15 @@ public class GameToSave implements Serializable{
      */
     private GameManager gameManager;
 
-
     /**
      * Initializes the GameToSave.
-     *
-     * @param savedTime The time when the game is saved
-     * @param gameName The name of the game
-     * @param gameDifficulty The difficulty level of the game
+
      * @param gameManager The game's state
      */
-    public GameToSave(String savedTime, String gameName, String gameDifficulty, GameManager gameManager){
-        this.savedTime = savedTime;
-        this.gameName = gameName;
-        this.gameDifficulty = gameDifficulty;
+    public GameToSave(GameManager gameManager){
+        savedTime = gameManager.getTime();
+        gameName = gameManager.getGameName();
+        gameDifficulty = gameManager.getGameDifficulty();
         this.gameManager = gameManager;
     }
 

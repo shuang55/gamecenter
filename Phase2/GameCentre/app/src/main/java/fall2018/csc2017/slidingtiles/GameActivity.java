@@ -110,9 +110,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 SavedGames savedGames = gameCentre.getSavedGames();
                 UserManager userManager = gameCentre.getUserManager();
                 String userName = userManager.getCurrentUser().getUsername();
-                String timeSaved = boardManager.getTime();
-                String gameDifficulty = boardManager.getGameDifficulty();
-                GameToSave gameToSave = new GameToSave(timeSaved, "Sliding Tile", gameDifficulty, boardManager);
+                GameToSave gameToSave = new GameToSave(boardManager);
                 savedGames.updateSavedGames(gameToSave, userName);
                 gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();

@@ -188,9 +188,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SavedGames savedGames = gameCentre.getSavedGames();
                 UserManager userManager = gameCentre.getUserManager();
-                GameToSave gameToSave = new GameToSave(
-                        sudokuBoardManager.getTime(), "Sudoku",
-                        sudokuBoardManager.getGameDifficulty(), sudokuBoardManager);
+                GameToSave gameToSave = new GameToSave(sudokuBoardManager);
                 savedGames.updateSavedGames(gameToSave, userManager.getCurrentUser().getUsername());
                 gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();

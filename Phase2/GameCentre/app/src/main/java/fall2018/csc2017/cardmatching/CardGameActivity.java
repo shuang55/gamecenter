@@ -102,9 +102,7 @@ public class CardGameActivity extends AppCompatActivity implements Observer {
                 UserManager userManager = gameCentre.getUserManager();
                 SavedGames savedGames = gameCentre.getSavedGames();
                 String userName = userManager.getCurrentUser().getUsername();
-                String timeSaved = boardManager.getTime();
-                String gameDifficulty = boardManager.getGameDifficulty();
-                GameToSave gameToSave = new GameToSave(timeSaved, "Card Matching", gameDifficulty, boardManager);
+                GameToSave gameToSave = new GameToSave(boardManager);
                 savedGames.updateSavedGames(gameToSave, userName);
                 gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();
