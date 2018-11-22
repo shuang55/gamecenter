@@ -1,6 +1,5 @@
 package fall2018.csc2017.slidingtiles;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +10,6 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +36,9 @@ public class StartingActivity extends AppCompatActivity {
     private GameCentre gameCentre;
 
     /**
-     * Sliding Tile BoardManager to be used in game
+     * Sliding Tile SlidingTileBoardManager to be used in game
      */
-    private BoardManager boardManager;
+    private SlidingTileBoardManager slidingTileBoardManager;
 
     /**
      * Level of difficulty chosen.
@@ -61,7 +55,7 @@ public class StartingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starting_sliding_tile);
         gameCentre = new GameCentre(this);
-        gameCentre.saveManager(SLIDING_TILE_START_FILE, boardManager);
+        gameCentre.saveManager(SLIDING_TILE_START_FILE, slidingTileBoardManager);
 
         addStartButtonListener();
         addLoadAutoSaveButtonListener();
@@ -77,8 +71,8 @@ public class StartingActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boardManager = new BoardManager(boardSize);
-                gameCentre.saveManager(GameManager.TEMP_SAVE_START, boardManager);
+                slidingTileBoardManager = new SlidingTileBoardManager(boardSize);
+                gameCentre.saveManager(GameManager.TEMP_SAVE_START, slidingTileBoardManager);
                 swapToSlidingTileGame();
             }
         });
@@ -93,7 +87,7 @@ public class StartingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 gameCentre.loadManager(UserManager.USERS);
-                BoardManager tempBoard = (BoardManager) gameCentre.getUserManager().
+                SlidingTileBoardManager tempBoard = (SlidingTileBoardManager) gameCentre.getUserManager().
                         getSelectedGame("Sliding Tile");
                 checkValidAutoSavedGame(tempBoard);
             }
@@ -104,10 +98,10 @@ public class StartingActivity extends AppCompatActivity {
      * Checks if a game has been autosaved, and transition into game if it has.
      * @param tempBoard the sudokuBoardManager
      */
-    private void checkValidAutoSavedGame(BoardManager tempBoard) {
+    private void checkValidAutoSavedGame(SlidingTileBoardManager tempBoard) {
         if (tempBoard != null) {
-            boardManager = tempBoard;
-            gameCentre.saveManager(GameManager.TEMP_SAVE_START, boardManager);
+            slidingTileBoardManager = tempBoard;
+            gameCentre.saveManager(GameManager.TEMP_SAVE_START, slidingTileBoardManager);
             swapToSlidingTileGame();
         } else {
             makeToastNoAutoSavedGame();
@@ -130,7 +124,7 @@ public class StartingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setEzWin();
-                gameCentre.saveManager(GameManager.TEMP_SAVE_START, boardManager);
+                gameCentre.saveManager(GameManager.TEMP_SAVE_START, slidingTileBoardManager);
                 swapToSlidingTileGame();
             }
         });
@@ -156,9 +150,9 @@ public class StartingActivity extends AppCompatActivity {
         }
         tiles.remove(tiles.size() - 1);
         tiles.add(new Tile(24));
-        Board board = new Board(tiles, boardSize);
-        board.swapTiles(board.boardSize - 1, board.boardSize - 1, board.boardSize - 1, board.boardSize - 2);
-        boardManager = new BoardManager(board);
+        SlidingTileBoard slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
+        slidingTileBoard.swapTiles(slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 2);
+        slidingTileBoardManager = new SlidingTileBoardManager(slidingTileBoard);
     }
 
     /**

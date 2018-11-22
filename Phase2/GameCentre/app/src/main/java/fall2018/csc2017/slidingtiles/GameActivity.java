@@ -11,10 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -38,7 +35,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private SlidingTileBoardManager slidingTileBoardManager;
 
     /**
      * Gamecentre for managing files
@@ -70,7 +67,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_sliding_tile);
         gameCentre = new GameCentre(this);
         gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        boardManager = (BoardManager) gameCentre.getGameManager();
+        slidingTileBoardManager = (SlidingTileBoardManager) gameCentre.getGameManager();
         createTileButtons(this);
 
         //Activate undo button
@@ -78,9 +75,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
         addSaveButtonListener();
         // Add View to activity
         gridView = findViewById(R.id.grid);
-        gridView.setNumColumns(boardManager.getBoard().boardSize);
-        gridView.setGameManager(boardManager);
-        boardManager.getBoard().addObserver(this);
+        gridView.setNumColumns(slidingTileBoardManager.getSlidingTileBoard().boardSize);
+        gridView.setGameManager(slidingTileBoardManager);
+        slidingTileBoardManager.getSlidingTileBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -91,8 +88,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                         columnWidth = displayWidth / boardManager.getBoard().boardSize;
-                        columnHeight = displayHeight / boardManager.getBoard().boardSize;
+                         columnWidth = displayWidth / slidingTileBoardManager.getSlidingTileBoard().boardSize;
+                        columnHeight = displayHeight / slidingTileBoardManager.getSlidingTileBoard().boardSize;
 
                         display();
                     }
@@ -110,7 +107,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
                 SavedGames savedGames = gameCentre.getSavedGames();
                 UserManager userManager = gameCentre.getUserManager();
                 String userName = userManager.getCurrentUser().getUsername();
-                GameToSave gameToSave = new GameToSave(boardManager);
+                GameToSave gameToSave = new GameToSave(slidingTileBoardManager);
                 savedGames.updateSavedGames(gameToSave, userName);
                 gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();
@@ -131,12 +128,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * @param context the context
      */
     private void createTileButtons(Context context) {
-        Board board = boardManager.getBoard();
+        SlidingTileBoard slidingTileBoard = slidingTileBoardManager.getSlidingTileBoard();
         tileButtons = new ArrayList<>();
-        for (int row = 0; row != board.boardSize; row++) {
-            for (int col = 0; col != board.boardSize; col++) {
+        for (int row = 0; row != slidingTileBoard.boardSize; row++) {
+            for (int col = 0; col != slidingTileBoard.boardSize; col++) {
                 Button tmp = new Button(context);
-                tmp.setBackgroundResource(board.getTile(row, col).getBackground());
+                tmp.setBackgroundResource(slidingTileBoard.getTile(row, col).getBackground());
                 this.tileButtons.add(tmp);
             }
         }
@@ -146,12 +143,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * Update the backgrounds on the buttons to match the tiles.
      */
     private void updateTileButtons() {
-        Board board = boardManager.getBoard();
+        SlidingTileBoard slidingTileBoard = slidingTileBoardManager.getSlidingTileBoard();
         int nextPos = 0;
         for (Button b : tileButtons) {
-            int row = nextPos / boardManager.getBoard().boardSize;
-            int col = nextPos % boardManager.getBoard().boardSize;
-            b.setBackgroundResource(board.getTile(row, col).getBackground());
+            int row = nextPos / slidingTileBoardManager.getSlidingTileBoard().boardSize;
+            int col = nextPos % slidingTileBoardManager.getSlidingTileBoard().boardSize;
+            b.setBackgroundResource(slidingTileBoard.getTile(row, col).getBackground());
             nextPos++;
         }
         autoSave();
@@ -166,7 +163,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(boardManager);
+            outputStream.writeObject(slidingTileBoardManager);
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
@@ -180,7 +177,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (!boardManager.puzzleSolved()) {
+        if (!slidingTileBoardManager.puzzleSolved()) {
             display();
         }
         else {
@@ -205,7 +202,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean undo = boardManager.undoMove();
+                boolean undo = slidingTileBoardManager.undoMove();
                 autoSave();
                 if (!undo) {
                     makeToastNoMoreUndo();
@@ -219,7 +216,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     private void autoSave() {
         UserManager userManager = gameCentre.getUserManager();
-        userManager.autoSaveGame(boardManager);
+        userManager.autoSaveGame(slidingTileBoardManager);
         gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
@@ -235,6 +232,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     private void setMoveCountText() {
         TextView moves = findViewById(R.id.MoveCount);
-        moves.setText(String.format("%s", boardManager.getMove()));
+        moves.setText(String.format("%s", slidingTileBoardManager.getMove()));
     }
 }
