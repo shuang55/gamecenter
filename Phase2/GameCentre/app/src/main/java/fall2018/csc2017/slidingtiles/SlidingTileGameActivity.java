@@ -65,19 +65,18 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sliding_tile);
-        gameCentre = new GameCentre(this);
-        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        slidingTileBoardManager = (SlidingTileBoardManager) gameCentre.getGameManager();
-        createTileButtons(this);
+        loadManagers();
 
-        //Activate undo button
+        //Activate buttons
         addUndoButtonListener();
         addSaveButtonListener();
+
         // Add View to activity
-        gridView = findViewById(R.id.grid);
+        gridView = findViewById(R.id.SlidingTileGrid);
         gridView.setNumColumns(slidingTileBoardManager.getSlidingTileBoard().boardSize);
         gridView.setGameManager(slidingTileBoardManager);
         slidingTileBoardManager.getSlidingTileBoard().addObserver(this);
+
         // Observer sets up desired dimensions as well as calls our display function
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -97,10 +96,20 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     }
 
     /**
+     * Load necessary managers
+     */
+    private void loadManagers() {
+        gameCentre = new GameCentre(this);
+        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+        slidingTileBoardManager = (SlidingTileBoardManager) gameCentre.getGameManager();
+        createTileButtons(this);
+    }
+
+    /**
      * Activate the save button.
      */
     private void addSaveButtonListener() {
-        Button saveButton = findViewById(R.id.SaveButton);
+        Button saveButton = findViewById(R.id.SlidingTileSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

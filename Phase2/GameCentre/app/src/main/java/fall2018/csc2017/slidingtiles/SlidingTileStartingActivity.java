@@ -143,7 +143,6 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
      */
     public void setEzWin() {
         List<Tile> tiles = new ArrayList<>();
-        Log.v(String.valueOf(boardSize), "bleh");
         final int numTiles = boardSize * boardSize;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
             tiles.add(new Tile(tileNum));
@@ -151,7 +150,8 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
         tiles.remove(tiles.size() - 1);
         tiles.add(new Tile(24));
         SlidingTileBoard slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        slidingTileBoard.swapTiles(slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 2);
+        slidingTileBoard.swapTiles(slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 1,
+                slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 2);
         slidingTileBoardManager = new SlidingTileBoardManager(slidingTileBoard);
     }
 

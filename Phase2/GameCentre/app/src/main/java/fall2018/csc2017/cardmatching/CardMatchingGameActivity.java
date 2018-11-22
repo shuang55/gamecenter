@@ -63,16 +63,18 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_matching);
-        gameCentre = new GameCentre(this);
-        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        cardMatchingBoardManager = (CardMatchingBoardManager) gameCentre.getGameManager();
+        loadManagers();
         createCardButtons(this);
+
+        // activate button
         addSaveButtonListener();
+
         // Add View to activity
-        gridView = findViewById(R.id.grid1);
+        gridView = findViewById(R.id.CardMatchingGrid);
         gridView.setNumColumns(cardMatchingBoardManager.getCardMatchingBoard().numCardPerCol);
         gridView.setGameManager(cardMatchingBoardManager);
         cardMatchingBoardManager.getCardMatchingBoard().addObserver(this);
+
         // Observer sets up desired dimensions as well as calls our display function
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -92,10 +94,19 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
     }
 
     /**
+     * Load necessary managers
+     */
+    private void loadManagers() {
+        gameCentre = new GameCentre(this);
+        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+        cardMatchingBoardManager = (CardMatchingBoardManager) gameCentre.getGameManager();
+    }
+
+    /**
      * Activate the save button.
      */
     private void addSaveButtonListener() {
-        Button saveButton = findViewById(R.id.SaveButton);
+        Button saveButton = findViewById(R.id.CardMatchingSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

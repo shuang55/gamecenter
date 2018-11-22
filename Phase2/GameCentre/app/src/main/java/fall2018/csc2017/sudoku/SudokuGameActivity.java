@@ -42,11 +42,7 @@ public class SudokuGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku_game);
-
-        // load the necessary managers
-        gameCentre = new GameCentre(this);
-        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        sudokuBoardManager = (SudokuBoardManager) gameCentre.getGameManager();
+        loadManagers();
 
         // set up gridview
         updateDisplay();
@@ -63,6 +59,15 @@ public class SudokuGameActivity extends AppCompatActivity {
         addHintButtonListener();
         addUndoButtonListener();
         addSaveButtonListener();
+    }
+
+    /**
+     * Load necessary managers
+     */
+    private void loadManagers() {
+        gameCentre = new GameCentre(this);
+        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+        sudokuBoardManager = (SudokuBoardManager) gameCentre.getGameManager();
     }
 
     /**
