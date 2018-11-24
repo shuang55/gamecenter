@@ -1,5 +1,8 @@
 package fall2018.csc2017.sudoku;
 
+
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,6 +111,22 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
             temp.repeats.add(0, i);
         }
         return temp;
+    }
+
+    /**
+     * Checks the activeBoard to see if the board is filled
+     * @return whether it is complete
+     */
+    boolean checkComplete() {
+        boolean containZero = false;
+        for (Integer[] row : sudokuBoard) {
+            for (Integer num : row) {
+                if (num == 0) {
+                    containZero = true;
+                }
+            }
+        }
+        return containZero;
     }
 
     /**

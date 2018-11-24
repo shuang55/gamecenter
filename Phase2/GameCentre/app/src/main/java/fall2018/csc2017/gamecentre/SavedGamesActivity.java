@@ -1,23 +1,24 @@
 package fall2018.csc2017.gamecentre;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import fall2018.csc2017.R;
-import fall2018.csc2017.slidingtiles.GameActivity;
-import fall2018.csc2017.slidingtiles.StartingActivity;
+import fall2018.csc2017.cardmatching.CardMatchingGameActivity;
+import fall2018.csc2017.cardmatching.CardMatchingStartingActivity;
+import fall2018.csc2017.slidingtiles.SlidingTileGameActivity;
+import fall2018.csc2017.slidingtiles.SlidingTileStartingActivity;
+import fall2018.csc2017.sudoku.SudokuGameActivity;
+import fall2018.csc2017.sudoku.SudokuStartingActivity;
 
 /**
  * Activity for Saved Games.
@@ -28,6 +29,11 @@ public class SavedGamesActivity extends AppCompatActivity {
      * The userManager that stores all users.
      */
     private UserManager userManager;
+
+    /**
+     * Gamecentre for managing files
+     */
+    private GameCentre gameCentre;
 
     /**
      * The hashmap that contains all saved games for all users and all games.
@@ -41,28 +47,14 @@ public class SavedGamesActivity extends AppCompatActivity {
     }
 
     /**
-     * Loads the userManager and savedGames.
-     */
-    private void loadManager(){
-        Context savedGame = SavedGamesActivity.this;
-        GameCentre gameCentre = new GameCentre(savedGame);
-        gameCentre.loadManager(UserManager.USERS);
-        userManager = gameCentre.userManager;
-        gameCentre.loadManager(SavedGames.SAVEDGAMES);
-        savedGames = gameCentre.savedGames.savedGames;
-    }
-
-    /**
      * Activates the load game spinner.
      *
      * @param gameName the name of the game
      */
     private void addLoadGameSpinnerListener(String gameName, int IDofSpinner){
-        // Note to marker: Android studio gives a style warning here, but we  will
-        // implement more games in the future, so having parameter gameName makes it more extendable
         final String GAMENAME = gameName;
-        Spinner slidingTileSpinner = findViewById(IDofSpinner);
-        slidingTileSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        Spinner Spinner = findViewById(IDofSpinner);
+        Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selected = parent.getItemAtPosition(position).toString();
@@ -87,7 +79,7 @@ public class SavedGamesActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SavedGamesActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, constructNameArray(GAMENAME));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        slidingTileSpinner.setAdapter(arrayAdapter);
+        Spinner.setAdapter(arrayAdapter);
     }
 
     /**
@@ -121,14 +113,13 @@ public class SavedGamesActivity extends AppCompatActivity {
         ArrayList<String> nameArray = new ArrayList<>();
         String currentUser = userManager.getCurrentUser().getUsername();
         nameArray.add("Select a Saved Game");
-        if (savedGames.get(currentUser) != null) {
-            ArrayList<GameToSave> listOfSavedGame = savedGames.get(currentUser).get(gameName);
-            System.out.println(currentUser);
+        HashMap<String, ArrayList<GameToSave>> savedGamesByGameType = savedGames.get(currentUser);
+        if (savedGamesByGameType != null && savedGamesByGameType.get(gameName) != null) {
+            ArrayList<GameToSave> listOfSavedGame = savedGamesByGameType.get(gameName);
             for (int i = 0; i < listOfSavedGame.size(); i++) {
                 String gameDifficulty = listOfSavedGame.get(i).getGameDifficulty();
                 nameArray.add(listOfSavedGame.get(i).getSavedTime() + " (" + gameDifficulty + ") ");
             }
-            return nameArray;
         }
         return nameArray;
     }
@@ -161,26 +152,19 @@ public class SavedGamesActivity extends AppCompatActivity {
      * @param gameManager the game state to be loaded
      */
     private void startActivity(String gameName, GameManager gameManager){
-        if (gameName.equals("Sliding Tile")){
-            saveToFile(StartingActivity.TEMP_SAVE_FILENAME,gameManager);
-            switchToSlidingTile();
-        }
-    }
-
-    /**
-     * Save gameManager to fileName.
-     *
-     * @param fileName the destination to save to
-     * @param gameManager the gameManager to be saved
-     */
-    public void saveToFile(String fileName, GameManager gameManager) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameManager);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
+        switch(gameName){
+            case "Sliding Tile":
+                gameCentre.saveManager(SlidingTileStartingActivity.SLIDING_TILE_START_FILE, gameManager);
+                switchToSlidingTile();
+                break;
+            case "Card Matching":
+                gameCentre.saveManager(CardMatchingStartingActivity.CARD_MATCHING_START_FILE, gameManager);
+                switchToCardMatching();
+                break;
+            case "Sudoku":
+                gameCentre.saveManager(SudokuStartingActivity.SUDOKU_START_FILE, gameManager);
+                switchToSudoku();
+                break;
         }
     }
 
@@ -188,7 +172,23 @@ public class SavedGamesActivity extends AppCompatActivity {
      * Switch to view of Sliding tile game.
      */
     public void switchToSlidingTile() {
-        Intent tmp = new Intent(this, GameActivity.class);
+        Intent tmp = new Intent(this, SlidingTileGameActivity.class);
+        startActivity(tmp);
+    }
+
+    /**
+     * Switch to view of Card Matching game.
+     */
+    public void switchToCardMatching() {
+        Intent tmp = new Intent(this, CardMatchingGameActivity.class);
+        startActivity(tmp);
+    }
+
+    /**
+     * Switch to view of Sudoku game.
+     */
+    public void switchToSudoku() {
+        Intent tmp = new Intent(this, SudokuGameActivity.class);
         startActivity(tmp);
     }
 
@@ -198,9 +198,15 @@ public class SavedGamesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadManager();
+        gameCentre = new GameCentre(this);
+        userManager = gameCentre.getUserManager();
+        savedGames = gameCentre.getSavedGames().savedGames;
         int slidingTileSpinnerID = R.id.SlidingTileSpinner;
+        int cardMatchingSpinnerID = R.id.cardMatchingSpinner;
+        int sudokuSpinnerID = R.id.sudokuSpinner;
         addLoadGameSpinnerListener("Sliding Tile", slidingTileSpinnerID);
+        addLoadGameSpinnerListener("Card Matching", cardMatchingSpinnerID);
+        addLoadGameSpinnerListener("Sudoku", sudokuSpinnerID);
         addBackButtonListener();
     }
 }
