@@ -46,6 +46,16 @@
         android:layout_marginStart="35dp"
         android:text="Auto Saved" />
 
+    <Button
+        android:id="@+id/OneMoveWin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/GameText1"
+        android:layout_marginTop="-5dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginStart="278dp"
+        android:text="Easy Win" />
+
     <Spinner
         android:id="@+id/complexity1"
         android:layout_marginTop="350dp"

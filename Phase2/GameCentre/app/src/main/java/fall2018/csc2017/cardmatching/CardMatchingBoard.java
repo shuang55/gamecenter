@@ -27,6 +27,8 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
         isSolved = 1 ;
     }
 
+    int pairsMatched;
+
     /**
      * 0 if board is not solved, 1 if board is solved.
      */
@@ -72,6 +74,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
                 this.cards[row][col] = iter.next();
             }
         }
+        pairsMatched = numCardPair;
     }
 
     /**

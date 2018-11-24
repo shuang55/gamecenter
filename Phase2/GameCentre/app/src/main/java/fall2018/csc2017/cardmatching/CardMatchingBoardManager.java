@@ -26,8 +26,6 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      */
     private int move = 0;
 
-    private int pairsMatched;
-
     private int[] lastMove = new int[2];
 
     void setOpenPairExistsToFalse() {
@@ -48,15 +46,16 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      *
      * @param numCardPair the size of the cardMatchingBoard.
      */
-    CardMatchingBoardManager(int numCardPair) {
+    CardMatchingBoardManager(int numCardPair, boolean easyBoard) {
         List<Card> cards = new ArrayList<>();
         final int NUMCARDS = numCardPair * 2;
         for (int cardNum = 0; cardNum != NUMCARDS; cardNum++) {
             cards.add(new Card(cardNum));
         }
-        Collections.shuffle(cards);
+        if (!easyBoard) {
+            Collections.shuffle(cards);
+        }
         this.cardMatchingBoard = new CardMatchingBoard(cards, numCardPair);
-        pairsMatched = numCardPair;
     }
 
     /**
@@ -110,7 +109,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
             } else{
                 card1.setPaired(true);
                 card2.setPaired(true);
-                if (--pairsMatched == 0){
+                if (--cardMatchingBoard.pairsMatched == 0){
                     cardMatchingBoard.setIsSolved();
                     cardMatchingBoard.flipCard(row, col, 1);
                 }
