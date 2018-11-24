@@ -16,7 +16,6 @@ import fall2018.csc2017.gamecentre.GameManager;
  * Manage a cardMatchingBoard, including swapping tiles, checking for a win, and managing taps.
  */
 public class CardMatchingBoardManager implements Serializable, GameManager {
-//TODO: make boardmanager an interface
     /**
      * The cardMatchingBoard being managed.
      */
@@ -27,12 +26,12 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      */
     private int move = 0;
 
-    private int[] lastMove = new int[2];
-
     private int pairsMatched;
 
-    public void setOpenPairExists(boolean openPairExists) {
-        this.openPairExists = openPairExists;
+    private int[] lastMove = new int[2];
+
+    void setOpenPairExistsToFalse() {
+        this.openPairExists = false;
     }
 
     private boolean openPairExists;
@@ -101,18 +100,20 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
         move++;
         cardMatchingBoard.flipCard(row, col, 1);
         if (move % 2 == 0) {
-            openPairExists = true;
+            openPairExists = false;
             Card card1 = cardMatchingBoard.getCard(lastMove[0], lastMove[1]);
             Card card2 = cardMatchingBoard.getCard(row, col);
-            if (checkMatch(card1, card2)){
-                openPairExists = false;
-                if (pairsMatched == 0){
-                    cardMatchingBoard.setIsSolved(1);
+            boolean cardsMatch = card1.getCardFaceId() == card2.getCardFaceId();
+            if (!cardsMatch){
+                openPairExists = true;
+                coverCardAfterFixedDelay(row, col);
+            } else{
+                card1.setPaired(true);
+                card2.setPaired(true);
+                if (--pairsMatched == 0){
+                    cardMatchingBoard.setIsSolved();
                     cardMatchingBoard.flipCard(row, col, 1);
                 }
-            }
-            else{
-                coverCardAfterFixedDelay(row, col);
             }
         }
         else{
@@ -132,16 +133,6 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
         return score;
     }
 
-    private boolean checkMatch(Card card1, Card card2){
-        if (card1.getCardFaceId() == card2.getCardFaceId()){
-            card1.setPaired(true);
-            card2.setPaired(true);
-            pairsMatched -= 1;
-            return true;
-        }
-        return false;
-    }
-
     private void coverCardAfterFixedDelay(int row, int col){
         final int rowOfCard = row;
         final int colOfCard = col;
@@ -152,7 +143,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
                 cardMatchingBoard.flipCard(rowOfCard, colOfCard, 0);
                 openPairExists = false;
             }
-        }, 1500);
+        }, 1000);
     }
 
     /**
@@ -178,7 +169,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
         return String.format("%s by %s", cardMatchingBoard.numCardPerRow, cardMatchingBoard.numCardPerCol);
     }
 
-    public int getMove() {
+    int getMove() {
         return move;
     }
 }

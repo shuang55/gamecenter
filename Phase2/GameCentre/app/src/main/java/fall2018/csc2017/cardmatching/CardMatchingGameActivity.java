@@ -4,15 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -26,7 +23,6 @@ import fall2018.csc2017.gamecentre.GestureDetectGridView;
 import fall2018.csc2017.gamecentre.SavedGames;
 import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
-
 
 public class CardMatchingGameActivity extends AppCompatActivity implements Observer {
 
@@ -135,20 +131,14 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
     private void createCardButtons(Context context) {
         CardMatchingBoard cardMatchingBoard = cardMatchingBoardManager.getCardMatchingBoard();
         cardButtons = new ArrayList<>();
-        int cardBackId = cardMatchingBoard.getCard(0,0).getCardBackId();
         for (int row = 0; row != cardMatchingBoard.numCardPerRow; row++) {
             for (int col = 0; col != cardMatchingBoard.numCardPerCol; col++) {
-                Button tmp = new Button(context);
+                Button button = new Button(context);
                 Card currentCard = cardMatchingBoardManager.getCardMatchingBoard().getCard(row, col);
-                if (currentCard.isPaired()){
-                    tmp.setBackgroundResource(currentCard.getCardFaceId());
-                }
-                else{
-                    currentCard.setOpened(0);
-                    tmp.setBackgroundResource(cardBackId);
-                }
-                cardMatchingBoardManager.setOpenPairExists(false);
-                this.cardButtons.add(tmp);
+                int mode = currentCard.isPaired() ? 1 : 0;
+                setCardBackGround(currentCard, mode, button);
+                cardMatchingBoardManager.setOpenPairExistsToFalse();
+                this.cardButtons.add(button);
             }
         }
     }
@@ -165,33 +155,23 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         int col = operation[1];
         int mode = operation[2];
         int position = row * 4 + col;
-        Button b = this.cardButtons.get(position);
-        if (mode == 0){
-            b.setBackgroundResource(cardMatchingBoard.getCard(row, col).getCardBackId());
-        }
-        else{
-            b.setBackgroundResource(cardMatchingBoard.getCard(row, col).getCardFaceId());
-        }
-        if (operation[3] == 1) {
-            saveToFile(GameManager.TEMP_SAVE_WIN);
+        Button button = this.cardButtons.get(position);
+        Card card = cardMatchingBoard.getCard(row, col);
+        setCardBackGround(card, mode, button);
+        if (operation[3] == 1){
+            gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, cardMatchingBoardManager);
             switchToWinActivity();
         }
     }
 
-    /**
-     * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
-     */
-    public void saveToFile(String fileName) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(cardMatchingBoardManager);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
+    private void setCardBackGround(Card card, int mode, Button button){
+        if (mode == 0){
+            button.setBackgroundResource(card.getCardBackId());
         }
+        else{
+            button.setBackgroundResource(card.getCardFaceId());
+        }
+        card.setOpened(mode);
     }
 
     /**
@@ -201,15 +181,13 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (!cardMatchingBoardManager.puzzleSolved()) {
             changeCardDisplay((int[]) arg);
             display();
+            if (cardMatchingBoardManager.puzzleSolved()) {
+                gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, cardMatchingBoardManager);
+                switchToWinActivity();
+            }
         }
-        else {
-            saveToFile(GameManager.TEMP_SAVE_WIN);
-            switchToWinActivity();
-        }
-    }
 
     /**
      * Autosaves the board
