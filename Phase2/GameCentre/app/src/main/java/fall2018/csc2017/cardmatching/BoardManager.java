@@ -29,6 +29,10 @@ public class BoardManager implements Serializable, GameManager {
 
     private int[] lastMove = new int[2];
     private boolean openPairExists;
+    /**
+     * whether or not it is the first time that the player has two covered cards remaining
+     */
+    private boolean firstTime = true;
 
     /**
      * Manage a board that has been pre-populated.
@@ -68,10 +72,17 @@ public class BoardManager implements Serializable, GameManager {
      */
     public boolean puzzleSolved() {
         boolean solved = true;
+        int numNotPaired= 0;
         for (Card card : board) {
             if (!(card.isPaired())) {
-                solved = false;
+                numNotPaired++;
             }
+        }
+        if (numNotPaired == 2){
+            solved = !firstTime;
+            firstTime = !firstTime;
+        } else{
+            solved = false;
         }
         return solved;
     }
@@ -120,6 +131,7 @@ public class BoardManager implements Serializable, GameManager {
 
     /**
      * Return the player's score.
+     * @return the player's score
      */
     public int getScore() {
         int score = 1000 - move * 2 * (13 - board.numCardPair);
@@ -129,6 +141,13 @@ public class BoardManager implements Serializable, GameManager {
         return score;
     }
 
+    /**
+     * checks whether card1 and card2 are a pair
+     * @param card1 the first card to be checked
+     * @param card2 the second card to be checked
+     * @return whether the two cards are a pair, or not
+     */
+
     private boolean checkMatch(Card card1, Card card2){
         if (card1.getCardFaceId() == card2.getCardFaceId()){
             card1.setPaired(true);
@@ -137,6 +156,12 @@ public class BoardManager implements Serializable, GameManager {
         }
         return false;
     }
+
+    /**
+     * covers the card at row, col after a fixed delay of 800 ms
+     * @param row the row of the tile to be covered
+     * @param col the column of the tile to be covered
+     */
 
     private void coverCardAfterFixedDelay(int row, int col){
         final int rowOfCard = row;
@@ -148,11 +173,12 @@ public class BoardManager implements Serializable, GameManager {
                 board.flipCard(rowOfCard, colOfCard, 0);
                 openPairExists = false;
             }
-        }, 1500);
+        }, 800);
     }
 
     /**
      * Return the game's name.
+     * @return the name of the game
      */
     public String getGameName() {
         return "Card Matching";
@@ -160,6 +186,7 @@ public class BoardManager implements Serializable, GameManager {
 
     /**
      * Return the date and time of the game being played.
+     * @return a string representation of the time
      */
     public String getTime() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -169,11 +196,16 @@ public class BoardManager implements Serializable, GameManager {
 
     /**
      * return the game difficulty.
+     * @return string representation of the game difficulty
      */
     public String getGameDifficulty() {
         return String.format("%s by %s", board.numCardPerRow, board.numCardPerCol);
     }
 
+    /**
+     *
+     * @return the current move number
+     */
     public int getMove() {
         return move;
     }
