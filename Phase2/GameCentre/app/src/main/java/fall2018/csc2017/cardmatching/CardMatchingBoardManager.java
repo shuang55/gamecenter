@@ -45,6 +45,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * Return the current cardMatchingBoard.
+     *
      * @return the current cardMatchingBoard
      */
     CardMatchingBoard getCardMatchingBoard() {
@@ -55,7 +56,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      * Manage a cardMatchingBoard with various complexities.
      *
      * @param numCardPair the size of the cardMatchingBoard.
-     * @param easyBoard whether or not to generate an easy board
+     * @param easyBoard   whether or not to generate an easy board
      */
     CardMatchingBoardManager(int numCardPair, boolean easyBoard) {
         List<Card> cards = new ArrayList<>();
@@ -76,20 +77,40 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      */
     public boolean puzzleSolved() {
         boolean solved = false;
-        int numNotOpened = 0;
-        int numNotPaired = 0;
-        for (Card card : cardMatchingBoard) {
-            if (!(card.isPaired())) {
-                numNotPaired++;
-                if (card.isOpen() == 0) {
-                    numNotOpened++;
-                }
-            }
-        }
+        int numNotPaired = getNumNotPaired();
+        int numNotOpened = getNumNotOpened();
         if (numNotOpened == 0 && numNotPaired == 2) {
             solved = true;
         }
         return solved;
+    }
+
+    /**
+     * return the number of unopened cards
+     * @return the number of unopened cards
+     */
+    private int getNumNotOpened() {
+        int unopened = 0;
+        for (Card card : cardMatchingBoard) {
+            if (card.isOpen() == 0) {
+                unopened++;
+            }
+        }
+        return unopened;
+    }
+
+    /**
+     * return the number of unpaired cards
+     * @return the number of unpaired cards
+     */
+    private int getNumNotPaired() {
+        int unpaired = 0;
+        for (Card card : cardMatchingBoard) {
+            if (!(card.isPaired())) {
+                unpaired++;
+            }
+        }
+        return unpaired;
     }
 
     /**
@@ -107,7 +128,6 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * Process a touch at position in the cardMatchingBoard, swapping tiles as appropriate.
-     * <p>
      * Mode 0 is to cover the card, Mode 1 is to open the card.
      *
      * @param position the position of the tile that is tapped
@@ -137,6 +157,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * Return the player's score.
+     *
      * @return the score
      */
     public int getScore() {
@@ -149,6 +170,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * covers the card flipped two turns ago, as well as the card at row, col after 1000ms.
+     *
      * @param row row of the card to be covered
      * @param col col of card to be covered
      */
@@ -167,6 +189,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * Return the game's name.
+     *
      * @return the game's name
      */
     public String getGameName() {
@@ -175,6 +198,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * Return the date and time of the game being played.
+     *
      * @return the current time
      */
     public String getTime() {
@@ -185,6 +209,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * return the game difficulty.
+     *
      * @return the game difficulty
      */
     public String getGameDifficulty() {
@@ -192,7 +217,8 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     }
 
     /**
-     *  return the current move
+     * return the current move
+     *
      * @return the current move
      */
     int getMove() {
