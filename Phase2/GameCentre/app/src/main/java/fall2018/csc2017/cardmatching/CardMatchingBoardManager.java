@@ -128,10 +128,6 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
             } else {
                 card1.setPaired(true);
                 card2.setPaired(true);
-                if (--cardMatchingBoard.pairsMatched == 0) {
-                    cardMatchingBoard.setIsSolved();
-                    cardMatchingBoard.flipCard(row, col, 1);
-                }
             }
         } else {
             lastMove[0] = row;

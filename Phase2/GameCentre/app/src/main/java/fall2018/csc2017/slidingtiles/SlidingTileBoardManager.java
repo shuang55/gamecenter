@@ -52,7 +52,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      */
     SlidingTileBoardManager(int boardSize) {
         List<Tile> tiles = new ArrayList<>();
-        final int numTiles = boardSize * boardSize;
+        int numTiles = boardSize * boardSize;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
             tiles.add(new Tile(tileNum));
         }
@@ -62,51 +62,68 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
             Tile blankTile = new Tile(24);
             tiles.add(blankTile);
         }
-        if (boardSize == 4) {
+        else if (boardSize == 4) {
             Collections.sort(tiles);
             tiles.remove(0);
             Tile blankTile = new Tile(24);
             tiles.add(blankTile);
         }
-
         Collections.shuffle(tiles);
-        //this.slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
+        slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
+        checkSolvability(boardSize, tiles);
+    }
 
-        int inv_count = 0;
+    /**
+     * Checks if the current sliding tile board is solvable. If it is not solvable, make it solvable
+     *
+     * @param boardSize size of the board
+     * @param tiles a list containing tiles for sliding tile game
+     * reference: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
+     */
+    private void checkSolvability(int boardSize, List<Tile> tiles) {
         int blankId = 25;
-        //int blankRow = slidingTileBoard.findTile(blankId) / boardSize;
+        int blankRow = slidingTileBoard.findTile(blankId) / boardSize;
+        int inversionCount = getInversionCount(tiles);
+        if (boardSize % 2 == 1 && inversionCount % 2 == 0) {
+            slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
+        }
+        else if (boardSize % 2 == 0 && (inversionCount + boardSize - 1 - blankRow) % 2 == 0) {
+            slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
+        }
+        else{
+            makeSolvableBoard(tiles);
+            slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
+        }
+    }
+
+    /**
+     * Calculates the number of inversions in sliding tile board.
+     *
+     * @param tiles a list containing tiles for sliding tile game
+     * @return number of inversions
+     */
+    private int getInversionCount(List<Tile> tiles) {
+        int inversionCount = 0;
         for (int i = 0; i < tiles.size() - 1; i++)
             for (int j = i + 1; j < tiles.size(); j++)
-                if (tiles.get(i).getId() !=25 && tiles.get(j).getId() != 25)
+                if (tiles.get(i).getId() != 25 && tiles.get(j).getId() != 25)
                     if (tiles.get(i).getId() > tiles.get(j).getId())
-                    inv_count ++;
-        if (inv_count % 2 == 0 && boardSize % 2 == 1)
-            this.slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        if (inv_count % 2 ==1 && boardSize % 2 ==1){
-            if (tiles.get(0).getId() == 25 || tiles.get(1).getId() ==25){
-                Collections.swap(tiles, tiles.size()-1, tiles.size()-2
-                );
+                        inversionCount++;
+        return inversionCount;
+    }
 
-            }
-            else {
-               Collections.swap(tiles, 0, 1 );
-            }
-            this.slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
-
+    /**
+     * Modifies the board, so the inversion count gets +/- by 1 to make the board solvable.
+     *
+     * @param tiles a list containing tiles for sliding tile game
+     */
+    private void makeSolvableBoard(List<Tile> tiles) {
+        if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
+            Collections.swap(tiles, tiles.size()-1, tiles.size()-2
+            );
         }
-        this.slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
-        int blankRow = slidingTileBoard.findTile(blankId) / boardSize;
-        if (boardSize %2 == 0 && (inv_count + boardSize -1 - blankRow) % 2 ==0)
-            this.slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
         else{
-            if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
-                Collections.swap(tiles, tiles.size()-1, tiles.size()-2
-                );
-            }
-            else{
-                Collections.swap(tiles, 0, 1 );
-            }
-            this.slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
+            Collections.swap(tiles, 0, 1 );
         }
     }
 

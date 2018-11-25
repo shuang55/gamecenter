@@ -15,24 +15,17 @@ import java.util.Iterator;
 public class CardMatchingBoard extends Observable implements Serializable, Iterable<Card> {
 
     /**
-     * The board size
+     * The board size - number of card pairs
      */
     int numCardPair;
-
-    int numCardPerRow;
-
-    int numCardPerCol;
-
-    void setIsSolved() {
-        isSolved = 1 ;
-    }
-
-    int pairsMatched;
-
     /**
-     * 0 if board is not solved, 1 if board is solved.
+     * number of cards per row
      */
-    private int isSolved = 0;
+    int numCardPerRow;
+    /**
+     * number of cards per column
+     */
+    int numCardPerCol;
 
     /**
      * The cards on the board in row-major order.
@@ -41,18 +34,18 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
 
     /**
      * Initializes the CardMatchingBoard for game.
-     *
+     * <p>
      * Choice of number of card pairs are: 8, 10, 12
      * BoardSize are: 4 X 4, 4 X 5, 4 X 6 (respectively)
      *
-     * @param cards     list of tiles
+     * @param cards       list of card tiles
      * @param numCardPair the number of pairs there are
      */
     CardMatchingBoard(List<Card> cards, int numCardPair) {
         this.numCardPair = numCardPair;
         this.numCardPerCol = 4;
 
-        switch(numCardPair){
+        switch (numCardPair) {
             case 8:
                 this.numCardPerRow = 4;
                 break;
@@ -74,19 +67,17 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
                 this.cards[row][col] = iter.next();
             }
         }
-        pairsMatched = numCardPair;
     }
 
     /**
      * Flip the card at (row, col).
-     *
      * Mode 0 is to cover the card, Mode 1 is to open the card.
      *
      * @param row the first tile row
      * @param col the first tile col
      */
     void flipCard(int row, int col, int mode) {
-        int[] operation = {row, col, mode, isSolved};
+        int[] operation = {row, col, mode};
         setChanged();
         notifyObservers(operation);
     }
