@@ -79,10 +79,8 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
                                 this);
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
-
                         columnWidth = displayWidth / cardMatchingBoardManager.getCardMatchingBoard().getNumCardPerCol();
                         columnHeight = displayHeight / cardMatchingBoardManager.getCardMatchingBoard().getNumCardPerRow();
-
                         display();
                     }
                 });
@@ -145,9 +143,8 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
 
     /**
      * Update the backgrounds on the buttons to match the tiles.
-     *
      * * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
-     *                    mode 0 is to close the card, mode 1 is to open the card.
+     * mode 0 is to close the card, mode 1 is to open the card.
      */
     private void changeCardDisplay(int[] operation) {
         CardMatchingBoard cardMatchingBoard = cardMatchingBoardManager.getCardMatchingBoard();
@@ -160,11 +157,10 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         setCardBackGround(card, mode, button);
     }
 
-    private void setCardBackGround(Card card, int mode, Button button){
-        if (mode == 0){
+    private void setCardBackGround(Card card, int mode, Button button) {
+        if (mode == 0) {
             button.setBackgroundResource(card.getCardBackId());
-        }
-        else{
+        } else {
             button.setBackgroundResource(card.getCardFaceId());
         }
         card.setOpened(mode);
@@ -172,18 +168,18 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
 
     /**
      * updates the screen
-     * @param o observable
+     * @param o   observable
      * @param arg object
      */
     @Override
     public void update(Observable o, Object arg) {
-            changeCardDisplay((int[]) arg);
-            display();
-            if (cardMatchingBoardManager.puzzleSolved()) {
-                gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, cardMatchingBoardManager);
-                switchToWinActivity();
-            }
+        changeCardDisplay((int[]) arg);
+        display();
+        if (cardMatchingBoardManager.puzzleSolved()) {
+            gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, cardMatchingBoardManager);
+            switchToWinActivity();
         }
+    }
 
     /**
      * Autosaves the board
