@@ -70,7 +70,10 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         }
         Collections.shuffle(tiles);
         slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        checkSolvability(boardSize, tiles);
+        if (!checkSolvability(tiles, boardSize)){
+            makeSolvableBoard(tiles);
+        }
+        slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
     }
 
     /**
@@ -80,20 +83,12 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * @param tiles a list containing tiles for sliding tile game
      * reference: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
      */
-    private void checkSolvability(int boardSize, List<Tile> tiles) {
+    private boolean checkSolvability(List<Tile> tiles, int boardSize) {
         int blankId = 25;
         int blankRow = slidingTileBoard.findTile(blankId) / boardSize;
         int inversionCount = getInversionCount(tiles);
-        if (boardSize % 2 == 1 && inversionCount % 2 == 0) {
-            slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        }
-        else if (boardSize % 2 == 0 && (inversionCount + boardSize - 1 - blankRow) % 2 == 0) {
-            slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        }
-        else{
-            makeSolvableBoard(tiles);
-            slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
-        }
+        return (boardSize % 2 == 1 && inversionCount % 2 == 0 ||
+                boardSize % 2 == 0 && (inversionCount + boardSize - 1 - blankRow) % 2 == 0);
     }
 
     /**
@@ -102,7 +97,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * @param tiles a list containing tiles for sliding tile game
      * @return number of inversions
      */
-    private int getInversionCount(List<Tile> tiles) {
+    int getInversionCount(List<Tile> tiles) {
         int inversionCount = 0;
         for (int i = 0; i < tiles.size() - 1; i++)
             for (int j = i + 1; j < tiles.size(); j++)
@@ -174,7 +169,6 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * @param position the position
      */
     public void touchMove(int position) {
-
         int row = position / slidingTileBoard.boardSize;
         int col = position % slidingTileBoard.boardSize;
         int blankId = 25;
@@ -190,7 +184,6 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
             this.undoStack.add(undoMove);
             this.move++;
             slidingTileBoard.swapTiles(blankRow, blankCol, row, col);
-
         }
 
     }
