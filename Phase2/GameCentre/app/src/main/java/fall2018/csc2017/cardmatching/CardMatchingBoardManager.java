@@ -66,11 +66,19 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      * @return whether the tiles are in row-major order
      */
     public boolean puzzleSolved() {
-        boolean solved = true;
+        boolean solved = false;
+        int numNotOpened = 0;
+        int numNotPaired = 0;
         for (Card card : cardMatchingBoard) {
             if (!(card.isPaired())) {
-                solved = false;
+                numNotPaired++;
+                if (card.isOpen() == 0){
+                    numNotOpened++;
+                }
             }
+        }
+        if (numNotOpened == 0 && numNotPaired == 2){
+            solved = true;
         }
         return solved;
     }
