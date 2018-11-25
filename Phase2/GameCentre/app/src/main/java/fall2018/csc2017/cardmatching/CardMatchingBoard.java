@@ -49,7 +49,6 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
 
     /**
      * Initializes the CardMatchingBoard for game.
-     * <p>
      * Choice of number of card pairs are: 8, 10, 12
      * BoardSize are: 4 X 4, 4 X 5, 4 X 6 (respectively)
      *
