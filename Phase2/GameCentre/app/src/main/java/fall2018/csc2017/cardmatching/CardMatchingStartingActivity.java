@@ -54,7 +54,8 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
 
         addStartButtonListener();
         addLoadAutoSaveButtonListener();
-        addComplexityButton1();
+        addComplexityButton();
+        addOneMoveWinButton();
     }
 
     /**
@@ -65,7 +66,7 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardMatchingBoardManager = new CardMatchingBoardManager(numCardPairs);
+                cardMatchingBoardManager = new CardMatchingBoardManager(numCardPairs, false);
                 gameCentre.saveManager(GameManager.TEMP_SAVE_START, cardMatchingBoardManager);
                 swapToCardMatching();
             }
@@ -120,7 +121,7 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
     /**
      * Add more complexities , 8 pairs, 10 pairs, 12 pairs.
      */
-    public void addComplexityButton1() {
+    public void addComplexityButton() {
         final Spinner complexity1 = findViewById(R.id.complexity1);
         complexity1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -142,6 +143,18 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+    }
+
+    public void addOneMoveWinButton() {
+        Button oneMoveToVictory = findViewById(R.id.OneMoveWin);
+        oneMoveToVictory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardMatchingBoardManager = new CardMatchingBoardManager(numCardPairs, true);
+                gameCentre.saveManager(GameManager.TEMP_SAVE_START, cardMatchingBoardManager);
+                swapToCardMatching();
             }
         });
     }

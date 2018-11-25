@@ -84,7 +84,7 @@ public class SudokuGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks if board is solved, and swap to YouWin if it is
+     * Checks if board is solved, swap to YouWin and delete the autosave game if it is
      */
     private void checkSolved() {
         if (sudokuBoardManager.puzzleSolved()) {

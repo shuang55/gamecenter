@@ -1,8 +1,5 @@
 package fall2018.csc2017.sudoku;
 
-
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,60 +38,25 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
      */
     void setSudokuBoardNumber(int row, int column, int number) {
         sudokuBoard[row][column] = number;
-        if (number != 0) {
-            updateRepeatsArrayList(row, column);
-        }
+        updateRepeats();
+
     }
 
     /**
-     * Updates the repeats list if it the position contains any repeats
-     *
-     * @param row    the row of the position to be updated
-     * @param column the column of the position to be updated
+     * Updates this.repeats list by looking for repeats in row, col, square
      */
-    private void updateRepeatsArrayList(int row, int column) {
-        int position = (row * 9) + column;
-        ArrayList<Integer> repeats = new ArrayList<>(Arrays.asList(position,
-                doubleInRow(position), doubleInColumn(position), doubleInBox(position)));
-        int repeatPosition = checkRepeat(position);
-        addOrRemoveFromRepeats(repeatPosition, repeats);
-    }
-
-    /**
-     * Add or removes arraylists from this.repeats depending on whether it prev exists
-     *
-     * @param repeatPosition the position to be checked
-     * @param repeats        the arraylist that contains the repeated positions for one set of repeat
-     */
-    private void addOrRemoveFromRepeats(int repeatPosition, ArrayList<Integer> repeats) {
-        if ((repeats.get(1) != -1) | (repeats.get(2) != -1) | (repeats.get(3) != -1)) {
-            // check if this.repeats already contains position
-            if (repeatPosition != -1) {
-                this.repeats.remove(repeatPosition);
-            }
-            this.repeats.add(repeats);
-        } else {
-            // remove repeat if it is in this.repeats
-            if (repeatPosition != -1) {
-                this.repeats.remove(repeatPosition);
+    private void updateRepeats() {
+        this.repeats = new ArrayList<>();
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                int position = (row * 9) + col;
+                ArrayList<Integer> repeats = new ArrayList<>(Arrays.asList(position,
+                        doubleInRow(position), doubleInColumn(position), doubleInBox(position)));
+                if ((repeats.get(1) != -1) | (repeats.get(2) != -1) | (repeats.get(3) != -1)) {
+                    this.repeats.add(repeats);
+                }
             }
         }
-    }
-
-    /**
-     * Check if position is already in the repeat list
-     *
-     * @param position the position to be checked
-     * @return index of the arraylist in this.repeats if the arraylist
-     * contains position, -1 if it doesn't
-     */
-    private int checkRepeat(int position) {
-        for (int i = 0; i < this.repeats.size(); i++) {
-            if (repeats.get(i).contains(position)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     /**

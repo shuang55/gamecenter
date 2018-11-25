@@ -23,15 +23,16 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
 
     int numCardPerCol;
 
-
-    public void setIsSolved(int isSolved) {
-        this.isSolved = isSolved;
+    void setIsSolved() {
+        isSolved = 1 ;
     }
+
+    int pairsMatched;
 
     /**
      * 0 if board is not solved, 1 if board is solved.
      */
-    int isSolved = 0;
+    private int isSolved = 0;
 
     /**
      * The cards on the board in row-major order.
@@ -73,6 +74,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
                 this.cards[row][col] = iter.next();
             }
         }
+        pairsMatched = numCardPair;
     }
 
     /**
@@ -85,7 +87,6 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
      */
     void flipCard(int row, int col, int mode) {
         int[] operation = {row, col, mode, isSolved};
-        getCard(row, col).setOpened(mode);
         setChanged();
         notifyObservers(operation);
     }

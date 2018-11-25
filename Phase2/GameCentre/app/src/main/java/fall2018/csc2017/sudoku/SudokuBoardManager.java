@@ -1,9 +1,5 @@
 package fall2018.csc2017.sudoku;
 
-
-import android.support.design.widget.TabLayout;
-import android.util.Log;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
