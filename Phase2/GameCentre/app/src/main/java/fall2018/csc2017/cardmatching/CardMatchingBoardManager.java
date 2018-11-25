@@ -99,8 +99,8 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      * @return whether the Card is not paired or paired.
      */
     public boolean isValidTap(int position) {
-        int row = position / cardMatchingBoard.numCardPerCol;
-        int col = position % cardMatchingBoard.numCardPerCol;
+        int row = position / cardMatchingBoard.getNumCardPerCol();
+        int col = position % cardMatchingBoard.getNumCardPerCol();
         Card cardTapped = cardMatchingBoard.getCard(row, col);
         return !(cardTapped.isOpen() == 1 || openPairExists);
     }
@@ -113,8 +113,8 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      * @param position the position of the tile that is tapped
      */
     public void touchMove(int position) {
-        final int row = position / cardMatchingBoard.numCardPerCol;
-        final int col = position % cardMatchingBoard.numCardPerCol;
+        final int row = position / cardMatchingBoard.getNumCardPerCol();
+        final int col = position % cardMatchingBoard.getNumCardPerCol();
         move++;
         cardMatchingBoard.flipCard(row, col, 1);
         if (move % 2 == 0) {
@@ -140,7 +140,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      * @return the score
      */
     public int getScore() {
-        int score = 1000 - move * 2 * (13 - cardMatchingBoard.numCardPair);
+        int score = 1000 - move * 2 * (13 - cardMatchingBoard.getNumCardPair());
         if (score < 0) {
             return 0;
         }
@@ -188,7 +188,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      * @return the game difficulty
      */
     public String getGameDifficulty() {
-        return String.format("%s by %s", cardMatchingBoard.numCardPerRow, cardMatchingBoard.numCardPerCol);
+        return String.format("%s by %s", cardMatchingBoard.getNumCardPerRow(), cardMatchingBoard.getNumCardPerCol());
     }
 
     /**

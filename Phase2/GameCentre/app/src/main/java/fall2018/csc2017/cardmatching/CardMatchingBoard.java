@@ -17,15 +17,16 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     /**
      * The board size - number of card pairs
      */
-    int numCardPair;
+    private int numCardPair;
+
     /**
      * number of cards per row
      */
-    int numCardPerRow;
+    private int numCardPerRow;
     /**
      * number of cards per column
      */
-    int numCardPerCol;
+    private int numCardPerCol;
 
     /**
      * The cards on the board in row-major order.
@@ -34,7 +35,6 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
 
     /**
      * Initializes the CardMatchingBoard for game.
-     * <p>
      * Choice of number of card pairs are: 8, 10, 12
      * BoardSize are: 4 X 4, 4 X 5, 4 X 6 (respectively)
      *
@@ -104,6 +104,30 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     @Override
     public Iterator<Card> iterator() {
         return new BoardIterator();
+    }
+
+    /**
+     * get numCardPair
+     * @return the number of card pairs
+     */
+    int getNumCardPair() {
+        return numCardPair;
+    }
+
+    /**
+     * get NumCardPerRow
+     * @return number of cards per row
+     */
+    int getNumCardPerRow() {
+        return numCardPerRow;
+    }
+
+    /**
+     * get numCardPerCol
+     * @return the number of cards per column
+     */
+    int getNumCardPerCol() {
+        return numCardPerCol;
     }
 
     /**

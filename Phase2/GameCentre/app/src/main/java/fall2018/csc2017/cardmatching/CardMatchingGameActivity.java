@@ -66,7 +66,7 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
 
         // Add View to activity
         gridView = findViewById(R.id.CardMatchingGrid);
-        gridView.setNumColumns(cardMatchingBoardManager.getCardMatchingBoard().numCardPerCol);
+        gridView.setNumColumns(cardMatchingBoardManager.getCardMatchingBoard().getNumCardPerCol());
         gridView.setGameManager(cardMatchingBoardManager);
         cardMatchingBoardManager.getCardMatchingBoard().addObserver(this);
 
@@ -80,8 +80,8 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                        columnWidth = displayWidth / cardMatchingBoardManager.getCardMatchingBoard().numCardPerCol;
-                        columnHeight = displayHeight / cardMatchingBoardManager.getCardMatchingBoard().numCardPerRow;
+                        columnWidth = displayWidth / cardMatchingBoardManager.getCardMatchingBoard().getNumCardPerCol();
+                        columnHeight = displayHeight / cardMatchingBoardManager.getCardMatchingBoard().getNumCardPerRow();
 
                         display();
                     }
@@ -131,8 +131,8 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
     private void createCardButtons(Context context) {
         CardMatchingBoard cardMatchingBoard = cardMatchingBoardManager.getCardMatchingBoard();
         cardButtons = new ArrayList<>();
-        for (int row = 0; row != cardMatchingBoard.numCardPerRow; row++) {
-            for (int col = 0; col != cardMatchingBoard.numCardPerCol; col++) {
+        for (int row = 0; row != cardMatchingBoard.getNumCardPerRow(); row++) {
+            for (int col = 0; col != cardMatchingBoard.getNumCardPerCol(); col++) {
                 Button button = new Button(context);
                 Card currentCard = cardMatchingBoardManager.getCardMatchingBoard().getCard(row, col);
                 int mode = currentCard.isPaired() ? 1 : 0;

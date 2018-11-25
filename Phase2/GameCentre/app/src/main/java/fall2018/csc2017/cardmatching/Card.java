@@ -41,7 +41,7 @@ public class Card implements Comparable<Card>, Serializable {
      *
      * @return id of card face
      */
-    public int getCardFaceId() {
+    int getCardFaceId() {
         return cardFaceId;
     }
 
@@ -50,7 +50,7 @@ public class Card implements Comparable<Card>, Serializable {
      *
      * @return id of card back
      */
-    public int getCardBackId() {
+    int getCardBackId() {
         return cardBackId;
     }
 
