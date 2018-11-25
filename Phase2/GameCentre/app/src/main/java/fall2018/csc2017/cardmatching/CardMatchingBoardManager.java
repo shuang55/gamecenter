@@ -26,25 +26,36 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      */
     private int move = 0;
 
+    /**
+     * the most recent move that the player has made
+     */
     private int[] lastMove = new int[2];
 
+    /**
+     * whether or not an open pair exists
+     */
+    private boolean openPairExists;
+
+    /**
+     * Set openPairExists to False
+     */
     void setOpenPairExistsToFalse() {
         this.openPairExists = false;
     }
 
-    private boolean openPairExists;
-
     /**
      * Return the current cardMatchingBoard.
+     * @return the current cardMatchingBoard
      */
     CardMatchingBoard getCardMatchingBoard() {
         return cardMatchingBoard;
     }
 
     /**
-     * Manage a cardMatchingBoard with varies complexities.
+     * Manage a cardMatchingBoard with various complexities.
      *
      * @param numCardPair the size of the cardMatchingBoard.
+     * @param easyBoard whether or not to generate an easy board
      */
     CardMatchingBoardManager(int numCardPair, boolean easyBoard) {
         List<Card> cards = new ArrayList<>();
@@ -70,12 +81,12 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
         for (Card card : cardMatchingBoard) {
             if (!(card.isPaired())) {
                 numNotPaired++;
-                if (card.isOpen() == 0){
+                if (card.isOpen() == 0) {
                     numNotOpened++;
                 }
             }
         }
-        if (numNotOpened == 0 && numNotPaired == 2){
+        if (numNotOpened == 0 && numNotPaired == 2) {
             solved = true;
         }
         return solved;
@@ -91,7 +102,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
         int row = position / cardMatchingBoard.numCardPerCol;
         int col = position % cardMatchingBoard.numCardPerCol;
         Card cardTapped = cardMatchingBoard.getCard(row, col);
-        return !(cardTapped.isOpen() == 1 || openPairExists) ;
+        return !(cardTapped.isOpen() == 1 || openPairExists);
     }
 
     /**
@@ -111,19 +122,18 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
             Card card1 = cardMatchingBoard.getCard(lastMove[0], lastMove[1]);
             Card card2 = cardMatchingBoard.getCard(row, col);
             boolean cardsMatch = card1.getCardFaceId() == card2.getCardFaceId();
-            if (!cardsMatch){
+            if (!cardsMatch) {
                 openPairExists = true;
                 coverCardAfterFixedDelay(row, col);
-            } else{
+            } else {
                 card1.setPaired(true);
                 card2.setPaired(true);
-                if (--cardMatchingBoard.pairsMatched == 0){
+                if (--cardMatchingBoard.pairsMatched == 0) {
                     cardMatchingBoard.setIsSolved();
                     cardMatchingBoard.flipCard(row, col, 1);
                 }
             }
-        }
-        else{
+        } else {
             lastMove[0] = row;
             lastMove[1] = col;
         }
@@ -131,16 +141,22 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * Return the player's score.
+     * @return the score
      */
     public int getScore() {
         int score = 1000 - move * 2 * (13 - cardMatchingBoard.numCardPair);
-        if (score < 0){
+        if (score < 0) {
             return 0;
         }
         return score;
     }
 
-    private void coverCardAfterFixedDelay(int row, int col){
+    /**
+     * covers the card flipped two turns ago, as well as the card at row, col after 1000ms.
+     * @param row row of the card to be covered
+     * @param col col of card to be covered
+     */
+    private void coverCardAfterFixedDelay(int row, int col) {
         final int rowOfCard = row;
         final int colOfCard = col;
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -155,6 +171,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * Return the game's name.
+     * @return the game's name
      */
     public String getGameName() {
         return "Card Matching";
@@ -162,6 +179,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * Return the date and time of the game being played.
+     * @return the current time
      */
     public String getTime() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -171,11 +189,16 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * return the game difficulty.
+     * @return the game difficulty
      */
     public String getGameDifficulty() {
         return String.format("%s by %s", cardMatchingBoard.numCardPerRow, cardMatchingBoard.numCardPerCol);
     }
 
+    /**
+     *  return the current move
+     * @return the current move
+     */
     int getMove() {
         return move;
     }
