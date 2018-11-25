@@ -13,7 +13,7 @@ import java.util.Iterator;
 /**
  * The sliding tiles board.
  */
-public class Board extends Observable implements Serializable, Iterable<Tile> {
+public class SlidingTileBoard extends Observable implements Serializable, Iterable<Tile> {
 
     /**
      * The board size
@@ -26,12 +26,12 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
     private Tile[][] tiles;
 
     /**
-     * Initializes the Board for game.
+     * Initializes the SlidingTileBoard for game.
      *
      * @param tiles     list of tiles
      * @param boardSize the size of board
      */
-    Board(List<Tile> tiles, int boardSize) {
+    SlidingTileBoard(List<Tile> tiles, int boardSize) {
         this.tiles = new Tile[boardSize][boardSize];
         Iterator<Tile> iter = tiles.iterator();
 
@@ -91,7 +91,7 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
 
     @Override
     public String toString() {
-        return "Board{" +
+        return "SlidingTileBoard{" +
                 "tiles=" + Arrays.toString(tiles) +
                 '}';
     }
@@ -103,7 +103,7 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
     }
 
     /**
-     * An iterator that iterates through Board
+     * An iterator that iterates through SlidingTileBoard
      */
     private class BoardIterator implements Iterator<Tile> {
 

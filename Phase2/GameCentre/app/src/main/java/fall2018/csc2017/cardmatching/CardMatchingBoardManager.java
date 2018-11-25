@@ -13,14 +13,13 @@ import java.util.List;
 import fall2018.csc2017.gamecentre.GameManager;
 
 /**
- * Manage a board, including swapping tiles, checking for a win, and managing taps.
+ * Manage a cardMatchingBoard, including swapping tiles, checking for a win, and managing taps.
  */
-public class BoardManager implements Serializable, GameManager {
-//TODO: make boardmanager an interface
+public class CardMatchingBoardManager implements Serializable, GameManager {
     /**
-     * The board being managed.
+     * The cardMatchingBoard being managed.
      */
-    private Board board;
+    private CardMatchingBoard cardMatchingBoard;
 
     /**
      * The current number of moves that the player has made.
@@ -29,41 +28,34 @@ public class BoardManager implements Serializable, GameManager {
 
     private int[] lastMove = new int[2];
 
-    public void setOpenPairExists(boolean openPairExists) {
-        this.openPairExists = openPairExists;
+    void setOpenPairExistsToFalse() {
+        this.openPairExists = false;
     }
 
     private boolean openPairExists;
 
     /**
-     * Manage a board that has been pre-populated.
-     *
-     * @param board the board
+     * Return the current cardMatchingBoard.
      */
-    BoardManager(Board board) {
-        this.board = board;
+    CardMatchingBoard getCardMatchingBoard() {
+        return cardMatchingBoard;
     }
 
     /**
-     * Return the current board.
-     */
-    Board getBoard() {
-        return board;
-    }
-
-    /**
-     * Manage a board with varies complexities.
+     * Manage a cardMatchingBoard with varies complexities.
      *
-     * @param numCardPair the size of the board.
+     * @param numCardPair the size of the cardMatchingBoard.
      */
-    BoardManager(int numCardPair) {
+    CardMatchingBoardManager(int numCardPair, boolean easyBoard) {
         List<Card> cards = new ArrayList<>();
         final int NUMCARDS = numCardPair * 2;
         for (int cardNum = 0; cardNum != NUMCARDS; cardNum++) {
             cards.add(new Card(cardNum));
         }
-        Collections.shuffle(cards);
-        this.board = new Board(cards, numCardPair);
+        if (!easyBoard) {
+            Collections.shuffle(cards);
+        }
+        this.cardMatchingBoard = new CardMatchingBoard(cards, numCardPair);
     }
 
     /**
@@ -73,7 +65,7 @@ public class BoardManager implements Serializable, GameManager {
      */
     public boolean puzzleSolved() {
         boolean solved = true;
-        for (Card card : board) {
+        for (Card card : cardMatchingBoard) {
             if (!(card.isPaired())) {
                 solved = false;
             }
@@ -88,33 +80,39 @@ public class BoardManager implements Serializable, GameManager {
      * @return whether the Card is not paired or paired.
      */
     public boolean isValidTap(int position) {
-        int row = position / board.numCardPerCol;
-        int col = position % board.numCardPerCol;
-        Card cardTapped = board.getCard(row, col);
+        int row = position / cardMatchingBoard.numCardPerCol;
+        int col = position % cardMatchingBoard.numCardPerCol;
+        Card cardTapped = cardMatchingBoard.getCard(row, col);
         return !(cardTapped.isOpen() == 1 || openPairExists) ;
     }
 
     /**
-     * Process a touch at position in the board, swapping tiles as appropriate.
+     * Process a touch at position in the cardMatchingBoard, swapping tiles as appropriate.
      * <p>
      * Mode 0 is to cover the card, Mode 1 is to open the card.
      *
      * @param position the position of the tile that is tapped
      */
     public void touchMove(int position) {
-        final int row = position / board.numCardPerCol;
-        final int col = position % board.numCardPerCol;
+        final int row = position / cardMatchingBoard.numCardPerCol;
+        final int col = position % cardMatchingBoard.numCardPerCol;
         move++;
-        board.flipCard(row, col, 1);
+        cardMatchingBoard.flipCard(row, col, 1);
         if (move % 2 == 0) {
-            openPairExists = true;
-            Card card1 = board.getCard(lastMove[0], lastMove[1]);
-            Card card2 = board.getCard(row, col);
-            if (checkMatch(card1, card2)){
-                openPairExists = false;
-            }
-            else{
+            openPairExists = false;
+            Card card1 = cardMatchingBoard.getCard(lastMove[0], lastMove[1]);
+            Card card2 = cardMatchingBoard.getCard(row, col);
+            boolean cardsMatch = card1.getCardFaceId() == card2.getCardFaceId();
+            if (!cardsMatch){
+                openPairExists = true;
                 coverCardAfterFixedDelay(row, col);
+            } else{
+                card1.setPaired(true);
+                card2.setPaired(true);
+                if (--cardMatchingBoard.pairsMatched == 0){
+                    cardMatchingBoard.setIsSolved();
+                    cardMatchingBoard.flipCard(row, col, 1);
+                }
             }
         }
         else{
@@ -127,20 +125,11 @@ public class BoardManager implements Serializable, GameManager {
      * Return the player's score.
      */
     public int getScore() {
-        int score = 1000 - move * 2 * (13 - board.numCardPair);
+        int score = 1000 - move * 2 * (13 - cardMatchingBoard.numCardPair);
         if (score < 0){
             return 0;
         }
         return score;
-    }
-
-    private boolean checkMatch(Card card1, Card card2){
-        if (card1.getCardFaceId() == card2.getCardFaceId()){
-            card1.setPaired(true);
-            card2.setPaired(true);
-            return true;
-        }
-        return false;
     }
 
     private void coverCardAfterFixedDelay(int row, int col){
@@ -149,11 +138,11 @@ public class BoardManager implements Serializable, GameManager {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                board.flipCard(lastMove[0], lastMove[1], 0);
-                board.flipCard(rowOfCard, colOfCard, 0);
+                cardMatchingBoard.flipCard(lastMove[0], lastMove[1], 0);
+                cardMatchingBoard.flipCard(rowOfCard, colOfCard, 0);
                 openPairExists = false;
             }
-        }, 1500);
+        }, 1000);
     }
 
     /**
@@ -176,10 +165,10 @@ public class BoardManager implements Serializable, GameManager {
      * return the game difficulty.
      */
     public String getGameDifficulty() {
-        return String.format("%s by %s", board.numCardPerRow, board.numCardPerCol);
+        return String.format("%s by %s", cardMatchingBoard.numCardPerRow, cardMatchingBoard.numCardPerCol);
     }
 
-    public int getMove() {
+    int getMove() {
         return move;
     }
 }

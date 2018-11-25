@@ -42,11 +42,7 @@ public class SudokuGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku_game);
-
-        // load the necessary managers
-        gameCentre = new GameCentre(this);
-        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        sudokuBoardManager = (SudokuBoardManager) gameCentre.getGameManager();
+        loadManagers();
 
         // set up gridview
         updateDisplay();
@@ -66,6 +62,15 @@ public class SudokuGameActivity extends AppCompatActivity {
     }
 
     /**
+     * Load necessary managers
+     */
+    private void loadManagers() {
+        gameCentre = new GameCentre(this);
+        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+        sudokuBoardManager = (SudokuBoardManager) gameCentre.getGameManager();
+    }
+
+    /**
      * Updates the gridview display
      */
     private void updateDisplay() {
@@ -74,6 +79,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         gridView.setAdapter(sudokuBoardAdapter);
         TextView textView = findViewById(R.id.sudoku_moves);
         textView.setText(String.format("Moves: %s", sudokuBoardManager.getMoves()));
+        autoSave();
         checkSolved();
     }
 
@@ -129,7 +135,6 @@ public class SudokuGameActivity extends AppCompatActivity {
      */
     private void updateSudokuBoard(int num) {
         sudokuBoardManager.updateNumber(num);
-        autoSave();
         updateDisplay();
     }
 
@@ -174,7 +179,6 @@ public class SudokuGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 sudokuBoardManager.provideHint();
                 updateDisplay();
-                autoSave();
             }
         });
     }
@@ -189,9 +193,7 @@ public class SudokuGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SavedGames savedGames = gameCentre.getSavedGames();
                 UserManager userManager = gameCentre.getUserManager();
-                GameToSave gameToSave = new GameToSave(
-                        sudokuBoardManager.getTime(), "Sudoku",
-                        sudokuBoardManager.getGameDifficulty(), sudokuBoardManager);
+                GameToSave gameToSave = new GameToSave(sudokuBoardManager);
                 savedGames.updateSavedGames(gameToSave, userManager.getCurrentUser().getUsername());
                 gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
                 makeToastSavedText();

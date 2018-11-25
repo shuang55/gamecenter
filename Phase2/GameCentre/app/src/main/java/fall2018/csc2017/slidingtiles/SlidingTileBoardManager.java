@@ -2,7 +2,6 @@ package fall2018.csc2017.slidingtiles;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
@@ -13,14 +12,14 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 /**
- * Manage a board, including swapping tiles, checking for a win, and managing taps.
+ * Manage a slidingTileBoard, including swapping tiles, checking for a win, and managing taps.
  */
-public class BoardManager implements Serializable, GameManager {
+public class SlidingTileBoardManager implements Serializable, GameManager {
 
     /**
-     * The board being managed.
+     * The slidingTileBoard being managed.
      */
-    private Board board;
+    private SlidingTileBoard slidingTileBoard;
     /**
      * the moves that have been made in this game
      */
@@ -31,27 +30,27 @@ public class BoardManager implements Serializable, GameManager {
     private int move = 0;
 
     /**
-     * Manage a board that has been pre-populated.
+     * Manage a slidingTileBoard that has been pre-populated.
      *
-     * @param board the board
+     * @param slidingTileBoard the slidingTileBoard
      */
-    BoardManager(Board board) {
-        this.board = board;
+    SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
+        this.slidingTileBoard = slidingTileBoard;
     }
 
     /**
-     * Return the current board.
+     * Return the current slidingTileBoard.
      */
-    Board getBoard() {
-        return board;
+    SlidingTileBoard getSlidingTileBoard() {
+        return slidingTileBoard;
     }
 
     /**
-     * Manage a board with varies complexities.
+     * Manage a slidingTileBoard with varies complexities.
      *
-     * @param boardSize the size of the board.
+     * @param boardSize the size of the slidingTileBoard.
      */
-    BoardManager(int boardSize) {
+    SlidingTileBoardManager(int boardSize) {
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = boardSize * boardSize;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
@@ -71,19 +70,18 @@ public class BoardManager implements Serializable, GameManager {
         }
 
         Collections.shuffle(tiles);
-        //this.board = new Board(tiles,boardSize);
-
+        //this.slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
 
         int inv_count = 0;
         int blankId = 25;
-        //int blankRow = board.findTile(blankId) / boardSize;
+        //int blankRow = slidingTileBoard.findTile(blankId) / boardSize;
         for (int i = 0; i < tiles.size() - 1; i++)
             for (int j = i + 1; j < tiles.size(); j++)
                 if (tiles.get(i).getId() !=25 && tiles.get(j).getId() != 25)
                     if (tiles.get(i).getId() > tiles.get(j).getId())
                     inv_count ++;
         if (inv_count % 2 == 0 && boardSize % 2 == 1)
-            this.board = new Board(tiles, boardSize);
+            this.slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
         if (inv_count % 2 ==1 && boardSize % 2 ==1){
             if (tiles.get(0).getId() == 25 || tiles.get(1).getId() ==25){
                 Collections.swap(tiles, tiles.size()-1, tiles.size()-2
@@ -93,13 +91,13 @@ public class BoardManager implements Serializable, GameManager {
             else {
                Collections.swap(tiles, 0, 1 );
             }
-            this.board = new Board(tiles,boardSize);
+            this.slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
 
         }
-        this.board = new Board(tiles,boardSize);
-        int blankRow = board.findTile(blankId) / boardSize;
+        this.slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
+        int blankRow = slidingTileBoard.findTile(blankId) / boardSize;
         if (boardSize %2 == 0 && (inv_count + boardSize -1 - blankRow) % 2 ==0)
-            this.board = new Board(tiles, boardSize);
+            this.slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
         else{
             if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
                 Collections.swap(tiles, tiles.size()-1, tiles.size()-2
@@ -108,14 +106,8 @@ public class BoardManager implements Serializable, GameManager {
             else{
                 Collections.swap(tiles, 0, 1 );
             }
-            this.board = new Board(tiles,boardSize);
+            this.slidingTileBoard = new SlidingTileBoard(tiles,boardSize);
         }
-
-
-
-
-
-
     }
 
     /**
@@ -126,7 +118,7 @@ public class BoardManager implements Serializable, GameManager {
     public boolean puzzleSolved() {
         boolean solved = true;
         int start = 1;
-        for (Tile tile : board) {
+        for (Tile tile : slidingTileBoard) {
             if (tile.getId() != start) {
                 solved = false;
             }
@@ -143,15 +135,15 @@ public class BoardManager implements Serializable, GameManager {
      */
     public boolean isValidTap(int position) {
 
-        int row = position / board.boardSize;
-        int col = position % board.boardSize;
+        int row = position / slidingTileBoard.boardSize;
+        int col = position % slidingTileBoard.boardSize;
         int blankId = 25;
 
         // Are any of the 4 the blank tile?
-        Tile above = row == 0 ? null : board.getTile(row - 1, col);
-        Tile below = row == board.boardSize - 1 ? null : board.getTile(row + 1, col);
-        Tile left = col == 0 ? null : board.getTile(row, col - 1);
-        Tile right = col == board.boardSize - 1 ? null : board.getTile(row, col + 1);
+        Tile above = row == 0 ? null : slidingTileBoard.getTile(row - 1, col);
+        Tile below = row == slidingTileBoard.boardSize - 1 ? null : slidingTileBoard.getTile(row + 1, col);
+        Tile left = col == 0 ? null : slidingTileBoard.getTile(row, col - 1);
+        Tile right = col == slidingTileBoard.boardSize - 1 ? null : slidingTileBoard.getTile(row, col + 1);
         return (below != null && below.getId() == blankId)
                 || (above != null && above.getId() == blankId)
                 || (left != null && left.getId() == blankId)
@@ -159,18 +151,18 @@ public class BoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Process a touch at position in the board, swapping tiles as appropriate.
+     * Process a touch at position in the slidingTileBoard, swapping tiles as appropriate.
      * Increment the number of moves.
      *
      * @param position the position
      */
     public void touchMove(int position) {
 
-        int row = position / board.boardSize;
-        int col = position % board.boardSize;
+        int row = position / slidingTileBoard.boardSize;
+        int col = position % slidingTileBoard.boardSize;
         int blankId = 25;
-        int blankRow = board.findTile(blankId) / board.boardSize;
-        int blankCol = board.findTile(blankId) % board.boardSize;
+        int blankRow = slidingTileBoard.findTile(blankId) / slidingTileBoard.boardSize;
+        int blankCol = slidingTileBoard.findTile(blankId) % slidingTileBoard.boardSize;
 
         if (isValidTap(position)) {
             ArrayList<Integer> undoMove = new ArrayList<>();
@@ -180,7 +172,7 @@ public class BoardManager implements Serializable, GameManager {
             undoMove.add(col);
             this.undoStack.add(undoMove);
             this.move++;
-            board.swapTiles(blankRow, blankCol, row, col);
+            slidingTileBoard.swapTiles(blankRow, blankCol, row, col);
 
         }
 
@@ -197,7 +189,7 @@ public class BoardManager implements Serializable, GameManager {
      * Return the player's score.
      */
     public int getScore() {
-        int score = 1000 - (move * 3 * (6 - board.boardSize));
+        int score = 1000 - (move * 3 * (6 - slidingTileBoard.boardSize));
         if (score < 0) {
             return 0;
         }
@@ -225,7 +217,7 @@ public class BoardManager implements Serializable, GameManager {
      * return the game difficulty.
      */
     public String getGameDifficulty() {
-        return String.format("%s by %s", board.boardSize, board.boardSize);
+        return String.format("%s by %s", slidingTileBoard.boardSize, slidingTileBoard.boardSize);
     }
 
     /**
@@ -238,7 +230,7 @@ public class BoardManager implements Serializable, GameManager {
             int col = previousMove.get(3);
             int blankRow = previousMove.get(0);
             int blankCol = previousMove.get(1);
-            board.swapTiles(row, col, blankRow, blankCol);
+            slidingTileBoard.swapTiles(row, col, blankRow, blankCol);
             return true;
         }
         return false;

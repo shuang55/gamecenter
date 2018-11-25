@@ -67,11 +67,11 @@ public class HighScoreActivity extends AppCompatActivity {
      * @param select the score board user wants to view
      */
     private void setDisplay(String select) {
-        TextView textScore = findViewById(R.id.score_2);
         TextView textName = findViewById(R.id.score_1);
+        TextView textScore = findViewById(R.id.score_2);
         if (select.equals("User")) {
-            textScore.setText(perUserListGenerator(true));
             textName.setText(perUserListGenerator(false));
+            textScore.setText(perUserListGenerator(true));
         } else {
             textName.setText(perGameListGenerator(select, false));
             textScore.setText(perGameListGenerator(select, true));

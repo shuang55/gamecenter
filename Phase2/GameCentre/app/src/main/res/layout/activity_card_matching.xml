@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fall2018.csc2017.cardmatching.CardGameActivity"
+    tools:context="fall2018.csc2017.cardmatching.CardMatchingGameActivity"
     tools:ignore="HardcodedText">
 
     <LinearLayout
@@ -24,7 +24,7 @@
         >
 
         <fall2018.csc2017.gamecentre.GestureDetectGridView
-            android:id="@+id/grid1"
+            android:id="@+id/CardMatchingGrid"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9" />
@@ -35,7 +35,7 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/SaveButton"
+                android:id="@+id/CardMatchingSaveButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="match_parent"

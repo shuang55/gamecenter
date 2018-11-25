@@ -11,8 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".slidingtiles.StartingActivity" />
-        <activity android:name=".slidingtiles.GameActivity" />
+        <activity android:name=".slidingtiles.SlidingTileStartingActivity" />
+        <activity android:name=".slidingtiles.SlidingTileGameActivity" />
         <activity android:name=".gamecentre.LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".cardmatching.CardGameActivity" />
-        <activity android:name=".cardmatching.CardStartingActivity" />
+        <activity android:name=".cardmatching.CardMatchingGameActivity" />
+        <activity android:name=".cardmatching.CardMatchingStartingActivity" />
         <activity android:name=".gamecentre.GameCentreActivity" />
         <activity android:name=".gamecentre.HighScoreActivity" />
         <activity android:name=".gamecentre.SavedGamesActivity" />

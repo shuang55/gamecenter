@@ -1,25 +1,22 @@
 package fall2018.csc2017.gamecentre;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import fall2018.csc2017.R;
-import fall2018.csc2017.cardmatching.CardGameActivity;
-import fall2018.csc2017.cardmatching.CardStartingActivity;
-import fall2018.csc2017.slidingtiles.GameActivity;
-import fall2018.csc2017.slidingtiles.StartingActivity;
+import fall2018.csc2017.cardmatching.CardMatchingGameActivity;
+import fall2018.csc2017.cardmatching.CardMatchingStartingActivity;
+import fall2018.csc2017.slidingtiles.SlidingTileGameActivity;
+import fall2018.csc2017.slidingtiles.SlidingTileStartingActivity;
 import fall2018.csc2017.sudoku.SudokuGameActivity;
 import fall2018.csc2017.sudoku.SudokuStartingActivity;
 
@@ -34,6 +31,11 @@ public class SavedGamesActivity extends AppCompatActivity {
     private UserManager userManager;
 
     /**
+     * Gamecentre for managing files
+     */
+    private GameCentre gameCentre;
+
+    /**
      * The hashmap that contains all saved games for all users and all games.
      */
     private HashMap<String, HashMap<String, ArrayList<GameToSave>>> savedGames;
@@ -42,18 +44,6 @@ public class SavedGamesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_games);
-    }
-
-    /**
-     * Loads the userManager and savedGames.
-     */
-    private void loadManager(){
-        Context savedGame = SavedGamesActivity.this;
-        GameCentre gameCentre = new GameCentre(savedGame);
-        gameCentre.loadManager(UserManager.USERS);
-        userManager = gameCentre.userManager;
-        gameCentre.loadManager(SavedGames.SAVEDGAMES);
-        savedGames = gameCentre.savedGames.savedGames;
     }
 
     /**
@@ -164,34 +154,17 @@ public class SavedGamesActivity extends AppCompatActivity {
     private void startActivity(String gameName, GameManager gameManager){
         switch(gameName){
             case "Sliding Tile":
-                saveToFile(StartingActivity.TEMP_SAVE_FILENAME,gameManager);
+                gameCentre.saveManager(SlidingTileStartingActivity.SLIDING_TILE_START_FILE, gameManager);
                 switchToSlidingTile();
                 break;
             case "Card Matching":
-                saveToFile(CardStartingActivity.TEMP_SAVE_FILENAME,gameManager);
+                gameCentre.saveManager(CardMatchingStartingActivity.CARD_MATCHING_START_FILE, gameManager);
                 switchToCardMatching();
                 break;
             case "Sudoku":
-                saveToFile(SudokuStartingActivity.SUDOKU_START_FILE,gameManager);
+                gameCentre.saveManager(SudokuStartingActivity.SUDOKU_START_FILE, gameManager);
                 switchToSudoku();
                 break;
-        }
-    }
-
-    /**
-     * Save gameManager to fileName.
-     *
-     * @param fileName the destination to save to
-     * @param gameManager the gameManager to be saved
-     */
-    public void saveToFile(String fileName, GameManager gameManager) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameManager);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
         }
     }
 
@@ -199,7 +172,7 @@ public class SavedGamesActivity extends AppCompatActivity {
      * Switch to view of Sliding tile game.
      */
     public void switchToSlidingTile() {
-        Intent tmp = new Intent(this, GameActivity.class);
+        Intent tmp = new Intent(this, SlidingTileGameActivity.class);
         startActivity(tmp);
     }
 
@@ -207,7 +180,7 @@ public class SavedGamesActivity extends AppCompatActivity {
      * Switch to view of Card Matching game.
      */
     public void switchToCardMatching() {
-        Intent tmp = new Intent(this, CardGameActivity.class);
+        Intent tmp = new Intent(this, CardMatchingGameActivity.class);
         startActivity(tmp);
     }
 
@@ -225,7 +198,9 @@ public class SavedGamesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadManager();
+        gameCentre = new GameCentre(this);
+        userManager = gameCentre.getUserManager();
+        savedGames = gameCentre.getSavedGames().savedGames;
         int slidingTileSpinnerID = R.id.SlidingTileSpinner;
         int cardMatchingSpinnerID = R.id.cardMatchingSpinner;
         int sudokuSpinnerID = R.id.sudokuSpinner;
