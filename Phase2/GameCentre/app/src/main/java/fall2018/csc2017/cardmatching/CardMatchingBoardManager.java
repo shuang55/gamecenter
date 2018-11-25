@@ -29,7 +29,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     /**
      * the most recent move that the player has made
      */
-    private int[] lastMove = new int[2];
+    private int[] lastMove = new int[4];
 
     /**
      * whether or not an open pair exists
@@ -87,6 +87,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * return the number of unopened cards
+     *
      * @return the number of unopened cards
      */
     private int getNumNotOpened() {
@@ -101,6 +102,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
 
     /**
      * return the number of unpaired cards
+     *
      * @return the number of unpaired cards
      */
     private int getNumNotPaired() {
@@ -139,19 +141,32 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
         cardMatchingBoard.flipCard(row, col, 1);
         if (move % 2 == 0) {
             openPairExists = false;
+            lastMove[2] = row;
+            lastMove[3] = col;
             Card card1 = cardMatchingBoard.getCard(lastMove[0], lastMove[1]);
-            Card card2 = cardMatchingBoard.getCard(row, col);
+            Card card2 = cardMatchingBoard.getCard(lastMove[2], lastMove[3]);
             boolean cardsMatch = card1.getCardFaceId() == card2.getCardFaceId();
-            if (!cardsMatch) {
-                openPairExists = true;
-                coverCardAfterFixedDelay(row, col);
-            } else {
-                card1.setPaired(true);
-                card2.setPaired(true);
-            }
+            coverOrPair(card1, card2, cardsMatch);
         } else {
             lastMove[0] = row;
             lastMove[1] = col;
+        }
+    }
+
+    /**
+     * covers or pairs card1 and card2, depending on if cardsMatch
+     *
+     * @param card1      the first card
+     * @param card2      the second card
+     * @param cardsMatch whether or not the cards match
+     */
+    private void coverOrPair(Card card1, Card card2, boolean cardsMatch) {
+        if (!cardsMatch) {
+            openPairExists = true;
+            coverCardAfterFixedDelay();
+        } else {
+            card1.setPaired(true);
+            card2.setPaired(true);
         }
     }
 
@@ -169,14 +184,11 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * covers the card flipped two turns ago, as well as the card at row, col after 1000ms.
-     *
-     * @param row row of the card to be covered
-     * @param col col of card to be covered
+     * covers the cards in the past two turns, after 1000 ms
      */
-    private void coverCardAfterFixedDelay(int row, int col) {
-        final int rowOfCard = row;
-        final int colOfCard = col;
+    private void coverCardAfterFixedDelay() {
+        final int rowOfCard = lastMove[2];
+        final int colOfCard = lastMove[3];
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
