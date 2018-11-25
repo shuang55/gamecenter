@@ -158,10 +158,6 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         Button button = this.cardButtons.get(position);
         Card card = cardMatchingBoard.getCard(row, col);
         setCardBackGround(card, mode, button);
-        if (operation[3] == 1){
-            gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, cardMatchingBoardManager);
-            switchToWinActivity();
-        }
     }
 
     private void setCardBackGround(Card card, int mode, Button button){
