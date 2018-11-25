@@ -75,6 +75,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      *
      * @return whether the cards have all been successfully paired
      */
+    // TODO: fix bug where if last tile is bottom right it doesn't correctly jump to victory screen
     public boolean puzzleSolved() {
         boolean solved = false;
         int numNotPaired = getNumNotPaired();
