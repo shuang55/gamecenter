@@ -26,22 +26,6 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
      * number of cards per column
      */
     int numCardPerCol;
-    /**
-     * number of pairs that are matched in this board
-     */
-    int pairsMatched;
-    /**
-     * 0 if board is not solved, 1 if board is solved.
-     */
-    private int isSolved = 0;
-
-    /**
-     * setter for isSolved()
-     */
-    void setIsSolved() {
-        isSolved = 1;
-    }
-
 
     /**
      * The cards on the board in row-major order.
@@ -50,6 +34,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
 
     /**
      * Initializes the CardMatchingBoard for game.
+     * <p>
      * Choice of number of card pairs are: 8, 10, 12
      * BoardSize are: 4 X 4, 4 X 5, 4 X 6 (respectively)
      *
