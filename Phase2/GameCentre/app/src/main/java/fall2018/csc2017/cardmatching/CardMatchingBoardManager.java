@@ -59,9 +59,9 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Return whether the tiles are in row-major order.
+     * Return whether all cards have been successfully paired
      *
-     * @return whether the tiles are in row-major order
+     * @return whether the cards have all been successfully paired
      */
     public boolean puzzleSolved() {
         boolean solved = false;
