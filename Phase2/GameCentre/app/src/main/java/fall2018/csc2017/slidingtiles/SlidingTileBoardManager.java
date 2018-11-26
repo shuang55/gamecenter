@@ -82,6 +82,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * @param boardSize size of the board
      * @param tiles a list containing tiles for sliding tile game
      * reference: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
+     * reference: https://www.sitepoint.com/randomizing-sliding-puzzle-tiles/
      */
     private boolean checkSolvability(List<Tile> tiles, int boardSize) {
         int blankId = 25;

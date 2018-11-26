@@ -23,7 +23,14 @@ class SudokuBoardRandomizer {
      * @return a randomized sudokuboard
      */
     SudokuBoard generateRandomBoard() {
-        randomizeBoard();
+        Random random = new Random();
+        // swap the major columns/rows twice
+        for (int i = 0; i < 2; i++) {
+            swapHorizontal(random.nextInt(3));
+            swapVertical(random.nextInt(3));
+        }
+        //iterate through the 3 major row/column to swap rows and columns within them
+        randomizeSingleRowColumn(random);
         return sudokuBoard;
     }
 
@@ -99,20 +106,6 @@ class SudokuBoardRandomizer {
                 swapColumns(4, 7);
                 swapColumns(5, 8);
         }
-    }
-
-    /**
-     * Randomize the board
-     */
-    private void randomizeBoard() {
-        Random random = new Random();
-        // swap the major columns/rows twice
-        for (int i = 0; i < 2; i++) {
-            swapHorizontal(random.nextInt(3));
-            swapVertical(random.nextInt(3));
-        }
-        //iterate through the 3 major row/column to swap rows and columns within them
-        randomizeSingleRowColumn(random);
     }
 
     /**
