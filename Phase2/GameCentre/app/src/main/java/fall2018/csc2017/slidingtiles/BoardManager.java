@@ -75,19 +75,23 @@ public class BoardManager implements Serializable, GameManager {
 
 
         int inv_count = 0;
-        int blankId = 25;
+        //int blankId = 25;
         //int blankRow = board.findTile(blankId) / boardSize;
         for (int i = 0; i < tiles.size() - 1; i++)
             for (int j = i + 1; j < tiles.size(); j++)
                 if (tiles.get(i).getId() !=25 && tiles.get(j).getId() != 25)
                     if (tiles.get(i).getId() > tiles.get(j).getId())
                     inv_count ++;
+
+
+
         if (inv_count % 2 == 0 && boardSize % 2 == 1)
             this.board = new Board(tiles, boardSize);
         if (inv_count % 2 ==1 && boardSize % 2 ==1){
             if (tiles.get(0).getId() == 25 || tiles.get(1).getId() ==25){
                 Collections.swap(tiles, tiles.size()-1, tiles.size()-2
                 );
+                this.board = new Board(tiles, boardSize);
 
             }
             else {
@@ -96,6 +100,7 @@ public class BoardManager implements Serializable, GameManager {
             this.board = new Board(tiles,boardSize);
 
         }
+        int blankId = 25;
         this.board = new Board(tiles,boardSize);
         int blankRow = board.findTile(blankId) / boardSize;
         if (boardSize %2 == 0 && (inv_count + boardSize -1 - blankRow) % 2 ==0)
@@ -104,6 +109,7 @@ public class BoardManager implements Serializable, GameManager {
             if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
                 Collections.swap(tiles, tiles.size()-1, tiles.size()-2
                 );
+                this.board = new Board(tiles,boardSize);
             }
             else{
                 Collections.swap(tiles, 0, 1 );
