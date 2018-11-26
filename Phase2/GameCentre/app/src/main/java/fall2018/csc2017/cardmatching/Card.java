@@ -69,9 +69,7 @@ public class Card implements Comparable<Card>, Serializable {
      * @param backgroundId ID of the background
      */
     Card(int backgroundId) {
-        id = backgroundId + 1;/*
-        int firstCardPictureId = R.drawable.hearthstone_card1;
-        cardFaceId = firstCardPictureId + backgroundId;*/
+        id = backgroundId + 1;
         switch ((int) Math.ceil(((double) id) / 2)) {
             case 1:
                 cardFaceId = R.drawable.hearthstone_card1;
@@ -107,7 +105,7 @@ public class Card implements Comparable<Card>, Serializable {
                 cardFaceId = R.drawable.hearthstone_card11;
                 break;
             case 12:
-                cardFaceId =R.drawable.hearthstone_card12;
+                cardFaceId = R.drawable.hearthstone_card12;
                 break;
             default:
                 cardFaceId = R.drawable.star_photo;
@@ -118,7 +116,6 @@ public class Card implements Comparable<Card>, Serializable {
 
     /**
      * Get whether or not this card is isPaired.
-     *
      * @return true if card is isPaired, false otherwise
      */
     boolean isPaired() {
@@ -147,9 +144,7 @@ public class Card implements Comparable<Card>, Serializable {
 
     /**
      * Get whether or not this card is opened.
-     * <p>
      * 1 means card is opened, 0 means card is covered.
-     *
      * @return true if card is opened, false otherwise
      */
     int isOpen() {
