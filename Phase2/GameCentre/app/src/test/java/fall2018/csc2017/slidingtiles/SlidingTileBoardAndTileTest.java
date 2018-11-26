@@ -3,7 +3,6 @@ package fall2018.csc2017.slidingtiles;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -51,13 +50,34 @@ public class SlidingTileBoardAndTileTest {
     }
 
     /**
-     * Make a shuffled Board.
+     * Checks if the current sliding tile board is solvable. If it is not solvable, make it solvable
+     *
+     * @param boardSize size of the board
+     * @param tiles a list containing tiles for sliding tile game
+     * reference: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
      */
-    private void setUpShuffled(int boardSize) {
-        List<Tile> tiles = makeTiles(boardSize);
-        Collections.shuffle(tiles);
-        SlidingTileBoard slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        slidingTileBoardManager = new SlidingTileBoardManager(slidingTileBoard);
+    private boolean checkSolvability(List<Tile> tiles, int boardSize) {
+        int blankId = 25;
+        int blankRow = slidingTileBoardManager.getSlidingTileBoard().findTile(blankId) / boardSize;
+        int inversionCount = getInversionCount(tiles);
+        return (boardSize % 2 == 1 && inversionCount % 2 == 0 ||
+                boardSize % 2 == 0 && (inversionCount + boardSize - 1 - blankRow) % 2 == 0);
+    }
+
+    /**
+     * Calculates the number of inversions in sliding tile board.
+     *
+     * @param tiles a list containing tiles for sliding tile game
+     * @return number of inversions
+     */
+    private int getInversionCount(List<Tile> tiles) {
+        int inversionCount = 0;
+        for (int i = 0; i < tiles.size() - 1; i++)
+            for (int j = i + 1; j < tiles.size(); j++)
+                if (tiles.get(i).getId() != 25 && tiles.get(j).getId() != 25)
+                    if (tiles.get(i).getId() > tiles.get(j).getId())
+                        inversionCount++;
+        return inversionCount;
     }
 
     /**
@@ -182,6 +202,55 @@ public class SlidingTileBoardAndTileTest {
         assertTrue(slidingTileBoardManager.undoMove());
         assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 4).getId());
         assertEquals(24, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 3).getId());
+    }
+
+
+    /**
+     * Test whether board is solvable for board size 3.
+     */
+    @Test
+    public void testSolvabilityBoardSize3(){
+        slidingTileBoardManager = new SlidingTileBoardManager(3);
+        Tile[][] tiles = slidingTileBoardManager.getSlidingTileBoard().getTiles();
+        List<Tile> tilesList = new ArrayList<>();
+        for(int i = 0; i != 3; i++){
+            for(int j = 0; j != 3; j++){
+                tilesList.add(tiles[i][j]);
+            }
+        }
+        assertTrue(checkSolvability(tilesList, 3));
+    }
+
+    /**
+     * Test whether board is solvable for board size 4.
+     */
+    @Test
+    public void testSolvabilityBoardSize4(){
+        slidingTileBoardManager = new SlidingTileBoardManager(4);
+        Tile[][] tiles = slidingTileBoardManager.getSlidingTileBoard().getTiles();
+        List<Tile> tilesList = new ArrayList<>();
+        for(int i = 0; i != 4; i++){
+            for(int j = 0; j != 4; j++){
+                tilesList.add(tiles[i][j]);
+            }
+        }
+        assertTrue(checkSolvability(tilesList, 4));
+    }
+
+    /**
+     * Test whether board is solvable for board size 5.
+     */
+    @Test
+    public void testSolvabilityBoardSize5(){
+        slidingTileBoardManager = new SlidingTileBoardManager(5);
+        Tile[][] tiles = slidingTileBoardManager.getSlidingTileBoard().getTiles();
+        List<Tile> tilesList = new ArrayList<>();
+        for(int i = 0; i != 5; i++){
+            for(int j = 0; j != 5; j++){
+                tilesList.add(tiles[i][j]);
+            }
+        }
+        assertTrue(checkSolvability(tilesList, 5));
     }
 }
 
