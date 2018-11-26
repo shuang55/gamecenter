@@ -2,17 +2,27 @@ package fall2018.csc2017.sudoku;
 
 import java.util.Random;
 
-public class SudokuBoardRandomizer {
+class SudokuBoardRandomizer {
 
     private SudokuBoard sudokuBoard;
     private Integer[][] sudokuBoardNumbers;
 
-    public SudokuBoardRandomizer (SudokuBoard sudokuBoard) {
+    /**
+     * Constructor for SudokuBoardRandomizer
+     *
+     * @param sudokuBoard the sudokuBoard to be randomized
+     */
+    SudokuBoardRandomizer(SudokuBoard sudokuBoard) {
         this.sudokuBoard = sudokuBoard;
         this.sudokuBoardNumbers = sudokuBoard.getSudokuBoard();
     }
 
-    public SudokuBoard generateRandomBoard() {
+    /**
+     * Generates a random SudokuBoard
+     *
+     * @return a randomized sudokuboard
+     */
+    SudokuBoard generateRandomBoard() {
         randomizeBoard();
         return sudokuBoard;
     }
@@ -23,7 +33,7 @@ public class SudokuBoardRandomizer {
      * @param row1 first row
      * @param row2 second row
      */
-    public void swapRows(int row1, int row2) {
+    private void swapRows(int row1, int row2) {
 
         Integer[] temp = sudokuBoardNumbers[row1];
         sudokuBoardNumbers[row1] = sudokuBoardNumbers[row2];
@@ -37,7 +47,7 @@ public class SudokuBoardRandomizer {
      * @param col1 first column
      * @param col2 second column
      */
-    public void swapColumns(int col1, int col2) {
+    private void swapColumns(int col1, int col2) {
         for (int i = 0; i < 9; i++) {
             Integer temp = sudokuBoardNumbers[i][col1];
             sudokuBoardNumbers[i][col1] = sudokuBoardNumbers[i][col2];
@@ -50,7 +60,7 @@ public class SudokuBoardRandomizer {
      *
      * @param swapMethod 0 -> swap first second, 1 -> swap first third, 2 -> swap second third
      */
-    public void swapHorizontal(int swapMethod) {
+    private void swapHorizontal(int swapMethod) {
         switch (swapMethod) {
             case 0:
                 swapRows(0, 3);
@@ -71,9 +81,9 @@ public class SudokuBoardRandomizer {
     /**
      * swaps the major vertical columns
      *
-     * @param swapMethod
+     * @param swapMethod the way of swapping
      */
-    public void swapVertical(int swapMethod) {
+    private void swapVertical(int swapMethod) {
         switch (swapMethod) {
             case 0:
                 swapColumns(0, 3);
@@ -101,12 +111,13 @@ public class SudokuBoardRandomizer {
             swapHorizontal(random.nextInt(3));
             swapVertical(random.nextInt(3));
         }
-        //iterate through  the 3 major row/column to swap them
+        //iterate through the 3 major row/column to swap rows and columns within them
         randomizeSingleRowColumn(random);
     }
 
     /**
      * Randomizes the rows/columns within each major horizontal/vertical section
+     *
      * @param random a random for randomizing
      */
     private void randomizeSingleRowColumn(Random random) {
@@ -115,6 +126,26 @@ public class SudokuBoardRandomizer {
             for (int j = 0; j < 2; j++) {
                 swapRows(random.nextInt(3) + (3 * j), random.nextInt(3) + (3 * j));
                 swapColumns(random.nextInt(3) + (3 * j), random.nextInt(3) + (3 * j));
+            }
+        }
+    }
+
+    /**
+     * Remove numbers from the board
+     *
+     * @param board the board to remove from
+     */
+    void generateActiveBoard(SudokuPlayBoard board) {
+        Random random = new Random();
+        int i = 0;
+        while (i < 36) {
+            int position = random.nextInt(81);
+            int rowPosition = position / 9;
+            int columnPosition = position % 9;
+            if (!(board.getSudokuBoard()[rowPosition][columnPosition] == 0)) {
+                board.setSudokuBoardNumber(rowPosition, columnPosition, 0);
+                board.addRemovedNumber(position);
+                i++;
             }
         }
     }

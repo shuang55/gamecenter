@@ -17,9 +17,17 @@ import fall2018.csc2017.gamecentre.UserManager;
 
 public class SudokuStartingActivity extends AppCompatActivity {
 
-
+    /**
+     * Temp save file for starting sudoku game
+     */
     public static final String SUDOKU_START_FILE = GameManager.TEMP_SAVE_START;
+    /**
+     * Gamecentre for managing files
+     */
     private GameCentre gameCentre;
+    /**
+     * SudokuBoardManager to be used in game
+     */
     SudokuBoardManager sudokuBoardManager = new SudokuBoardManager();
 
     @Override
@@ -33,6 +41,9 @@ public class SudokuStartingActivity extends AppCompatActivity {
         addSudokuStartButtonListener();
     }
 
+    /**
+     * Activates start button
+     */
     private void addSudokuStartButtonListener() {
         Button sudokuStart = findViewById(R.id.sudoku_start);
         sudokuStart.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +54,9 @@ public class SudokuStartingActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Activates LoadAutoSaveButton
+     */
     private void addSudokuLoadAutoSaveButtonListener() {
         Button sudokuAutoSave = findViewById(R.id.sudoku_load_auto);
         sudokuAutoSave.setOnClickListener(new View.OnClickListener() {
@@ -51,24 +65,38 @@ public class SudokuStartingActivity extends AppCompatActivity {
                 gameCentre.loadManager(UserManager.USERS);
                 SudokuBoardManager tempBoard = (SudokuBoardManager) gameCentre.getUserManager().
                         getSelectedGame("Sudoku");
-                if (tempBoard != null) {
-                    sudokuBoardManager = tempBoard;
-                    gameCentre.saveManager(GameManager.TEMP_SAVE_START, sudokuBoardManager);
-                    swapToSudokuGame();
-                } else {
-                    makeToastNoAutoSavedGame();
-                }
+                checkValidAutoSavedGame(tempBoard);
             }
         });
     }
 
+    /**
+     * Checks if a game has been autosaved, and transition into game if it has.
+     * @param tempBoard the sudokuBoardManager
+     */
+    private void checkValidAutoSavedGame(SudokuBoardManager tempBoard) {
+        if (tempBoard != null) {
+            sudokuBoardManager = tempBoard;
+            gameCentre.saveManager(GameManager.TEMP_SAVE_START, sudokuBoardManager);
+            swapToSudokuGame();
+        } else {
+            makeToastNoAutoSavedGame();
+        }
+    }
+
+    /**
+     * Transitions to SudokuGameActivity
+     */
     private void swapToSudokuGame() {
         Intent sudoku = new Intent(this, SudokuGameActivity.class);
         startActivity(sudoku);
     }
 
+    /**
+     * Make toast "no autosaved game"
+     */
     private void makeToastNoAutoSavedGame() {
-        Toast.makeText(this, "No autosaved game", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "No autosaved game", Toast.LENGTH_SHORT).show();
     }
 
 }

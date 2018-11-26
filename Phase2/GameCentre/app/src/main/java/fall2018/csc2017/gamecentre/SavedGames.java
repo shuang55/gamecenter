@@ -27,7 +27,6 @@ public class SavedGames implements Serializable {
      */
     public void updateSavedGames(GameToSave gameToSave, String currentUser) {
         String gameType = gameToSave.getGameName();
-
         checkNullKey(currentUser, gameType);
         ArrayList<GameToSave> gameToSaves = savedGames.get(currentUser).get(gameType);
         updateSavedGamesArray(gameToSave, gameToSaves);

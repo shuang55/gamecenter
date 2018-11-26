@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import fall2018.csc2017.R;
 
 /**
@@ -19,7 +23,7 @@ public class SudokuBoardAdapter extends BaseAdapter {
     /**
      * The sudoku board and boardmanager to be processed
      */
-    private SudokuBoard sudokuBoard;
+    private SudokuPlayBoard sudokuBoard;
     private SudokuBoardManager sudokuBoardManager;
 
     /**
@@ -61,28 +65,60 @@ public class SudokuBoardAdapter extends BaseAdapter {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
             convertView = layoutInflater.inflate(R.layout.layout_sudoku_number, null);
         }
-
         // Display the number in the layout
         TextView number = convertView.findViewById(R.id.sudoku_number);
+        number.setTextColor(ContextCompat.getColor(context, R.color.black));
+        // update text displays
+        setTextDisplay(currentNumber, number);
+        setTextHighlight(position, number);
+        //update layout background
+        updateGridBackground(position, convertView);
+        // Return the view
+        return convertView;
+    }
+
+    /**
+     * Set text highlight if there are repeats
+     * @param position the current position
+     * @param number the textview to be updated
+     */
+    private void setTextHighlight(int position, TextView number) {
+        for (ArrayList<Integer> group : sudokuBoard.getRepeats()) {
+            if (group.contains(position)) {
+                number.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            }
+        }
+    }
+
+    /**
+     * Sets the text of the view
+     * @param currentNumber the number to be displayed
+     * @param number the textview to be updated
+     */
+    private void setTextDisplay(Integer currentNumber, TextView number) {
         if (currentNumber == 0) {
             number.setText("");
         } else {
             number.setText(String.format("%s", currentNumber));
         }
+    }
 
+    /**
+     * Updates the grid background depending on whether it is selected,
+     * to be filled, or cannot be filled
+     * @param position the current position
+     * @param convertView the view
+     */
+    private void updateGridBackground(int position, View convertView) {
         // Display the highlighted grid and empty grids
         if (position == sudokuBoardManager.getPositionSelected()) {
             convertView.setBackground(ContextCompat.getDrawable(
                     context,R.drawable.sudoku_border_selected));
-        } else if (sudokuBoardManager.getGeneratedNumbers().contains(position)) {
+        } else if (sudokuBoard.getRemovedNumbers().contains(position)) {
             convertView.setBackground(ContextCompat.getDrawable(context, R.drawable.sudoku_border_empty));
         } else {
             convertView.setBackground(ContextCompat.getDrawable(context,R.drawable.sudoku_border));
         }
-
-
-        // Return the view
-        return convertView;
     }
 
 }

@@ -5,11 +5,10 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+/**
+ * A custom linear layout with equal width and height, used for displaying sudoku number
+ */
 public class CustomSudokuLinearLayout extends LinearLayout {
-
-    public CustomSudokuLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
 
     public CustomSudokuLinearLayout(Context context) {
         super(context);

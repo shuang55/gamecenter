@@ -41,7 +41,7 @@ public class Card implements Comparable<Card>, Serializable {
      *
      * @return id of card face
      */
-    public int getCardFaceId() {
+    int getCardFaceId() {
         return cardFaceId;
     }
 
@@ -50,7 +50,9 @@ public class Card implements Comparable<Card>, Serializable {
      *
      * @return id of card back
      */
-    public int getCardBackId() { return cardBackId; }
+    int getCardBackId() {
+        return cardBackId;
+    }
 
     /**
      * Return the card id.
@@ -68,95 +70,55 @@ public class Card implements Comparable<Card>, Serializable {
      */
     Card(int backgroundId) {
         id = backgroundId + 1;
-        switch ((int) Math.ceil(((double) id)/2)) {
+        switch ((int) Math.ceil(((double) id) / 2)) {
             case 1:
-                cardFaceId = R.drawable.tile_1;
+                cardFaceId = R.drawable.hearthstone_card1;
                 break;
             case 2:
-                cardFaceId = R.drawable.tile_2;
+                cardFaceId = R.drawable.hearthstone_card2;
                 break;
             case 3:
-                cardFaceId = R.drawable.tile_3;
+                cardFaceId = R.drawable.hearthstone_card3;
                 break;
             case 4:
-                cardFaceId = R.drawable.tile_4;
+                cardFaceId = R.drawable.hearthstone_card4;
                 break;
             case 5:
-                cardFaceId = R.drawable.tile_5;
+                cardFaceId = R.drawable.hearthstone_card5;
                 break;
             case 6:
-                cardFaceId = R.drawable.tile_6;
+                cardFaceId = R.drawable.hearthstone_card6;
                 break;
             case 7:
-                cardFaceId = R.drawable.tile_7;
+                cardFaceId = R.drawable.hearthstone_card7;
                 break;
             case 8:
-                cardFaceId = R.drawable.tile_8;
+                cardFaceId = R.drawable.hearthstone_card8;
                 break;
             case 9:
-                cardFaceId = R.drawable.tile_9;
+                cardFaceId = R.drawable.hearthstone_card9;
                 break;
             case 10:
-                cardFaceId = R.drawable.tile_10;
+                cardFaceId = R.drawable.hearthstone_card10;
                 break;
             case 11:
-                cardFaceId = R.drawable.tile_11;
+                cardFaceId = R.drawable.hearthstone_card11;
                 break;
             case 12:
-                cardFaceId = R.drawable.tile_12;
+                cardFaceId = R.drawable.hearthstone_card12;
                 break;
-//            case 13:
-//                cardFaceId = R.drawable.tile_13;
-//                break;
-//            case 14:
-//                cardFaceId = R.drawable.tile_14;
-//                break;
-//            case 15:
-//                cardFaceId = R.drawable.tile_15;
-//                break;
-//            case 16:
-//                cardFaceId = R.drawable.tile_16;
-//                break;
-//            case 17:
-//                cardFaceId = R.drawable.tile_17;
-//                break;
-//            case 18:
-//                cardFaceId = R.drawable.tile_18;
-//                break;
-//            case 19:
-//                cardFaceId = R.drawable.tile_19;
-//                break;
-//            case 20:
-//                cardFaceId = R.drawable.tile_20;
-//                break;
-//            case 21:
-//                cardFaceId = R.drawable.tile_21;
-//                break;
-//            case 22:
-//                cardFaceId = R.drawable.tile_22;
-//                break;
-//            case 23:
-//                cardFaceId = R.drawable.tile_23;
-//                break;
-//            case 24:
-//                cardFaceId = R.drawable.tile_24;
-//                break;
-//            case 25:
-//                cardFaceId = R.drawable.blank_tile;
-//                break;
             default:
-                cardFaceId = R.drawable.blank_tile;
+                cardFaceId = R.drawable.star_photo;
         }
-        cardBackId = R.drawable.star_photo;
+        cardBackId = R.drawable.hearthstone_card13;
         isPaired = false;
     }
 
     /**
      * Get whether or not this card is isPaired.
-     *
      * @return true if card is isPaired, false otherwise
      */
-    boolean isPaired(){
+    boolean isPaired() {
         return isPaired;
     }
 
@@ -171,7 +133,7 @@ public class Card implements Comparable<Card>, Serializable {
 
     /**
      * Set the card to opened or not opened;
-     *
+     * <p>
      * 1 means card is opened, 0 means card is covered.
      *
      * @param opened whether the card is opened or not
@@ -182,12 +144,10 @@ public class Card implements Comparable<Card>, Serializable {
 
     /**
      * Get whether or not this card is opened.
-     *
      * 1 means card is opened, 0 means card is covered.
-     *
      * @return true if card is opened, false otherwise
      */
-    int isOpen(){
+    int isOpen() {
         return opened;
     }
 

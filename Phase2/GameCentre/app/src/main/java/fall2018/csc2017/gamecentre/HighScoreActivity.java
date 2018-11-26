@@ -67,60 +67,52 @@ public class HighScoreActivity extends AppCompatActivity {
      * @param select the score board user wants to view
      */
     private void setDisplay(String select) {
-        TextView textScore = findViewById(R.id.score_2);
         TextView textName = findViewById(R.id.score_1);
+        TextView textScore = findViewById(R.id.score_2);
         if (select.equals("User")) {
-            textScore.setText(perUserScoreListGenerator());
-            textName.setText(perUserGameListGenerator());
+            textName.setText(perUserListGenerator(false));
+            textScore.setText(perUserListGenerator(true));
         } else {
-            textName.setText(perGameUserListGenerator(select));
-            textScore.setText(perGameScoreListGenerator(select));
+            textName.setText(perGameListGenerator(select, false));
+            textScore.setText(perGameListGenerator(select, true));
         }
     }
 
     /**
-     * Generates the string for displaying user high score games.
-     *
-     * @return the string for displaying list of games
+     * Generates the string display for user highscore and game name
+     * @param isScore whether the string output should be a list of score or list of game name
+     * @return the string output
      */
-    private String perUserGameListGenerator() {
+    private String perUserListGenerator(boolean isScore) {
         Score[] scoreSorted = scoreBoard.getTopTenSelect(userManager.getCurrentUser().getUsername(),
                 "user");
         StringBuilder game = new StringBuilder();
         for (int i = 0; i < 10; i++) {
-            game.append(String.format("%s. %s \n", i + 1, scoreSorted[i].getGame()));
+            if (!isScore) {
+                game.append(String.format("%s. %s \n", i + 1, scoreSorted[i].getGame()));
+            } else {
+                game.append(String.format(" %s \n", scoreSorted[i].getScore()));
+            }
         }
         return game.toString();
     }
 
     /**
-     * Generates the string for display user high score score.
+     * Generates the string display for game highscore and username
      *
-     * @return the string for displaying list of score
+     * @param game    the game name
+     * @param isScore whether the string output is a list of score or list of name
+     * @return the string display
      */
-    private String perUserScoreListGenerator() {
-        Score[] scoreSorted = scoreBoard.getTopTenSelect(userManager.getCurrentUser().getUsername(),
-                "user");
-        StringBuilder scoreList = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
-            scoreList.append(String.format(" %s \n", scoreSorted[i].getScore()));
-        }
-        return scoreList.toString();
-
-    }
-
-    /**
-     * Generates the string for displaying high score users for the game.
-     *
-     * @param game which game to display
-     * @return string for displaying list of users
-     */
-    private String perGameUserListGenerator(String game) {
+    private String perGameListGenerator(String game, boolean isScore) {
         Score[] score = checkSelectAll(game);
-
         StringBuilder gameDisplay = new StringBuilder();
         for (int i = 0; i < 10; i++) {
-            gameDisplay.append(String.format("%s. %s \n", i + 1, score[i].getUser()));
+            if (!isScore) {
+                gameDisplay.append(String.format("%s. %s \n", i + 1, score[i].getUser()));
+            } else {
+                gameDisplay.append(String.format(" %s \n", score[i].getScore()));
+            }
         }
         return gameDisplay.toString();
     }
@@ -145,23 +137,6 @@ public class HighScoreActivity extends AppCompatActivity {
 
 
     /**
-     * Generates the string for displaying high score for the game.
-     *
-     * @param game which game to display
-     * @return the score display
-     */
-    private String perGameScoreListGenerator(String game) {
-        Score[] score = checkSelectAll(game);
-
-        StringBuilder gameDisplay = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
-            gameDisplay.append(String.format(" %s \n", score[i].getScore()));
-        }
-        return gameDisplay.toString();
-    }
-
-
-    /**
      * Activates back button.
      */
     private void addBackButtonListener() {
@@ -172,9 +147,7 @@ public class HighScoreActivity extends AppCompatActivity {
                 switchToGameCentre();
             }
         });
-
     }
-
 
     /**
      * Switch to the GameCentreActivity view.

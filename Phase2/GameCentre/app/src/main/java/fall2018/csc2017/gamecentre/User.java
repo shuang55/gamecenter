@@ -56,10 +56,14 @@ public class User implements Serializable {
     }
 
     public void addSavedGame(GameManager gameManager) {
+        GameManager gameToRemove = null;
         for (GameManager game: savedGames) {
             if (game.getGameName().equals(gameManager.getGameName())) {
-                savedGames.remove(game);
+                gameToRemove = game;
             }
+        }
+        if (gameToRemove != null){
+            savedGames.remove(gameToRemove);
         }
         savedGames.add(gameManager);
     }
@@ -71,5 +75,13 @@ public class User implements Serializable {
             }
         }
         return null;
+    }
+
+    public void removeSavedGame(String gameName) {
+        for (GameManager game : savedGames) {
+            if (game.getGameName().equals(gameName)) {
+                savedGames.remove(game);
+            }
+        }
     }
 }
