@@ -5,6 +5,13 @@ Wilson Wei-Sheng Hsu 7787985537 wilson.hsu@mail.utoronto.ca
 Jun Yu Zhang 6047733718 kelv.zhang@mail.utoronto.ca
 Maggie Zhu 6134060952 mg.zhu@mail.utoronto.ca
 
+#git usernames:
+Jia Yang Yu:
+Wilson Hsu:
+Jun Yu Zhang:
+Tsan Yu Huang: huangts7, huang
+Maggie Zhu
+
 # Team contract
 I will do my work
 I will do my best to attend all meetings on time
@@ -25,3 +32,8 @@ meeting time/location : BA, time discussed on facebook.
 note taker for each meeting responsible for sharing notes ( decisions made, each person's task, etc)
 maybe rotate note taker every meeting
 Use markdown file to record each meeting and push to the repository
+
+#work distribution:
+Making sure every sliding tiles is solvable, and helping write tests: Jia Yang Yu
+Sudoku and tests: maggie and jun yu
+cardmatching: wilson and tsan yu

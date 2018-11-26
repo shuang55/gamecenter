@@ -97,7 +97,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * @param tiles a list containing tiles for sliding tile game
      * @return number of inversions
      */
-    int getInversionCount(List<Tile> tiles) {
+    private int getInversionCount(List<Tile> tiles) {
         int inversionCount = 0;
         for (int i = 0; i < tiles.size() - 1; i++)
             for (int j = i + 1; j < tiles.size(); j++)

@@ -55,6 +55,15 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
     }
 
     /**
+     * Return the tiles for this slidingTileBoard.
+     *
+     * @return the tiles for this slidingTileBoard
+     */
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    /**
      * Swap the tiles at (row1, col1) and (row2, col2)
      *
      * @param row1 the first tile row
