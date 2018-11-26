@@ -135,12 +135,12 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
      */
     private class BoardIterator implements Iterator<Card> {
 
-        private int row = 0;
-        private int col = 0;
+        int row = 0;
+        int col = 0;
 
         @Override
         public boolean hasNext() {
-            return !(row == numCardPerRow - 1 && col == numCardPerCol - 1);
+            return row <= numCardPerRow - 1 && col <= numCardPerCol - 1;
         }
 
         @Override
