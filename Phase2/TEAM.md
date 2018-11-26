@@ -8,7 +8,7 @@ Maggie Zhu 6134060952 mg.zhu@mail.utoronto.ca
 #git usernames:
 Jia Yang Yu:
 Wilson Hsu:
-Jun Yu Zhang:
+Jun Yu Zhang: kelvin, 
 Tsan Yu Huang: huangts7, huang
 Maggie Zhu
 
