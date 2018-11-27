@@ -165,6 +165,34 @@ public class GameCentre {
     }
 
     /**
+     * Add a gameManager to this.savedGames
+     * @param gameManager the gameManager to be added
+     */
+    public void saveGame(GameManager gameManager) {
+        GameToSave gameToSave = new GameToSave(gameManager);
+        savedGames.updateSavedGames(gameToSave, userManager.getCurrentUser().getUsername());
+        saveManager(SavedGames.SAVEDGAMES, savedGames);
+    }
+
+    /**
+     * Add a gameManager to the list of current user temporary autosaves
+     * @param gameManager the gameManager to be added
+     */
+    public void autoSave(GameManager gameManager) {
+        userManager.autoSaveGame(gameManager);
+        saveManager(UserManager.USERS, userManager);
+    }
+
+    /**
+     * Writes gameManager to TEMP_SAVE_WIN file, and delete the current autosaved gameManager
+     * @param gameManager the gameManager to be written
+     */
+    public void createWinFile(GameManager gameManager) {
+        saveManager(GameManager.TEMP_SAVE_WIN, gameManager);
+        userManager.getCurrentUser().removeSavedGame(gameManager.getGameName());
+        saveManager(UserManager.USERS, userManager);
+    }
+    /**
      * Get userManager.
      *
      * @return userManager
