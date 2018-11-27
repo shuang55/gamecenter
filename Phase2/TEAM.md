@@ -6,7 +6,7 @@ Jun Yu Zhang 6047733718 kelv.zhang@mail.utoronto.ca
 Maggie Zhu 6134060952 mg.zhu@mail.utoronto.ca
 
 #git usernames:
-Jia Yang Yu:
+Jia Yang Yu: jia yang yu
 Wilson Hsu:
 Jun Yu Zhang: kelvin, 
 Tsan Yu Huang: huangts7, huang
