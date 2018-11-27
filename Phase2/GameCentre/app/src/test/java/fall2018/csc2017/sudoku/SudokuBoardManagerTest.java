@@ -69,11 +69,6 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void getActiveBoard() {
-
-    }
-
-    @Test
     public void isValidTap() {
         ArrayList<Integer> list = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
         assertTrue(sudokuBoardManager.isValidTap(list.get(0)));
@@ -93,13 +88,25 @@ public class SudokuBoardManagerTest {
 
     @Test
     public void provideHint() {
-    }
+        Integer[][] before = sudokuBoardManager.getActiveBoard().getSudokuBoard().clone();
+        sudokuBoardManager.provideHint();
+        Integer[][] after = sudokuBoardManager.getActiveBoard().getSudokuBoard();
 
-    @Test
-    public void getMoves() {
+        if(sudokuBoardManager.getActiveBoard().getRemovedNumbers().size() != 0) {
+            assertNotEquals(before, after);
+        }
     }
 
     @Test
     public void undo() {
+        int numUndo = sudokuBoardManager.getUndo().size();
+        Object before = sudokuBoardManager.getActiveBoard().getRemovedNumbers().clone();
+        sudokuBoardManager.undo();
+        ArrayList<Integer> after = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
+        if(numUndo != 0) {
+            assertNotEquals(before, after);
+        } else {
+            assertEquals(before, after);
+        }
     }
 }
