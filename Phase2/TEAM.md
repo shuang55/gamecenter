@@ -10,7 +10,7 @@ Jia Yang Yu:
 Wilson Hsu:
 Jun Yu Zhang: kelvin, 
 Tsan Yu Huang: huangts7, huang
-Maggie Zhu
+Maggie Zhu: Maggie Zhu
 
 # Team contract
 I will do my work
