@@ -86,7 +86,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        gameCentre.createWinFile(sudokuBoardManager);
+        gameCentre.gameManagerWin(sudokuBoardManager);
         swapToYouWin();
     }
 

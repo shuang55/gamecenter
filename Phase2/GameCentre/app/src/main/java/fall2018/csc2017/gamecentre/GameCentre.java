@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -109,13 +108,10 @@ public class GameCentre {
                 managerSelect(fileName, input);
                 inputStream.close();
             }
-
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
         } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
+            Log.e("GameCentre", "Can not read file: " + e.toString());
         } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
+            Log.e("GameCentre", "File contained unexpected data type: " + e.toString());
         }
     }
 
@@ -124,7 +120,7 @@ public class GameCentre {
      *
      * @param fileName the file being accessed
      * @param input    data being loaded
-     * @throws IOException when reading input file gets interrupted
+     * @throws IOException            when reading input file gets interrupted
      * @throws ClassNotFoundException when the input class cannot be found
      */
     private void managerSelect(String fileName, ObjectInputStream input) throws IOException, ClassNotFoundException {
@@ -158,12 +154,13 @@ public class GameCentre {
             outputStream.writeObject(save);
             outputStream.close();
         } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
+            Log.e("GameCentre", "File write failed: " + e.toString());
         }
     }
 
     /**
      * Add a gameManager to this.savedGames
+     *
      * @param gameManager the gameManager to be added
      */
     public void saveGame(GameManager gameManager) {
@@ -174,6 +171,7 @@ public class GameCentre {
 
     /**
      * Add a gameManager to the list of current user temporary autosaves
+     *
      * @param gameManager the gameManager to be added
      */
     public void autoSave(GameManager gameManager) {
@@ -182,14 +180,29 @@ public class GameCentre {
     }
 
     /**
-     * Writes gameManager to TEMP_SAVE_WIN file, and delete the current autosaved gameManager
+     * Writes gameManager to TEMP_SAVE_WIN file and updates score, delete
+     * the current autosaved gameManager
+     *
      * @param gameManager the gameManager to be written
      */
-    public void createWinFile(GameManager gameManager) {
+    public void gameManagerWin(GameManager gameManager) {
         saveManager(GameManager.TEMP_SAVE_WIN, gameManager);
         userManager.getCurrentUser().removeSavedGame(gameManager.getGameName());
         saveManager(UserManager.USERS, userManager);
+        writeScoreToFile(gameManager);
     }
+
+    /**
+     * Writes the score from gameManager to scoreBoard
+     * @param gameManager the gameManager with score to be updated
+     */
+    private void writeScoreToFile(GameManager gameManager) {
+        Score score = new Score(gameManager.getGameName(),
+                userManager.getCurrentUser().getUsername(), gameManager.getScore());
+        scoreBoard.updateScore(score);
+        saveManager(ScoreBoard.SCOREBOARD, scoreBoard);
+    }
+
     /**
      * Get userManager.
      *
@@ -210,13 +223,14 @@ public class GameCentre {
 
     /**
      * get game manager
+     *
      * @return gameManager
      */
     public GameManager getGameManager() {
         return gameManager;
     }
 
-    public ScoreBoard getScoreBoard() {
+    ScoreBoard getScoreBoard() {
         return scoreBoard;
     }
 }

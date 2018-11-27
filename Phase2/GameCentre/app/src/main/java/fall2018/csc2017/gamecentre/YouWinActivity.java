@@ -1,6 +1,5 @@
 package fall2018.csc2017.gamecentre;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,20 +19,7 @@ public class YouWinActivity extends AppCompatActivity {
      */
     private GameManager gameManager;
 
-    /**
-     * The scoreboard.
-     */
-    private ScoreBoard scoreBoard;
 
-    /**
-     * The user manager that manages all users.
-     */
-    private UserManager userManager;
-
-    /**
-     * The game centre.
-     */
-    private GameCentre gameCentre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +35,7 @@ public class YouWinActivity extends AppCompatActivity {
      * Loads userManager, scoreBoard and gameManager.
      */
     private void loadManager(){
-        Context youWin = YouWinActivity.this;
-        gameCentre = new GameCentre(youWin);
-        userManager = gameCentre.getUserManager();
-        scoreBoard = gameCentre.getScoreBoard();
+        GameCentre gameCentre = new GameCentre(this);
         gameCentre.loadManager(GameManager.TEMP_SAVE_WIN);
         gameManager = gameCentre.getGameManager();
     }
@@ -65,24 +48,9 @@ public class YouWinActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateScore();
                 switchToHighscore();
             }
         });
-    }
-
-    /**
-     * Updates the personal score and scoreboard score.
-     */
-    private void updateScore() {
-        Score newScore = new Score(
-                gameManager.getGameName(),
-                userManager.getCurrentUser().getUsername(),
-                gameManager.getScore());
-        scoreBoard.updateByGame(newScore);
-        scoreBoard.updateByUser(newScore);
-        gameCentre.saveManager(ScoreBoard.SCOREBOARD, scoreBoard);
-
     }
 
     /**

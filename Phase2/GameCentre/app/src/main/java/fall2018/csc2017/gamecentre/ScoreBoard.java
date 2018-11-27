@@ -3,6 +3,7 @@ package fall2018.csc2017.gamecentre;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Score board for games.
@@ -17,33 +18,22 @@ class ScoreBoard implements Serializable {
     /**
      * Stores a HashMap of game (String): Score[];
      */
-    private HashMap<String, ArrayList<Score>> byGame = new HashMap<>();
+    private Map<String, ArrayList<Score>> byGame = new HashMap<>();
 
     /**
      * Stores a HashMap of user (String): Score[].
      */
-    private HashMap<String, ArrayList<Score>> byUser = new HashMap<>();
+    private Map<String, ArrayList<Score>> byUser = new HashMap<>();
 
-    /**
-     * Update hashmap byGame.
-     *
-     * @param score score that is added
-     */
-    void updateByGame(Score score) {
-        // Assuming index 0 - 9 is lowest to highest score.
+
+    void updateScore(Score score) {
         if (!byGame.containsKey(score.getGame())) {
             byGame.put(score.getGame(), new ArrayList<Score>());
         }
-        updateArray(score, byGame.get(score.getGame()));
-    }
-
-    /**
-     * Update hashmap byUser.
-     */
-    void updateByUser(Score score) {
         if (!byUser.containsKey(score.getUser())) {
             byUser.put(score.getUser(), new ArrayList<Score>());
         }
+        updateArray(score, byGame.get(score.getGame()));
         updateArray(score, byUser.get(score.getUser()));
     }
 
