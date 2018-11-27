@@ -18,12 +18,10 @@ import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.CustomAdapter;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
-import fall2018.csc2017.gamecentre.GameToSave;
 import fall2018.csc2017.gamecentre.GestureDetectGridView;
-import fall2018.csc2017.gamecentre.SavedGames;
-import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
+// Excluded from tests because it's a view class
 public class CardMatchingGameActivity extends AppCompatActivity implements Observer {
 
     /**
@@ -52,7 +50,7 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
     public void display() {
         gridView.setAdapter(new CustomAdapter(cardButtons, columnWidth, columnHeight));
         setMoveCountText();
-        autoSave();
+        gameCentre.autoSave(cardMatchingBoardManager);
     }
 
     @Override
@@ -103,12 +101,7 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserManager userManager = gameCentre.getUserManager();
-                SavedGames savedGames = gameCentre.getSavedGames();
-                String userName = userManager.getCurrentUser().getUsername();
-                GameToSave gameToSave = new GameToSave(cardMatchingBoardManager);
-                savedGames.updateSavedGames(gameToSave, userName);
-                gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
+                gameCentre.saveGame(cardMatchingBoardManager);
                 makeToastSavedText();
             }
         });
@@ -143,7 +136,8 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
 
     /**
      * Update the backgrounds on the buttons to match the tiles.
-     * * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
+     *
+     * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
      * mode 0 is to close the card, mode 1 is to open the card.
      */
     private void changeCardDisplay(int[] operation) {
@@ -176,18 +170,9 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         changeCardDisplay((int[]) arg);
         display();
         if (cardMatchingBoardManager.puzzleSolved()) {
-            gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, cardMatchingBoardManager);
+            gameCentre.gameManagerWin(cardMatchingBoardManager);
             switchToWinActivity();
         }
-    }
-
-    /**
-     * Autosaves the board
-     */
-    private void autoSave() {
-        UserManager userManager = gameCentre.getUserManager();
-        userManager.autoSaveGame(cardMatchingBoardManager);
-        gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
     /**
