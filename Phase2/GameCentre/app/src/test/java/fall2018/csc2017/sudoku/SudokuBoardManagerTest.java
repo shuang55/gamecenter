@@ -112,21 +112,25 @@ public class SudokuBoardManagerTest {
 
     @Test
     public void provideHint() {
-        int position = sudokuBoardManager.getActiveBoard().getRemovedNumbers().get(0);
+        Integer[][] before = sudokuBoardManager.getActiveBoard().getSudokuBoard().clone();
         sudokuBoardManager.provideHint();
-        Integer zero = 0;
-        assertNotEquals(sudokuBoardManager.getActiveBoard().
-                getSudokuBoard()[position / 9][position % 9], zero);
+        Integer[][] after = sudokuBoardManager.getActiveBoard().getSudokuBoard();
+
+        if(sudokuBoardManager.getActiveBoard().getRemovedNumbers().size() != 0) {
+            assertNotEquals(before, after);
+        }
     }
 
     @Test
     public void undo() {
-        int position = sudokuBoardManager.getActiveBoard().getRemovedNumbers().get(0);
-        SudokuPlayBoard oldBoard = sudokuBoardManager.getActiveBoard().copy();
-        sudokuBoardManager.touchMove(position);
-        sudokuBoardManager.updateNumber(9);
-        assertNotEquals(oldBoard, sudokuBoardManager.getActiveBoard());
+        int numUndo = sudokuBoardManager.getUndo().size();
+        Object before = sudokuBoardManager.getActiveBoard().getRemovedNumbers().clone();
         sudokuBoardManager.undo();
-        assertEquals(oldBoard, sudokuBoardManager.getActiveBoard().copy());
+        ArrayList<Integer> after = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
+        if(numUndo != 0) {
+            assertNotEquals(before, after);
+        } else {
+            assertEquals(before, after);
+        }
     }
 }
