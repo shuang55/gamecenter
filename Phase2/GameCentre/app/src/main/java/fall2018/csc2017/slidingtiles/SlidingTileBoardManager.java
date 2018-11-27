@@ -100,8 +100,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      */
     private int getInversionCount(List<Tile> tiles) {
         int inversionCount = 0;
-        for (int i = 0; i < tiles.size() - 1; i++)
-            for (int j = i + 1; j < tiles.size(); j++)
+        for (int i = 0; i != tiles.size() - 1; i++)
+            for (int j = i + 1; j != tiles.size(); j++)
                 if (tiles.get(i).getId() != 25 && tiles.get(j).getId() != 25)
                     if (tiles.get(i).getId() > tiles.get(j).getId())
                         inversionCount++;
