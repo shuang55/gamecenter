@@ -123,7 +123,8 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setEzWin();
+                slidingTileBoardManager = new SlidingTileBoardManager(boardSize);
+                slidingTileBoardManager.setBoardOneMoveWin();
                 gameCentre.saveManager(GameManager.TEMP_SAVE_START, slidingTileBoardManager);
                 swapToSlidingTileGame();
             }
@@ -136,23 +137,6 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
     public void swapToSlidingTileGame() {
         Intent tmp = new Intent(this, SlidingTileGameActivity.class);
         startActivity(tmp);
-    }
-
-    /**
-     * Set the board to be one move away from winning.
-     */
-    public void setEzWin() {
-        List<Tile> tiles = new ArrayList<>();
-        final int numTiles = boardSize * boardSize;
-        for (int tileNum = 0; tileNum != numTiles; tileNum++) {
-            tiles.add(new Tile(tileNum));
-        }
-        tiles.remove(tiles.size() - 1);
-        tiles.add(new Tile(24));
-        SlidingTileBoard slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        slidingTileBoard.swapTiles(slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 1,
-                slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 2);
-        slidingTileBoardManager = new SlidingTileBoardManager(slidingTileBoard);
     }
 
     /**

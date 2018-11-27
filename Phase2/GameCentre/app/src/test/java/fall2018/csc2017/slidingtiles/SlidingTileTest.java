@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class SlidingTileBoardAndTileTest {
+public class SlidingTileTest {
 
     /** The board manager for testing. */
     private SlidingTileBoardManager slidingTileBoardManager;
@@ -204,7 +204,6 @@ public class SlidingTileBoardAndTileTest {
         assertEquals(24, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 3).getId());
     }
 
-
     /**
      * Test whether board is solvable for board size 3.
      */
@@ -251,6 +250,42 @@ public class SlidingTileBoardAndTileTest {
             }
         }
         assertTrue(checkSolvability(tilesList, 5));
+    }
+
+    /**
+     * Test whether One move away board is actually one move away for board size 3.
+     */
+    @Test
+    public void testEasyWinBoardSize3(){
+        slidingTileBoardManager = new SlidingTileBoardManager(3);
+        slidingTileBoardManager.setBoardOneMoveWin();
+        assertFalse(slidingTileBoardManager.puzzleSolved());
+        slidingTileBoardManager.touchMove(8);
+        assertTrue(slidingTileBoardManager.puzzleSolved());
+    }
+
+    /**
+     * Test whether One move away board is actually one move away for board size 3.
+     */
+    @Test
+    public void testEasyWinBoardSize4(){
+        slidingTileBoardManager = new SlidingTileBoardManager(4);
+        slidingTileBoardManager.setBoardOneMoveWin();
+        assertFalse(slidingTileBoardManager.puzzleSolved());
+        slidingTileBoardManager.touchMove(15);
+        assertTrue(slidingTileBoardManager.puzzleSolved());
+    }
+
+    /**
+     * Test whether One move away board is actually one move away for board size 3.
+     */
+    @Test
+    public void testEasyWinBoardSize5(){
+        slidingTileBoardManager = new SlidingTileBoardManager(5);
+        slidingTileBoardManager.setBoardOneMoveWin();
+        assertFalse(slidingTileBoardManager.puzzleSolved());
+        slidingTileBoardManager.touchMove(24);
+        assertTrue(slidingTileBoardManager.puzzleSolved());
     }
 }
 

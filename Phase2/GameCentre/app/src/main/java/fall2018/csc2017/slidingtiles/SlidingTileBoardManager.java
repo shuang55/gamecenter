@@ -72,8 +72,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
         if (!checkSolvability(tiles, boardSize)){
             makeSolvableBoard(tiles);
+            slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
         }
-        slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
     }
 
     /**
@@ -115,12 +115,28 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      */
     private void makeSolvableBoard(List<Tile> tiles) {
         if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
-            Collections.swap(tiles, tiles.size()-1, tiles.size()-2
-            );
+            Collections.swap(tiles, tiles.size()-1, tiles.size()-2);
         }
         else{
             Collections.swap(tiles, 0, 1 );
         }
+    }
+
+    /**
+     * Set the board to be one move away from winning.
+     */
+    void setBoardOneMoveWin(){
+        int boardSize = getSlidingTileBoard().boardSize;
+        List<Tile> tiles = new ArrayList<>();
+        final int numTiles = boardSize * boardSize;
+        for (int tileNum = 0; tileNum != numTiles; tileNum++) {
+            tiles.add(new Tile(tileNum));
+        }
+        tiles.remove(tiles.size() - 1);
+        tiles.add(new Tile(24));
+        slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
+        slidingTileBoard.swapTiles(slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 1,
+                slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 2);
     }
 
     /**
