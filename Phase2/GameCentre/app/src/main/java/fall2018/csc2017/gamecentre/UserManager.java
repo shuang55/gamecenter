@@ -3,8 +3,6 @@ package fall2018.csc2017.gamecentre;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Observable;
-
 
 /**
  * Manages all the users for the gameCentre.
@@ -27,11 +25,6 @@ public class UserManager implements Serializable {
     private User currentUser;
 
     /**
-     * Current user's file.
-     */
-    private String currentUserFile;
-
-    /**
      * Initalizes a new Usermanager.
      */
     UserManager() {
@@ -41,13 +34,12 @@ public class UserManager implements Serializable {
     /**
      * Method for creating a new user.
      *
-     * @param user the input username
+     * @param user     the input username
      * @param password the input password
      */
     boolean signUp(String user, String password) {
         boolean nameValid = isValidName(user);
         boolean passwordValid = isValidPassword(password);
-
         if (nameValid && passwordValid) {
             User newUser = new User(user, password);
             users.add(newUser);
@@ -120,41 +112,21 @@ public class UserManager implements Serializable {
     }
 
     /**
-     * Returns the User with username user.
+     * Adds gameManager to the current user's list of auto saved games
      *
-     * @param user the input username
-     * @return the User with the username user
+     * @param gameManager the gameManager to be added
      */
-    User findUser(String user) {
-        for (User u : users) {
-            if (u.getUsername().equals(user)) {
-                return u;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Set the currentUserFile to username.ser.
-     */
-    public void setCurrentUserFile() {
-        this.currentUserFile = getCurrentUser().getUsername() + ".ser";
-    }
-
-    /**
-     * Getter for currentUserFile.
-     *
-     * @return currentUserFile
-     */
-    public String getCurrentUserFile() {
-        return currentUserFile;
-    }
-
     public void autoSaveGame(GameManager gameManager) {
         currentUser.addSavedGame(gameManager);
     }
 
-    public GameManager getSelectedGame (String gameName) {
+    /**
+     * Returns the gameManager in current user's list of auto saved games with gameName
+     *
+     * @param gameName the gameName of the gameManager to be returned
+     * @return the gameManager
+     */
+    public GameManager getSelectedGame(String gameName) {
         return currentUser.getSelectedGame(gameName);
 
     }
