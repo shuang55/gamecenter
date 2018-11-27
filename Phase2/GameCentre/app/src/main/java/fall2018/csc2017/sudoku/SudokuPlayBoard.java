@@ -32,11 +32,12 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
     /**
      * Sets the board at [row][col] to be num
      *
-     * @param row    row to be updated
-     * @param column column to be updated
+     * @param position the position to be updated
      * @param number number to be updated
      */
-    void setSudokuBoardNumber(int row, int column, int number) {
+    void setSudokuBoardNumber(int position, int number) {
+        int row = position / 9;
+        int column = position % 9;
         sudokuBoard[row][column] = number;
         updateRepeats();
 
