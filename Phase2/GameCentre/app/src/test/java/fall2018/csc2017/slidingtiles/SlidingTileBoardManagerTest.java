@@ -12,8 +12,9 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class SlidingTileTest {
+public class SlidingTileBoardManagerTest {
 
+    //Set up for testings.
     /** The board manager for testing. */
     private SlidingTileBoardManager slidingTileBoardManager;
 
@@ -80,76 +81,7 @@ public class SlidingTileTest {
         return inversionCount;
     }
 
-    /**
-     * Shuffle a few tiles.
-     */
-    private void swapFirstTwoTiles() {
-        slidingTileBoardManager.getSlidingTileBoard().swapTiles(0, 0, 0, 1);
-    }
-
-    /**
-     * Test whether swapping two tiles makes a solved board unsolved.
-     */
-    @Test
-    public void testIsSolved() {
-        setUpCorrect(3);
-        assertTrue(slidingTileBoardManager.puzzleSolved());
-        swapFirstTwoTiles();
-        assertFalse(slidingTileBoardManager.puzzleSolved());
-    }
-
-    /**
-     * Test whether swapping the first two tiles works.
-     */
-    @Test
-    public void testSwapFirstTwoBoardSize3() {
-        setUpCorrect(3);
-        assertEquals(1, slidingTileBoardManager.getSlidingTileBoard().getTile(0, 0).getId());
-        assertEquals(2, slidingTileBoardManager.getSlidingTileBoard().getTile(0, 1).getId());
-        slidingTileBoardManager.getSlidingTileBoard().swapTiles(0, 0, 0, 1);
-        assertEquals(2, slidingTileBoardManager.getSlidingTileBoard().getTile(0, 0).getId());
-        assertEquals(1, slidingTileBoardManager.getSlidingTileBoard().getTile(0, 1).getId());
-    }
-
-    /**
-     * Test whether swapping the last two tiles works on a board size 3.
-     */
-    @Test
-    public void testSwapLastTwoBoardSize3() {
-        setUpCorrect(3);
-        assertEquals(8, slidingTileBoardManager.getSlidingTileBoard().getTile(2, 1).getId());
-        assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(2, 2).getId());
-        slidingTileBoardManager.getSlidingTileBoard().swapTiles(2, 2, 2, 1);
-        assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(2, 1).getId());
-        assertEquals(8, slidingTileBoardManager.getSlidingTileBoard().getTile(2, 2).getId());
-    }
-
-    /**
-     * Test whether swapping the last two tiles works on a board size 4.
-     */
-    @Test
-    public void testSwapLastTwoBoardSize4() {
-        setUpCorrect(4);
-        assertEquals(15, slidingTileBoardManager.getSlidingTileBoard().getTile(3, 2).getId());
-        assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(3, 3).getId());
-        slidingTileBoardManager.getSlidingTileBoard().swapTiles(3, 3, 3, 2);
-        assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(3, 2).getId());
-        assertEquals(15, slidingTileBoardManager.getSlidingTileBoard().getTile(3, 3).getId());
-    }
-
-    /**
-     * Test whether swapping the last two tiles works on a board size 4.
-     */
-    @Test
-    public void testSwapLastTwoBoardSize5() {
-        setUpCorrect(5);
-        assertEquals(24, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 3).getId());
-        assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 4).getId());
-        slidingTileBoardManager.getSlidingTileBoard().swapTiles(4, 4, 4, 3);
-        assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 3).getId());
-        assertEquals(24, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 4).getId());
-    }
-
+    // Testing begins here
     /**
      * Test whether isValidHelp works.
      */
@@ -162,14 +94,14 @@ public class SlidingTileTest {
     }
 
     /**
-     * Test whether findTile works.
+     * Test whether swapping two tiles makes a solved board unsolved.
      */
     @Test
-    public void testFindTile(){
-        setUpCorrect(4);
-        assertEquals(15, slidingTileBoardManager.getSlidingTileBoard().findTile(25));
-        assertEquals(0, slidingTileBoardManager.getSlidingTileBoard().findTile(1));
-        assertEquals(11, slidingTileBoardManager.getSlidingTileBoard().findTile(12));
+    public void testIsSolved() {
+        setUpCorrect(3);
+        assertTrue(slidingTileBoardManager.puzzleSolved());
+        slidingTileBoardManager.getSlidingTileBoard().swapTiles(0, 0, 0, 1);
+        assertFalse(slidingTileBoardManager.puzzleSolved());
     }
 
     /**
@@ -288,4 +220,3 @@ public class SlidingTileTest {
         assertTrue(slidingTileBoardManager.puzzleSolved());
     }
 }
-
