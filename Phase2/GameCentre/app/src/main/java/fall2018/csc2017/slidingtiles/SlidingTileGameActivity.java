@@ -30,6 +30,7 @@ import fall2018.csc2017.gamecentre.YouWinActivity;
 /**
  * The game activity.
  */
+// Excluded from tests because it's a view class
 public class SlidingTileGameActivity extends AppCompatActivity implements Observer {
 
     /**
@@ -113,12 +114,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SavedGames savedGames = gameCentre.getSavedGames();
-                UserManager userManager = gameCentre.getUserManager();
-                String userName = userManager.getCurrentUser().getUsername();
-                GameToSave gameToSave = new GameToSave(slidingTileBoardManager);
-                savedGames.updateSavedGames(gameToSave, userName);
-                gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
+                gameCentre.saveGame(slidingTileBoardManager);
                 makeToastSavedText();
             }
         });
@@ -160,23 +156,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
             b.setBackgroundResource(slidingTileBoard.getTile(row, col).getBackground());
             nextPos++;
         }
-        autoSave();
-    }
-
-    /**
-     * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
-     */
-    public void saveToFile(String fileName) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(slidingTileBoardManager);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+        gameCentre.autoSave(slidingTileBoardManager);
     }
 
     /**
@@ -190,7 +170,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
             display();
         }
         else {
-            saveToFile(GameManager.TEMP_SAVE_WIN);
+            gameCentre.gameManagerWin(slidingTileBoardManager);
             switchToWinActivity();
         }
     }
