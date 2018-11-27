@@ -52,6 +52,12 @@ public class SudokuBoardManager extends Observable implements GameManager, Seria
     }
 
     /**
+     * Returns the undoStack.
+     * @return the undoStack
+     */
+    public ArrayList getUndo() {return undoStack;}
+
+    /**
      * Returns the game name
      *
      * @return the game name
