@@ -155,7 +155,7 @@ public class UserManager implements Serializable {
     }
 
     public GameManager getSelectedGame (String gameName) {
-        GameManager tempGame = currentUser.getSelectedGame(gameName);
-        return tempGame;
+        return currentUser.getSelectedGame(gameName);
+
     }
 }
