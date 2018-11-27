@@ -34,8 +34,8 @@ public class HighScoreActivity extends AppCompatActivity {
 
         Context highScore = HighScoreActivity.this;
         GameCentre gameCentre = new GameCentre(highScore);
-        userManager = gameCentre.userManager;
-        scoreBoard = gameCentre.scoreBoard;
+        userManager = gameCentre.getUserManager();
+        scoreBoard = gameCentre.getScoreBoard();
         addBackButtonListener();
         setDisplay("User");
         addSortScoreSpinnerListener();
@@ -67,74 +67,12 @@ public class HighScoreActivity extends AppCompatActivity {
      * @param select the score board user wants to view
      */
     private void setDisplay(String select) {
+        String user = userManager.getCurrentUser().getUsername();
         TextView textName = findViewById(R.id.score_1);
         TextView textScore = findViewById(R.id.score_2);
-        if (select.equals("User")) {
-            textName.setText(perUserListGenerator(false));
-            textScore.setText(perUserListGenerator(true));
-        } else {
-            textName.setText(perGameListGenerator(select, false));
-            textScore.setText(perGameListGenerator(select, true));
-        }
+        textName.setText(scoreBoard.createDisplayString(select, user, false));
+        textScore.setText(scoreBoard.createDisplayString(select, user, true));
     }
-
-    /**
-     * Generates the string display for user highscore and game name
-     * @param isScore whether the string output should be a list of score or list of game name
-     * @return the string output
-     */
-    private String perUserListGenerator(boolean isScore) {
-        Score[] scoreSorted = scoreBoard.getTopTenSelect(userManager.getCurrentUser().getUsername(),
-                "user");
-        StringBuilder game = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
-            if (!isScore) {
-                game.append(String.format("%s. %s \n", i + 1, scoreSorted[i].getGame()));
-            } else {
-                game.append(String.format(" %s \n", scoreSorted[i].getScore()));
-            }
-        }
-        return game.toString();
-    }
-
-    /**
-     * Generates the string display for game highscore and username
-     *
-     * @param game    the game name
-     * @param isScore whether the string output is a list of score or list of name
-     * @return the string display
-     */
-    private String perGameListGenerator(String game, boolean isScore) {
-        Score[] score = checkSelectAll(game);
-        StringBuilder gameDisplay = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
-            if (!isScore) {
-                gameDisplay.append(String.format("%s. %s \n", i + 1, score[i].getUser()));
-            } else {
-                gameDisplay.append(String.format(" %s \n", score[i].getScore()));
-            }
-        }
-        return gameDisplay.toString();
-    }
-
-    /**
-     * Checks if selected is a selection containing (ALL).
-     *
-     * @param selected the selected spinner
-     * @return array of score that needs to be displayed
-     */
-    private Score[] checkSelectAll(String selected) {
-        boolean containAll = selected.contains("(All)");
-
-        if (containAll) {
-            String gameName = selected.substring(0, selected.length() - 5).trim();
-            return scoreBoard.getTopTenSelect(gameName, "game");
-        }
-        String gameName = selected.trim();
-        return scoreBoard.getTopTenByGameByUser(gameName,
-                userManager.getCurrentUser().getUsername());
-    }
-
 
     /**
      * Activates back button.

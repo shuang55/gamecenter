@@ -19,29 +19,27 @@ public class GameCentre {
     /**
      * Context of current state of the application.
      */
-    public Context context;
+    private Context context;
 
     /**
      * User manager that manages all users.
      */
-    UserManager userManager;
+    private UserManager userManager;
 
     /**
      * Scoreboard that records scores.
      */
-    ScoreBoard scoreBoard;
-
+    private ScoreBoard scoreBoard;
 
     /**
      * Game manager that manages all games.
      */
-    GameManager gameManager;
-
+    private GameManager gameManager;
 
     /**
      * Keep track of all saved games.
      */
-    SavedGames savedGames;
+    private SavedGames savedGames;
 
     /**
      * Initialize a Game Centre.
@@ -216,5 +214,9 @@ public class GameCentre {
      */
     public GameManager getGameManager() {
         return gameManager;
+    }
+
+    public ScoreBoard getScoreBoard() {
+        return scoreBoard;
     }
 }

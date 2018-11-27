@@ -51,10 +51,10 @@ public class YouWinActivity extends AppCompatActivity {
     private void loadManager(){
         Context youWin = YouWinActivity.this;
         gameCentre = new GameCentre(youWin);
-        userManager = gameCentre.userManager;
-        scoreBoard = gameCentre.scoreBoard;
+        userManager = gameCentre.getUserManager();
+        scoreBoard = gameCentre.getScoreBoard();
         gameCentre.loadManager(GameManager.TEMP_SAVE_WIN);
-        gameManager = gameCentre.gameManager;
+        gameManager = gameCentre.getGameManager();
     }
 
     /**

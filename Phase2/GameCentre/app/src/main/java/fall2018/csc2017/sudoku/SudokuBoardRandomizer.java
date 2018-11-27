@@ -136,7 +136,7 @@ class SudokuBoardRandomizer {
             int rowPosition = position / 9;
             int columnPosition = position % 9;
             if (!(board.getSudokuBoard()[rowPosition][columnPosition] == 0)) {
-                board.setSudokuBoardNumber(rowPosition, columnPosition, 0);
+                board.setSudokuBoardNumber(position, 0);
                 board.addRemovedNumber(position);
                 i++;
             }
