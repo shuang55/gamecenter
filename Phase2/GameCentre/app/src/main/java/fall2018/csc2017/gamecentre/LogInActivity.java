@@ -1,10 +1,8 @@
 package fall2018.csc2017.gamecentre;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,14 +16,9 @@ import fall2018.csc2017.R;
 public class LogInActivity extends AppCompatActivity {
 
     /**
-     * SAVE FILE FOR USERMANAGER.
-     */
-    public static final String USERS = UserManager.USERS;
-
-    /**
      * Usermanager for signing in and signing up.
      */
-    private UserManager manager;
+    private UserManager userManager;
 
     /**
      * The username input.
@@ -52,9 +45,8 @@ public class LogInActivity extends AppCompatActivity {
         addPasswordTextListener();
         addUserTextListener();
         addSignUpButtonListener();
-        Context LogIn = LogInActivity.this;
-        gameCentre = new GameCentre(LogIn);
-        manager = gameCentre.userManager;
+        gameCentre = new GameCentre(this);
+        userManager = gameCentre.getUserManager();
     }
 
     /**
@@ -105,10 +97,10 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addPasswordTextListener();
                 addUserTextListener();
-                if (manager.signUp(user, password)) {
+                boolean signUpSuccessful = userManager.signUp(user, password);
+                if (signUpSuccessful) {
                     makeToastSignUp();
                 } else {
-                    Log.v("test", user + password);
                     makeToastFailedSignUp();
                 }
             }
@@ -126,9 +118,8 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addUserTextListener();
                 addPasswordTextListener();
-                if (manager.authenticate(user, password)) {
-                    User currentUser = manager.findUser(user);
-                    manager.setCurrentUser(currentUser);
+                boolean logInSuccessful = userManager.authenticate(user, password);
+                if (logInSuccessful) {
                     switchToGameCentre();
                 } else {
                     makeToastInvalidLogIn();
@@ -141,7 +132,7 @@ public class LogInActivity extends AppCompatActivity {
      * Switch to Game Centre to choose games.
      */
     private void switchToGameCentre() {
-        gameCentre.saveManager(USERS, manager);
+        gameCentre.saveManager(UserManager.USERS, userManager);
         Intent swap = new Intent(this, GameCentreActivity.class);
         startActivity(swap);
 
@@ -153,7 +144,7 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        gameCentre.saveManager(USERS, manager);
+        gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
 }

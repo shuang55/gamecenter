@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Observable;
 
 import fall2018.csc2017.gamecentre.GameManager;
 
-public class SudokuBoardManager implements GameManager, Serializable {
+public class SudokuBoardManager extends Observable implements GameManager, Serializable {
 
     /**
      * the active board for users to solve
@@ -99,6 +100,8 @@ public class SudokuBoardManager implements GameManager, Serializable {
             if (rowSolved != -1 | columnSolved != -1 | boxSolved != -1)
                 return false;
         }
+        setChanged();
+        notifyObservers();
         return true;
     }
 
@@ -121,10 +124,9 @@ public class SudokuBoardManager implements GameManager, Serializable {
     void updateNumber(int num) {
         if (isValidTap(positionSelected)) {
             undoStack.add(0, activeBoard.copy());
-            int row = positionSelected / 9;
-            int col = positionSelected % 9;
-            activeBoard.setSudokuBoardNumber(row, col, num);
+            activeBoard.setSudokuBoardNumber(positionSelected, num);
             moves++;
+            puzzleSolved();
         }
     }
 
@@ -163,8 +165,7 @@ public class SudokuBoardManager implements GameManager, Serializable {
     void erase() {
         if (isValidTap(positionSelected)) {
             undoStack.add(0, activeBoard.copy());
-            activeBoard.setSudokuBoardNumber(
-                    positionSelected / 9, positionSelected % 9, 0);
+            activeBoard.setSudokuBoardNumber(positionSelected, 0);
         }
     }
 
@@ -174,11 +175,10 @@ public class SudokuBoardManager implements GameManager, Serializable {
     void provideHint() {
         if (activeBoard.getRemovedNumbers().size() != 0) {
             int position = activeBoard.popRemovedNumber();
-            int row = position / 9;
-            int col = position % 9;
-            activeBoard.setSudokuBoardNumber(row, col, hiddenBoard.getSudokuBoard()[row][col]);
+            activeBoard.setSudokuBoardNumber(position,
+                    hiddenBoard.getSudokuBoard()[position / 9][position % 9]);
             moves = moves + 5;
-
+            puzzleSolved();
         }
     }
 

@@ -10,15 +10,16 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
-import fall2018.csc2017.gamecentre.GameToSave;
-import fall2018.csc2017.gamecentre.SavedGames;
-import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
-public class SudokuGameActivity extends AppCompatActivity {
+// Excluded from tests because it's a view class
+public class SudokuGameActivity extends AppCompatActivity implements Observer {
 
     /**
      * SudokubBoardManager
@@ -43,6 +44,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku_game);
         loadManagers();
+        sudokuBoardManager.addObserver(this);
 
         // set up gridview
         updateDisplay();
@@ -79,20 +81,13 @@ public class SudokuGameActivity extends AppCompatActivity {
         gridView.setAdapter(sudokuBoardAdapter);
         TextView textView = findViewById(R.id.sudoku_moves);
         textView.setText(String.format("Moves: %s", sudokuBoardManager.getMoves()));
-        autoSave();
-        checkSolved();
+        gameCentre.autoSave(sudokuBoardManager);
     }
 
-    /**
-     * Checks if board is solved, swap to YouWin and delete the autosave game if it is
-     */
-    private void checkSolved() {
-        if (sudokuBoardManager.puzzleSolved()) {
-            gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, sudokuBoardManager);
-            gameCentre.getUserManager().getCurrentUser().removeSavedGame("Sudoku");
-            gameCentre.saveManager(UserManager.USERS, gameCentre.getUserManager());
-            swapToYouWin();
-        }
+    @Override
+    public void update(Observable o, Object arg) {
+        gameCentre.gameManagerWin(sudokuBoardManager);
+        swapToYouWin();
     }
 
     /**
@@ -123,19 +118,10 @@ public class SudokuGameActivity extends AppCompatActivity {
         numberSelectGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                updateSudokuBoard(position + 1);
+                sudokuBoardManager.updateNumber(position + 1);
+                updateDisplay();
             }
         });
-    }
-
-    /**
-     * Update the sudokuboard with the user input number
-     *
-     * @param num number to be updated
-     */
-    private void updateSudokuBoard(int num) {
-        sudokuBoardManager.updateNumber(num);
-        updateDisplay();
     }
 
     /**
@@ -191,11 +177,7 @@ public class SudokuGameActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SavedGames savedGames = gameCentre.getSavedGames();
-                UserManager userManager = gameCentre.getUserManager();
-                GameToSave gameToSave = new GameToSave(sudokuBoardManager);
-                savedGames.updateSavedGames(gameToSave, userManager.getCurrentUser().getUsername());
-                gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
+                gameCentre.saveGame(sudokuBoardManager);
                 makeToastSavedText();
             }
         });
@@ -208,14 +190,6 @@ public class SudokuGameActivity extends AppCompatActivity {
         Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Autosaves the board
-     */
-    private void autoSave() {
-        UserManager userManager = gameCentre.getUserManager();
-        userManager.autoSaveGame(sudokuBoardManager);
-        gameCentre.saveManager(UserManager.USERS, userManager);
-    }
 
     /**
      * Creates toast with msg "no more move"

@@ -3,6 +3,7 @@ package fall2018.csc2017.gamecentre;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
 
 
 /**
@@ -93,6 +94,7 @@ public class UserManager implements Serializable {
     boolean authenticate(String user, String password) {
         for (User u : users) {
             if (u.getUsername().equals(user)) {
+                setCurrentUser(u);
                 return u.authenticate(password);
             }
         }
@@ -104,7 +106,7 @@ public class UserManager implements Serializable {
      *
      * @param currentUser the input currentUser
      */
-    void setCurrentUser(User currentUser) {
+    private void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
 
@@ -153,7 +155,7 @@ public class UserManager implements Serializable {
     }
 
     public GameManager getSelectedGame (String gameName) {
-        GameManager tempGame = currentUser.getSelectedGame(gameName);
-        return tempGame;
+        return currentUser.getSelectedGame(gameName);
+
     }
 }
