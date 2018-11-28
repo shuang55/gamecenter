@@ -185,7 +185,7 @@ public class GameCentre {
      *
      * @param gameManager the gameManager to be written
      */
-    public void gameManagerWin(GameManager gameManager) {
+    void gameManagerWin(GameManager gameManager) {
         saveManager(GameManager.TEMP_SAVE_WIN, gameManager);
         userManager.getCurrentUser().removeSavedGame(gameManager.getGameName());
         saveManager(UserManager.USERS, userManager);

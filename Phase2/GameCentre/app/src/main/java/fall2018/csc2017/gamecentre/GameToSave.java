@@ -32,7 +32,7 @@ public class GameToSave implements Serializable{
 
      * @param gameManager The game's state
      */
-    public GameToSave(GameManager gameManager){
+    GameToSave(GameManager gameManager){
         savedTime = gameManager.getTime();
         gameName = gameManager.getGameName();
         gameDifficulty = gameManager.getGameDifficulty();

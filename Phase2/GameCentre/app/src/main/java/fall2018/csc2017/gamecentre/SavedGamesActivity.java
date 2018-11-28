@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.cardmatching.CardMatchingGameActivity;
@@ -26,19 +26,21 @@ import fall2018.csc2017.sudoku.SudokuStartingActivity;
 public class SavedGamesActivity extends AppCompatActivity {
 
     /**
-     * The userManager that stores all users.
+     * The current user that we are interested in.
      */
-    private UserManager userManager;
+    private User currentUser;
 
     /**
      * Gamecentre for managing files
      */
     private GameCentre gameCentre;
 
+    private SavedGames savedGames;
+
     /**
      * The hashmap that contains all saved games for all users and all games.
      */
-    private HashMap<String, HashMap<String, ArrayList<GameToSave>>> savedGames;
+    private Map<String, Map<String, ArrayList<GameToSave>>> savedGamesMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,7 @@ public class SavedGamesActivity extends AppCompatActivity {
             }
         });
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SavedGamesActivity.this,
-                android.R.layout.simple_spinner_dropdown_item, constructNameArray(GAMENAME));
+                android.R.layout.simple_spinner_dropdown_item, savedGames.constructNameArray(GAMENAME, currentUser));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner.setAdapter(arrayAdapter);
     }
@@ -104,27 +106,6 @@ public class SavedGamesActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates a String array containing the name of the saved games.
-     *
-     * @param gameName the game that we are interested in
-     * @return a String array containing the name of the saved games
-     */
-    private ArrayList<String> constructNameArray(String gameName){
-        ArrayList<String> nameArray = new ArrayList<>();
-        String currentUser = userManager.getCurrentUser().getUsername();
-        nameArray.add("Select a Saved Game");
-        HashMap<String, ArrayList<GameToSave>> savedGamesByGameType = savedGames.get(currentUser);
-        if (savedGamesByGameType != null && savedGamesByGameType.get(gameName) != null) {
-            ArrayList<GameToSave> listOfSavedGame = savedGamesByGameType.get(gameName);
-            for (int i = 0; i < listOfSavedGame.size(); i++) {
-                String gameDifficulty = listOfSavedGame.get(i).getGameDifficulty();
-                nameArray.add(listOfSavedGame.get(i).getSavedTime() + " (" + gameDifficulty + ") ");
-            }
-        }
-        return nameArray;
-    }
-
-    /**
      * Set up which game to be loaded, and switch to that view.
      *
      * @param selected the game user choose to load
@@ -132,8 +113,8 @@ public class SavedGamesActivity extends AppCompatActivity {
      */
     private void switchToLoadGame(String selected, String gameName) {
         int indexOfSelectedGame=0;
-        String currentUser = userManager.getCurrentUser().getUsername();
-        ArrayList<GameToSave> listOfSavedGame = savedGames.get(currentUser).get(gameName);
+        String currentUserUsername = currentUser.getUsername();
+        ArrayList<GameToSave> listOfSavedGame = savedGamesMap.get(currentUserUsername).get(gameName);
         for (int i = 0; i < listOfSavedGame.size(); i++) {
             String gameDifficulty = listOfSavedGame.get(i).getGameDifficulty();
             String nameOfSelectedGame = listOfSavedGame.get(i).getSavedTime() + " (" + gameDifficulty + ") ";
@@ -199,8 +180,9 @@ public class SavedGamesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         gameCentre = new GameCentre(this);
-        userManager = gameCentre.getUserManager();
-        savedGames = gameCentre.getSavedGames().savedGames;
+        currentUser = gameCentre.getUserManager().getCurrentUser();
+        savedGames = gameCentre.getSavedGames();
+        savedGamesMap = savedGames.savedGames;
         int slidingTileSpinnerID = R.id.SlidingTileSpinner;
         int cardMatchingSpinnerID = R.id.cardMatchingSpinner;
         int sudokuSpinnerID = R.id.sudokuSpinner;
