@@ -4,6 +4,9 @@ import java.util.Random;
 
 class SudokuBoardRandomizer {
 
+    /**
+     * The sudokuBoard and its values to be processed in the randomizer
+     */
     private SudokuBoard sudokuBoard;
     private Integer[][] sudokuBoardNumbers;
 
@@ -18,7 +21,7 @@ class SudokuBoardRandomizer {
     }
 
     /**
-     * Generates a random SudokuBoard
+     * Generates a random SudokuBoard by swapping a solved board
      *
      * @return a randomized sudokuboard
      */
