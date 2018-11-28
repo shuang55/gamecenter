@@ -192,21 +192,12 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
             @Override
             public void onClick(View v) {
                 boolean undo = slidingTileBoardManager.undoMove();
-                autoSave();
+                gameCentre.autoSave(slidingTileBoardManager);
                 if (!undo) {
                     makeToastNoMoreUndo();
                 }
             }
         });
-    }
-
-    /**
-     * Autosaves the board
-     */
-    private void autoSave() {
-        UserManager userManager = gameCentre.getUserManager();
-        userManager.autoSaveGame(slidingTileBoardManager);
-        gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
     /**
