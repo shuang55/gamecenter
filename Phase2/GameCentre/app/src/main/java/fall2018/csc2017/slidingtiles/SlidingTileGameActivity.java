@@ -29,13 +29,13 @@ import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
 /**
- * The game activity.
+ * The game activity for Sliding Tile.
  */
 // Excluded from tests because it's a view class
 public class SlidingTileGameActivity extends GameAcitivity implements Observer {
 
     /**
-     * The board manager.
+     * The board manager for current sliding tile game.
      */
     private SlidingTileBoardManager slidingTileBoardManager;
 
@@ -50,18 +50,16 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
     private ArrayList<Button> tileButtons;
 
     // Grid View and calculated column height and width based on device size
+    /**
+     * Grid for sliding tile game.
+     */
     private GestureDetectGridView gridView;
-    private static int columnWidth, columnHeight;
+
 
     /**
-     * Set up the background image for each button based on the master list
-     * of positions, and then call the adapter to set the view.
+     * The columnWidth and columnHeight for the grids.
      */
-    public void display() {
-        updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
-        setMoveCountText(R.id.SlidingTileMoveCount);
-    }
+    private int columnWidth, columnHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +84,11 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        gridView.getViewTreeObserver().removeOnGlobalLayoutListener(
-                                this);
+                        gridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
-
-                         columnWidth = displayWidth / slidingTileBoardManager.getSlidingTileBoard().boardSize;
+                        columnWidth = displayWidth / slidingTileBoardManager.getSlidingTileBoard().boardSize;
                         columnHeight = displayHeight / slidingTileBoardManager.getSlidingTileBoard().boardSize;
-
                         display();
                     }
                 });
@@ -122,10 +117,30 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
     }
 
     /**
-     * Display that a game was saved successfully.
+     * Adds an undo button and undoes the previous move when clicked.
      */
-    private void makeToastSavedText() {
-        Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
+    private void addUndoButtonListener() {
+        Button undo = findViewById(R.id.Undo);
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean undo = slidingTileBoardManager.undoMove();
+                gameCentre.autoSave(slidingTileBoardManager);
+                if (!undo) {
+                    makeToastNoMoreUndo();
+                }
+            }
+        });
+    }
+
+    /**
+     * Set up the background image for each button based on the master list
+     * of positions, and then call the adapter to set the view.
+     */
+    public void display() {
+        updateTileButtons();
+        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
+        setMoveCountText(R.id.SlidingTileMoveCount);
     }
 
     /**
@@ -161,7 +176,8 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
     }
 
     /**
-     * updates the screen
+     * Updates the screen or jump to game victory screen.
+     *
      * @param o observable
      * @param arg object
      */
@@ -185,27 +201,17 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
 //    }
 
     /**
-     * adds an undo button and undoes the previous move when clicked.
-     */
-    private void addUndoButtonListener() {
-        Button undo = findViewById(R.id.Undo);
-        undo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean undo = slidingTileBoardManager.undoMove();
-                gameCentre.autoSave(slidingTileBoardManager);
-                if (!undo) {
-                    makeToastNoMoreUndo();
-                }
-            }
-        });
-    }
-
-    /**
-     * give the text no more moves are available
+     * Give the text no more moves are available.
      */
     private void makeToastNoMoreUndo() {
         Toast.makeText(this, "No more moves are available", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Display that a game was saved successfully.
+     */
+    private void makeToastSavedText() {
+        Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
     }
 
 //    /**

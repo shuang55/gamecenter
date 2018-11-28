@@ -1,5 +1,7 @@
 package fall2018.csc2017.slidingtiles;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,10 +22,12 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * The slidingTileBoard being managed.
      */
     private SlidingTileBoard slidingTileBoard;
+
     /**
-     * the moves that have been made in this game
+     * The moves that have been made in this game.
      */
     private Stack<ArrayList<Integer>> undoStack = new Stack<>();
+
     /**
      * The current number of moves that the player has made.
      */
@@ -39,18 +43,28 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Return the current slidingTileBoard.
-     */
-    SlidingTileBoard getSlidingTileBoard() {
-        return slidingTileBoard;
-    }
-
-    /**
      * Manage a slidingTileBoard with varies complexities.
      *
      * @param boardSize the size of the slidingTileBoard.
      */
     SlidingTileBoardManager(int boardSize) {
+        List<Tile> tiles = createTiles(boardSize);
+        Collections.shuffle(tiles);
+        slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
+        if (!checkSolvability(tiles, boardSize)){
+            makeSolvableBoard(tiles);
+            slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
+        }
+    }
+
+    /**
+     * Create tiles with the corresponding board size.
+     *
+     * @param boardSize size of the board
+     * @return list of tiles
+     */
+    @NonNull
+    private List<Tile> createTiles(int boardSize) {
         List<Tile> tiles = new ArrayList<>();
         int numTiles = boardSize * boardSize;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
@@ -68,16 +82,11 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
             Tile blankTile = new Tile(24);
             tiles.add(blankTile);
         }
-        Collections.shuffle(tiles);
-        slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        if (!checkSolvability(tiles, boardSize)){
-            makeSolvableBoard(tiles);
-            slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        }
+        return tiles;
     }
 
     /**
-     * Checks if the current sliding tile board is solvable. If it is not solvable, make it solvable
+     * Checks if the current sliding tile board is solvable. If it is not solvable, make it solvable.
      *
      * @param boardSize size of the board
      * @param tiles a list containing tiles for sliding tile game
@@ -139,11 +148,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
                 slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 2);
     }
 
-    /**
-     * Return whether the tiles are in row-major order.
-     *
-     * @return whether the tiles are in row-major order
-     */
+    @Override
     public boolean puzzleSolved() {
         boolean solved = true;
         int start = 1;
@@ -156,19 +161,12 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         return solved;
     }
 
-    /**
-     * Return whether any of the four surrounding tiles is the blank tile.
-     *
-     * @param position the tile to check
-     * @return whether the tile at position is surrounded by a blank tile
-     */
+    @Override
     public boolean isValidTap(int position) {
-
         int row = position / slidingTileBoard.boardSize;
         int col = position % slidingTileBoard.boardSize;
         int blankId = 25;
 
-        // Are any of the 4 the blank tile?
         Tile above = row == 0 ? null : slidingTileBoard.getTile(row - 1, col);
         Tile below = row == slidingTileBoard.boardSize - 1 ? null : slidingTileBoard.getTile(row + 1, col);
         Tile left = col == 0 ? null : slidingTileBoard.getTile(row, col - 1);
@@ -179,12 +177,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
                 || (right != null && right.getId() == blankId);
     }
 
-    /**
-     * Process a touch at position in the slidingTileBoard, swapping tiles as appropriate.
-     * Increment the number of moves.
-     *
-     * @param position the position
-     */
+    @Override
     public void touchMove(int position) {
         int row = position / slidingTileBoard.boardSize;
         int col = position % slidingTileBoard.boardSize;
@@ -202,53 +195,12 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
             this.move++;
             slidingTileBoard.swapTiles(blankRow, blankCol, row, col);
         }
-
-    }
-
-    /**
-     * Return the player's move.
-     */
-    public int getMove() {
-        return move;
-    }
-
-    /**
-     * Return the player's score.
-     */
-    public int getScore() {
-        int score = 1000 - (move * 3 * (6 - slidingTileBoard.boardSize));
-        if (score < 0) {
-            return 0;
-        }
-        return score;
-
-    }
-
-    /**
-     * Return the game's name.
-     */
-    public String getGameName() {
-        return "Sliding Tile";
-    }
-
-    /**
-     * Return the date and time of the game being played.
-     */
-    public String getTime() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        return dateTimeFormatter.format(now);
-    }
-
-    /**
-     * return the game difficulty.
-     */
-    public String getGameDifficulty() {
-        return String.format("%s by %s", slidingTileBoard.boardSize, slidingTileBoard.boardSize);
     }
 
     /**
      * Undo the previous move made, if possible. Return true if move is undone, otherwise false.
+     *
+     * @return true if move is undone, other wise false
      */
     boolean undoMove() {
         if (!undoStack.empty()) {
@@ -261,5 +213,45 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Return the current slidingTileBoard.
+     *
+     * @return return the current slidingTileBoard.
+     */
+    SlidingTileBoard getSlidingTileBoard() {
+        return slidingTileBoard;
+    }
+
+    @Override
+    public int getMove() {
+        return move;
+    }
+
+    @Override
+    public int getScore() {
+        int score = 1000 - (move * 3 * (6 - slidingTileBoard.boardSize));
+        if (score < 0) {
+            return 0;
+        }
+        return score;
+    }
+
+    @Override
+    public String getGameName() {
+        return "Sliding Tile";
+    }
+
+    @Override
+    public String getTime() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return dateTimeFormatter.format(now);
+    }
+
+    @Override
+    public String getGameDifficulty() {
+        return String.format("%s by %s", slidingTileBoard.boardSize, slidingTileBoard.boardSize);
     }
 }

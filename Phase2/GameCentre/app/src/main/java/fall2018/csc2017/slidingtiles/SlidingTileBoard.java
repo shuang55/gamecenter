@@ -16,7 +16,7 @@ import java.util.Iterator;
 public class SlidingTileBoard extends Observable implements Serializable, Iterable<Tile> {
 
     /**
-     * The board size
+     * The board size.
      */
     int boardSize;
 

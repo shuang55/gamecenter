@@ -3,15 +3,11 @@ package fall2018.csc2017.slidingtiles;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.GameCentre;
@@ -22,21 +18,19 @@ import fall2018.csc2017.gamecentre.UserManager;
  * The initial activity for the sliding puzzle tile game.
  */
 public class SlidingTileStartingActivity extends AppCompatActivity {
-// https://www.vectorstock.com/royalty-free-vector/pink-star-with-a-smile-logo-vector-21368236
-// star photo
 
     /**
-     * Temp save file for starting sudoku game
+     * Temp save file for starting sliding tile game.
      */
     public static final String SLIDING_TILE_START_FILE = GameManager.TEMP_SAVE_START;
 
     /**
-     * Gamecentre for managing files
+     * GameCentre for managing files.
      */
     private GameCentre gameCentre;
 
     /**
-     * Sliding Tile SlidingTileBoardManager to be used in game
+     * Sliding Tile's SlidingTileBoardManager to be used in game.
      */
     private SlidingTileBoardManager slidingTileBoardManager;
 
@@ -48,7 +42,7 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
     /**
      * Size of the board chosen.
      */
-    public int boardSize;
+    private int boardSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +73,7 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
     }
 
     /**
-     * Activates LoadAutoSaveButton
+     * Activates load AutoSave button.
      */
     private void addLoadAutoSaveButtonListener() {
         Button slidingTileAutoSave = findViewById(R.id.SlidingTileAutoSave);
@@ -95,28 +89,7 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks if a game has been autosaved, and transition into game if it has.
-     * @param tempBoard the sudokuBoardManager
-     */
-    private void checkValidAutoSavedGame(SlidingTileBoardManager tempBoard) {
-        if (tempBoard != null) {
-            slidingTileBoardManager = tempBoard;
-            gameCentre.saveManager(GameManager.TEMP_SAVE_START, slidingTileBoardManager);
-            swapToSlidingTileGame();
-        } else {
-            makeToastNoAutoSavedGame();
-        }
-    }
-
-    /**
-     * Display that a game was loaded successfully.
-     */
-    private void makeToastNoAutoSavedGame() {
-        Toast.makeText(this, "No AutoSave History", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Activate the ez win button.
+     * Activate the Easy Win button.
      */
     private void addEzWinButtonListener() {
         Button saveButton = findViewById(R.id.preset);
@@ -129,14 +102,6 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
                 swapToSlidingTileGame();
             }
         });
-    }
-
-    /**
-     * Switch to the SlidingTileGameActivity view to play the game.
-     */
-    public void swapToSlidingTileGame() {
-        Intent tmp = new Intent(this, SlidingTileGameActivity.class);
-        startActivity(tmp);
     }
 
     /**
@@ -160,11 +125,40 @@ public class SlidingTileStartingActivity extends AppCompatActivity {
                         break;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
+    }
+
+    /**
+     * Checks if a game has been autoSaved, and transition into game if it has.
+     *
+     * @param tempBoard the sudokuBoardManager
+     */
+    private void checkValidAutoSavedGame(SlidingTileBoardManager tempBoard) {
+        if (tempBoard != null) {
+            slidingTileBoardManager = tempBoard;
+            gameCentre.saveManager(GameManager.TEMP_SAVE_START, slidingTileBoardManager);
+            swapToSlidingTileGame();
+        } else {
+            makeToastNoAutoSavedGame();
+        }
+    }
+
+    /**
+     * Switch to the SlidingTileGameActivity view to play the game.
+     */
+    public void swapToSlidingTileGame() {
+        Intent tmp = new Intent(this, SlidingTileGameActivity.class);
+        startActivity(tmp);
+    }
+
+    /**
+     * Display that a game was loaded successfully.
+     */
+    private void makeToastNoAutoSavedGame() {
+        Toast.makeText(this, "No AutoSave History", Toast.LENGTH_SHORT).show();
     }
 }

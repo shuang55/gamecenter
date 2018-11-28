@@ -18,27 +18,9 @@ public class Tile implements Comparable<Tile>, Serializable {
     private int background;
 
     /**
-     * The unique id.
+     * The unique id of the tile.
      */
-    public int id;
-
-    /**
-     * Return the background id.
-     *
-     * @return the background id
-     */
-    public int getBackground() {
-        return background;
-    }
-
-    /**
-     * Return the tile id.
-     *
-     * @return the tile id
-     */
-    public int getId() {
-        return id;
-    }
+    private int id;
 
     /**
      * A tile with a background id; look up and set the id.
@@ -47,7 +29,6 @@ public class Tile implements Comparable<Tile>, Serializable {
      */
     Tile(int backgroundId) {
         id = backgroundId + 1;
-        // This looks so ugly.
         switch (backgroundId + 1) {
             case 1:
                 background = R.drawable.tile_1;
@@ -127,6 +108,24 @@ public class Tile implements Comparable<Tile>, Serializable {
             default:
                 background = R.drawable.tile_25;
         }
+    }
+
+    /**
+     * Return the background id.
+     *
+     * @return the background id
+     */
+    public int getBackground() {
+        return background;
+    }
+
+    /**
+     * Return the tile id.
+     *
+     * @return the tile id
+     */
+    public int getId() {
+        return id;
     }
 
     @Override
