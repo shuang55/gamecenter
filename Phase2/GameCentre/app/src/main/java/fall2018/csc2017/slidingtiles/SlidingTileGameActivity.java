@@ -19,6 +19,7 @@ import java.util.Observer;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.CustomAdapter;
+import fall2018.csc2017.gamecentre.GameAcitivity;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
 import fall2018.csc2017.gamecentre.GameToSave;
@@ -30,17 +31,18 @@ import fall2018.csc2017.gamecentre.YouWinActivity;
 /**
  * The game activity.
  */
-public class SlidingTileGameActivity extends AppCompatActivity implements Observer {
+// Excluded from tests because it's a view class
+public class SlidingTileGameActivity extends GameAcitivity implements Observer {
 
     /**
      * The board manager.
      */
     private SlidingTileBoardManager slidingTileBoardManager;
 
-    /**
-     * Gamecentre for managing files
-     */
-    private GameCentre gameCentre;
+//    /**
+//     * Gamecentre for managing files
+//     */
+//    private GameCentre gameCentre;
 
     /**
      * The buttons to display.
@@ -58,14 +60,16 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     public void display() {
         updateTileButtons();
         gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
-        setMoveCountText();
+        setMoveCountText(R.id.SlidingTileMoveCount);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sliding_tile);
-        loadManagers();
+        loadManagers(this);
+        slidingTileBoardManager = (SlidingTileBoardManager) gameManager;
+        createTileButtons(this);
 
         //Activate buttons
         addUndoButtonListener();
@@ -95,15 +99,13 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
                 });
     }
 
-    /**
-     * Load necessary managers
-     */
-    private void loadManagers() {
-        gameCentre = new GameCentre(this);
-        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        slidingTileBoardManager = (SlidingTileBoardManager) gameCentre.getGameManager();
-        createTileButtons(this);
-    }
+//    /**
+//     * Load necessary managers
+//     */
+//    private void loadManagers() {
+//        gameCentre = new GameCentre(this);
+//        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+//    }
 
     /**
      * Activate the save button.
@@ -113,12 +115,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SavedGames savedGames = gameCentre.getSavedGames();
-                UserManager userManager = gameCentre.getUserManager();
-                String userName = userManager.getCurrentUser().getUsername();
-                GameToSave gameToSave = new GameToSave(slidingTileBoardManager);
-                savedGames.updateSavedGames(gameToSave, userName);
-                gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
+                gameCentre.saveGame(slidingTileBoardManager);
                 makeToastSavedText();
             }
         });
@@ -160,23 +157,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
             b.setBackgroundResource(slidingTileBoard.getTile(row, col).getBackground());
             nextPos++;
         }
-        autoSave();
-    }
-
-    /**
-     * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
-     */
-    public void saveToFile(String fileName) {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(slidingTileBoardManager);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+        gameCentre.autoSave(slidingTileBoardManager);
     }
 
     /**
@@ -190,18 +171,18 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
             display();
         }
         else {
-            saveToFile(GameManager.TEMP_SAVE_WIN);
-            switchToWinActivity();
+//            gameCentre.gameManagerWin(slidingTileBoardManager);
+            switchToWinActivity(this);
         }
     }
 
-    /**
-     * swaps activity to you win activity
-     */
-    private void switchToWinActivity() {
-        Intent win = new Intent(this, YouWinActivity.class);
-        startActivity(win);
-    }
+//    /**
+//     * swaps activity to you win activity
+//     */
+//    private void switchToWinActivity() {
+//        Intent win = new Intent(this, YouWinActivity.class);
+//        startActivity(win);
+//    }
 
     /**
      * adds an undo button and undoes the previous move when clicked.
@@ -212,21 +193,12 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
             @Override
             public void onClick(View v) {
                 boolean undo = slidingTileBoardManager.undoMove();
-                autoSave();
+                gameCentre.autoSave(slidingTileBoardManager);
                 if (!undo) {
                     makeToastNoMoreUndo();
                 }
             }
         });
-    }
-
-    /**
-     * Autosaves the board
-     */
-    private void autoSave() {
-        UserManager userManager = gameCentre.getUserManager();
-        userManager.autoSaveGame(slidingTileBoardManager);
-        gameCentre.saveManager(UserManager.USERS, userManager);
     }
 
     /**
@@ -236,11 +208,11 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         Toast.makeText(this, "No more moves are available", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * sets the move count on screen
-     */
-    private void setMoveCountText() {
-        TextView moves = findViewById(R.id.MoveCount);
-        moves.setText(String.format("%s", slidingTileBoardManager.getMove()));
-    }
+//    /**
+//     * sets the move count on screen
+//     */
+//    private void setMoveCountText() {
+//        TextView moves = findViewById(R.id.MoveCount);
+//        moves.setText(String.format("%s", slidingTileBoardManager.getMove()));
+//    }
 }

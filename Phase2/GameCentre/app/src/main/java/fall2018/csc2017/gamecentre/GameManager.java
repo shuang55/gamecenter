@@ -46,4 +46,6 @@ public interface GameManager extends Serializable {
     boolean puzzleSolved();
 
     void touchMove(int position);
+
+    int getMove();
 }

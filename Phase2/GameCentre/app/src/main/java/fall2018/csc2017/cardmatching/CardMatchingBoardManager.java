@@ -108,7 +108,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     private int getNumNotPaired() {
         int unpaired = 0;
         for (Card card : cardMatchingBoard) {
-            if (!(card.isPaired())) {
+            if (!(card.getIsPaired())) {
                 unpaired++;
             }
         }
@@ -165,8 +165,9 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
             openPairExists = true;
             coverCardAfterFixedDelay();
         } else {
-            card1.setPaired(true);
-            card2.setPaired(true);
+            card1.setPaired();
+            card2.setPaired();
+            cardMatchingBoard.boardUpdate(null);
         }
     }
 
@@ -233,7 +234,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      *
      * @return the current move
      */
-    int getMove() {
+    public int getMove() {
         return move;
     }
 }

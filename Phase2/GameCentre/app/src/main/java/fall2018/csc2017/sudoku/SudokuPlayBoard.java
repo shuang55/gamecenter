@@ -127,4 +127,5 @@ class SudokuPlayBoard extends SudokuBoard implements Serializable {
     ArrayList<Integer> getRemovedNumbers() {
         return removedNumbers;
     }
+
 }

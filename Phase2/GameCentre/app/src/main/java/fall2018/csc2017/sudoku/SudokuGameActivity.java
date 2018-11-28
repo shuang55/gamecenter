@@ -14,12 +14,13 @@ import java.util.Observable;
 import java.util.Observer;
 
 import fall2018.csc2017.R;
+import fall2018.csc2017.gamecentre.GameAcitivity;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
 // Excluded from tests because it's a view class
-public class SudokuGameActivity extends AppCompatActivity implements Observer {
+public class SudokuGameActivity extends GameAcitivity implements Observer {
 
     /**
      * SudokubBoardManager
@@ -34,16 +35,18 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
      * Gridview for number buttons
      */
     private GridView numberSelectGridView;
-    /**
-     * Gamecentre for managing files
-     */
-    private GameCentre gameCentre;
+
+//    /**
+//     * Gamecentre for managing files
+//     */
+//    private GameCentre gameCentre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku_game);
-        loadManagers();
+        loadManagers(this);
+        sudokuBoardManager = (SudokuBoardManager) gameManager;
         sudokuBoardManager.addObserver(this);
 
         // set up gridview
@@ -63,14 +66,13 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         addSaveButtonListener();
     }
 
-    /**
-     * Load necessary managers
-     */
-    private void loadManagers() {
-        gameCentre = new GameCentre(this);
-        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        sudokuBoardManager = (SudokuBoardManager) gameCentre.getGameManager();
-    }
+//    /**
+//     * Load necessary managers
+//     */
+//    private void loadManagers() {
+//        gameCentre = new GameCentre(this);
+//        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+//    }
 
     /**
      * Updates the gridview display
@@ -79,15 +81,22 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         gridView = findViewById(R.id.game_grid);
         SudokuBoardAdapter sudokuBoardAdapter = new SudokuBoardAdapter(sudokuBoardManager, this);
         gridView.setAdapter(sudokuBoardAdapter);
-        TextView textView = findViewById(R.id.sudoku_moves);
-        textView.setText(String.format("Moves: %s", sudokuBoardManager.getMoves()));
+        setMoveCountText(R.id.sudoku_moves);
         gameCentre.autoSave(sudokuBoardManager);
     }
 
+//    /**
+//     * sets the move count on screen
+//     */
+//    private void setMoveCountText() {
+//        TextView textView = findViewById(R.id.sudoku_moves);
+//        textView.setText(String.format("Moves: %s", sudokuBoardManager.getMove()));
+//    }
+
     @Override
     public void update(Observable o, Object arg) {
-        gameCentre.createWinFile(sudokuBoardManager);
-        swapToYouWin();
+//        gameCentre.gameManagerWin(sudokuBoardManager);
+        switchToWinActivity(this);
     }
 
     /**
@@ -103,13 +112,13 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         });
     }
 
-    /**
-     * Transitions to YouWinActivity
-     */
-    private void swapToYouWin() {
-        Intent youWin = new Intent(this, YouWinActivity.class);
-        startActivity(youWin);
-    }
+//    /**
+//     * Transitions to YouWinActivity
+//     */
+//    private void switchToWinActivity() {
+//        Intent youWin = new Intent(this, YouWinActivity.class);
+//        startActivity(youWin);
+//    }
 
     /**
      * Activates number select clicks in gridview

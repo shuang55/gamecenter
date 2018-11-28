@@ -13,12 +13,12 @@ public class SudokuBoardManagerTest {
     private SudokuBoardManager sudokuBoardManager;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         sudokuBoardManager = new SudokuBoardManager();
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         sudokuBoardManager = null;
     }
 
@@ -40,7 +40,24 @@ public class SudokuBoardManagerTest {
 
     @Test
     public void puzzleSolvedFalse() {
-       assertFalse(sudokuBoardManager.puzzleSolved());
+        assertFalse(sudokuBoardManager.puzzleSolved());
+    }
+
+    @Test
+    public void puzzleSolvedFalseCompleteBoard() {
+        for (Integer i : sudokuBoardManager.getActiveBoard().getRemovedNumbers()) {
+            sudokuBoardManager.touchMove(i);
+            sudokuBoardManager.updateNumber(9);
+        }
+        assertFalse(sudokuBoardManager.puzzleSolved());
+    }
+
+    @Test
+    public void puzzleSolvedTrue() {
+        for (int i = 0; i < 36; i++) {
+            sudokuBoardManager.provideHint();
+        }
+        assertTrue(sudokuBoardManager.puzzleSolved());
     }
 
     @Test
@@ -69,11 +86,6 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void getActiveBoard() {
-
-    }
-
-    @Test
     public void isValidTap() {
         ArrayList<Integer> list = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
         assertTrue(sudokuBoardManager.isValidTap(list.get(0)));
@@ -85,21 +97,40 @@ public class SudokuBoardManagerTest {
         }
     }
 
-
     @Test
     public void erase() {
-        ArrayList<Integer> list = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
+        int position = sudokuBoardManager.getActiveBoard().getRemovedNumbers().get(0);
+        Integer[] number = {9, 0};
+        sudokuBoardManager.touchMove(position);
+        sudokuBoardManager.updateNumber(number[0]);
+        assertEquals(sudokuBoardManager.getActiveBoard().
+                getSudokuBoard()[position / 9][position % 9], number[0]);
+        sudokuBoardManager.erase();
+        assertEquals(sudokuBoardManager.getActiveBoard().
+                getSudokuBoard()[position / 9][position % 9], number[1]);
     }
 
     @Test
     public void provideHint() {
-    }
+        Integer[][] before = sudokuBoardManager.getActiveBoard().getSudokuBoard().clone();
+        sudokuBoardManager.provideHint();
+        Integer[][] after = sudokuBoardManager.getActiveBoard().getSudokuBoard();
 
-    @Test
-    public void getMoves() {
+        if(sudokuBoardManager.getActiveBoard().getRemovedNumbers().size() != 0) {
+            assertNotEquals(before, after);
+        }
     }
 
     @Test
     public void undo() {
+        int numUndo = sudokuBoardManager.getUndo().size();
+        Object before = sudokuBoardManager.getActiveBoard().getRemovedNumbers().clone();
+        sudokuBoardManager.undo();
+        ArrayList<Integer> after = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
+        if(numUndo != 0) {
+            assertNotEquals(before, after);
+        } else {
+            assertEquals(before, after);
+        }
     }
 }

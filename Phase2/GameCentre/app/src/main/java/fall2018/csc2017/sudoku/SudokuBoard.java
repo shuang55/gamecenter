@@ -128,5 +128,24 @@ public class SudokuBoard implements Serializable {
         return s.toString();
     }
 
+    @Override
+    public int hashCode() {
+        return sudokuBoard[0][0];
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SudokuBoard)) {
+            return false;
+        }
+        SudokuBoard other = (SudokuBoard) obj;
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (!((int) sudokuBoard[row][col] == ((other.sudokuBoard[row][col])))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

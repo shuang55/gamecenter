@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 /**
  * A custom linear layout with equal width and height, used for displaying sudoku number
  */
+// Excluded from tests because it's a view class
 public class CustomSudokuLinearLayout extends LinearLayout {
 
     public CustomSudokuLinearLayout(Context context) {

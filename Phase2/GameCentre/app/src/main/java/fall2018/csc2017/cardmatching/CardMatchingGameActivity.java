@@ -16,25 +16,24 @@ import java.util.Observer;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.CustomAdapter;
+import fall2018.csc2017.gamecentre.GameAcitivity;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
-import fall2018.csc2017.gamecentre.GameToSave;
 import fall2018.csc2017.gamecentre.GestureDetectGridView;
-import fall2018.csc2017.gamecentre.SavedGames;
-import fall2018.csc2017.gamecentre.UserManager;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
-public class CardMatchingGameActivity extends AppCompatActivity implements Observer {
+// Excluded from tests because it's a view class
+public class CardMatchingGameActivity extends GameAcitivity implements Observer {
 
     /**
      * The board manager.
      */
     private CardMatchingBoardManager cardMatchingBoardManager;
 
-    /**
-     * Gamecentre for managing files
-     */
-    private GameCentre gameCentre;
+//    /**
+//     * Gamecentre for managing files
+//     */
+//    private GameCentre gameCentre;
 
     /**
      * The buttons to display.
@@ -51,15 +50,16 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
      */
     public void display() {
         gridView.setAdapter(new CustomAdapter(cardButtons, columnWidth, columnHeight));
-        setMoveCountText();
-        autoSave();
+        setMoveCountText(R.id.CardMatchingMoveCount);
+        gameCentre.autoSave(cardMatchingBoardManager);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_matching);
-        loadManagers();
+        loadManagers(this);
+        cardMatchingBoardManager = (CardMatchingBoardManager) gameManager;
 
         // activate button
         addSaveButtonListener();
@@ -86,14 +86,13 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
                 });
     }
 
-    /**
-     * Load necessary managers
-     */
-    private void loadManagers() {
-        gameCentre = new GameCentre(this);
-        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        cardMatchingBoardManager = (CardMatchingBoardManager) gameCentre.getGameManager();
-    }
+//    /**
+//     * Load necessary managers
+//     */
+//    private void loadManagers() {
+//        gameCentre = new GameCentre(this);
+//        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+//    }
 
     /**
      * Activate the save button.
@@ -103,12 +102,7 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserManager userManager = gameCentre.getUserManager();
-                SavedGames savedGames = gameCentre.getSavedGames();
-                String userName = userManager.getCurrentUser().getUsername();
-                GameToSave gameToSave = new GameToSave(cardMatchingBoardManager);
-                savedGames.updateSavedGames(gameToSave, userName);
-                gameCentre.saveManager(SavedGames.SAVEDGAMES, savedGames);
+                gameCentre.saveGame(cardMatchingBoardManager);
                 makeToastSavedText();
             }
         });
@@ -133,7 +127,7 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
             for (int col = 0; col != cardMatchingBoard.getNumCardPerCol(); col++) {
                 Button button = new Button(context);
                 Card currentCard = cardMatchingBoardManager.getCardMatchingBoard().getCard(row, col);
-                int mode = currentCard.isPaired() ? 1 : 0;
+                int mode = currentCard.getIsPaired() ? 1 : 0;
                 setCardBackGround(currentCard, mode, button);
                 cardMatchingBoardManager.setOpenPairExistsToFalse();
                 this.cardButtons.add(button);
@@ -143,7 +137,8 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
 
     /**
      * Update the backgrounds on the buttons to match the tiles.
-     * * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
+     *
+     * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
      * mode 0 is to close the card, mode 1 is to open the card.
      */
     private void changeCardDisplay(int[] operation) {
@@ -173,38 +168,31 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
      */
     @Override
     public void update(Observable o, Object arg) {
-        changeCardDisplay((int[]) arg);
+        if(arg != null){
+            changeCardDisplay((int[]) arg);
+        }
         display();
         if (cardMatchingBoardManager.puzzleSolved()) {
-            gameCentre.saveManager(GameManager.TEMP_SAVE_WIN, cardMatchingBoardManager);
-            switchToWinActivity();
+//            gameCentre.gameManagerWin(cardMatchingBoardManager);
+            switchToWinActivity(this);
         }
     }
 
-    /**
-     * Autosaves the board
-     */
-    private void autoSave() {
-        UserManager userManager = gameCentre.getUserManager();
-        userManager.autoSaveGame(cardMatchingBoardManager);
-        gameCentre.saveManager(UserManager.USERS, userManager);
-    }
-
-    /**
-     * swaps activity to you win activity
-     */
-    private void switchToWinActivity() {
-        Intent win = new Intent(this, YouWinActivity.class);
-        startActivity(win);
-    }
+//    /**
+//     * swaps activity to you win activity
+//     */
+//    private void switchToWinActivity() {
+//        Intent win = new Intent(this, YouWinActivity.class);
+//        startActivity(win);
+//    }
 
     /**
      * sets the move count on screen
-     */
+     *//*
     private void setMoveCountText() {
         TextView moves = findViewById(R.id.MoveCount);
         moves.setText(String.format("%s", cardMatchingBoardManager.getMove()));
-    }
+    }*/
 
     @Override
     protected void onStart() {
