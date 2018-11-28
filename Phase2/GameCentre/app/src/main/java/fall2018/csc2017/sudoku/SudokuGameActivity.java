@@ -81,7 +81,7 @@ public class SudokuGameActivity extends GameAcitivity implements Observer {
         gridView = findViewById(R.id.game_grid);
         SudokuBoardAdapter sudokuBoardAdapter = new SudokuBoardAdapter(sudokuBoardManager, this);
         gridView.setAdapter(sudokuBoardAdapter);
-        setMoveCountText(R.id.sudoku_moves);
+        setMoveCountText(R.id.SudokuMoveCount);
         gameCentre.autoSave(sudokuBoardManager);
     }
 

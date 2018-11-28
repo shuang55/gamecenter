@@ -1,13 +1,10 @@
 package fall2018.csc2017.cardmatching;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,10 +14,7 @@ import java.util.Observer;
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.CustomAdapter;
 import fall2018.csc2017.gamecentre.GameAcitivity;
-import fall2018.csc2017.gamecentre.GameCentre;
-import fall2018.csc2017.gamecentre.GameManager;
 import fall2018.csc2017.gamecentre.GestureDetectGridView;
-import fall2018.csc2017.gamecentre.YouWinActivity;
 
 // Excluded from tests because it's a view class
 public class CardMatchingGameActivity extends GameAcitivity implements Observer {

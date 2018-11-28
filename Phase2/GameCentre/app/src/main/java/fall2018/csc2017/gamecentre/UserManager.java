@@ -107,7 +107,7 @@ public class UserManager implements Serializable {
      *
      * @return the current logged in user
      */
-    public User getCurrentUser() {
+    User getCurrentUser() {
         return currentUser;
     }
 
@@ -116,7 +116,7 @@ public class UserManager implements Serializable {
      *
      * @param gameManager the gameManager to be added
      */
-    public void autoSaveGame(GameManager gameManager) {
+    void autoSaveGame(GameManager gameManager) {
         currentUser.addSavedGame(gameManager);
     }
 

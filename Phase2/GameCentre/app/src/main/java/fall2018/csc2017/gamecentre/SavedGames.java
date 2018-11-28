@@ -3,6 +3,7 @@ package fall2018.csc2017.gamecentre;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manages saved games.
@@ -12,12 +13,12 @@ public class SavedGames implements Serializable {
     /**
      * File that contains all saved games for all users and all games.
      */
-    public static final String SAVEDGAMES = "savedgames.ser";
+    static final String SAVEDGAMES = "savedgames.ser";
 
     /**
      * Stores a HashMap(User: HashMap(TypeOfGame: ArrayList(game)))].
      */
-    public HashMap<String, HashMap<String, ArrayList<GameToSave>>> savedGames = new HashMap<>();
+    public Map<String, Map<String, ArrayList<GameToSave>>> savedGames = new HashMap<>();
 
     /**
      * Updates the hashmap that stores all saved games with the new game to save.
@@ -25,7 +26,7 @@ public class SavedGames implements Serializable {
      * @param gameToSave the new game to be saved
      * @param currentUser the current user
      */
-    public void updateSavedGames(GameToSave gameToSave, String currentUser) {
+    void updateSavedGames(GameToSave gameToSave, String currentUser) {
         String gameType = gameToSave.getGameName();
         checkNullKey(currentUser, gameType);
         ArrayList<GameToSave> gameToSaves = savedGames.get(currentUser).get(gameType);
@@ -82,6 +83,28 @@ public class SavedGames implements Serializable {
             }
         }
         return result;
+    }
+
+    /**
+     * Creates a String array containing the name of the saved games.
+     *
+     * @param gameName the game that we are interested in
+     * @param currentUser the current User that we are interested in
+     * @return a String array containing the name of the saved games
+     */
+    ArrayList<String> constructNameArray(String gameName, User currentUser){
+        ArrayList<String> nameArray = new ArrayList<>();
+        String currentUserUserName = currentUser.getUsername();
+        nameArray.add("Select a Saved Game");
+        Map<String, ArrayList<GameToSave>> savedGamesByGameType = savedGames.get(currentUserUserName);
+        if (savedGamesByGameType != null && savedGamesByGameType.get(gameName) != null) {
+            ArrayList<GameToSave> listOfSavedGame = savedGamesByGameType.get(gameName);
+            for (int i = 0; i < listOfSavedGame.size(); i++) {
+                String gameDifficulty = listOfSavedGame.get(i).getGameDifficulty();
+                nameArray.add(listOfSavedGame.get(i).getSavedTime() + " (" + gameDifficulty + ") ");
+            }
+        }
+        return nameArray;
     }
 
     /**
