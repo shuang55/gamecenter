@@ -139,10 +139,10 @@ public class SudokuBoardManagerTest {
         SudokuPlayBoard oldBoard = sudokuBoardManager.getActiveBoard().copy();
         sudokuBoardManager.touchMove(position);
         sudokuBoardManager.updateNumber(9);
-        int oldMoves = sudokuBoardManager.getMoves();
+        int oldMoves = sudokuBoardManager.getMove();
         assertNotEquals(oldBoard, sudokuBoardManager.getActiveBoard());
         sudokuBoardManager.undo();
         assertEquals(oldBoard, sudokuBoardManager.getActiveBoard());
-        assertEquals(oldMoves, sudokuBoardManager.getMoves());
+        assertEquals(oldMoves, sudokuBoardManager.getMove());
     }
 }
