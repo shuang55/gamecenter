@@ -79,15 +79,22 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         gridView = findViewById(R.id.game_grid);
         SudokuBoardAdapter sudokuBoardAdapter = new SudokuBoardAdapter(sudokuBoardManager, this);
         gridView.setAdapter(sudokuBoardAdapter);
+        setMoveCountText();
+        gameCentre.autoSave(sudokuBoardManager);
+    }
+
+    /**
+     * sets the move count on screen
+     */
+    private void setMoveCountText() {
         TextView textView = findViewById(R.id.sudoku_moves);
         textView.setText(String.format("Moves: %s", sudokuBoardManager.getMoves()));
-        gameCentre.autoSave(sudokuBoardManager);
     }
 
     @Override
     public void update(Observable o, Object arg) {
         gameCentre.gameManagerWin(sudokuBoardManager);
-        swapToYouWin();
+        switchToWinActivity();
     }
 
     /**
@@ -106,7 +113,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     /**
      * Transitions to YouWinActivity
      */
-    private void swapToYouWin() {
+    private void switchToWinActivity() {
         Intent youWin = new Intent(this, YouWinActivity.class);
         startActivity(youWin);
     }
