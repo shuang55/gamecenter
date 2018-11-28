@@ -193,7 +193,7 @@ public class SudokuBoardManager extends Observable implements GameManager, Seria
      *
      * @return moves
      */
-    int getMoves() {
+    public int getMove() {
         return moves;
     }
 

@@ -16,23 +16,24 @@ import java.util.Observer;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.CustomAdapter;
+import fall2018.csc2017.gamecentre.GameAcitivity;
 import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
 import fall2018.csc2017.gamecentre.GestureDetectGridView;
 import fall2018.csc2017.gamecentre.YouWinActivity;
 
 // Excluded from tests because it's a view class
-public class CardMatchingGameActivity extends AppCompatActivity implements Observer {
+public class CardMatchingGameActivity extends GameAcitivity implements Observer {
 
     /**
      * The board manager.
      */
     private CardMatchingBoardManager cardMatchingBoardManager;
 
-    /**
-     * Gamecentre for managing files
-     */
-    private GameCentre gameCentre;
+//    /**
+//     * Gamecentre for managing files
+//     */
+//    private GameCentre gameCentre;
 
     /**
      * The buttons to display.
@@ -49,7 +50,7 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
      */
     public void display() {
         gridView.setAdapter(new CustomAdapter(cardButtons, columnWidth, columnHeight));
-        setMoveCountText();
+        setMoveCountText(R.id.CardMatchingMoveCount);
         gameCentre.autoSave(cardMatchingBoardManager);
     }
 
@@ -57,7 +58,8 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_matching);
-        loadManagers();
+        loadManagers(this);
+        cardMatchingBoardManager = (CardMatchingBoardManager) gameManager;
 
         // activate button
         addSaveButtonListener();
@@ -84,14 +86,13 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
                 });
     }
 
-    /**
-     * Load necessary managers
-     */
-    private void loadManagers() {
-        gameCentre = new GameCentre(this);
-        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-        cardMatchingBoardManager = (CardMatchingBoardManager) gameCentre.getGameManager();
-    }
+//    /**
+//     * Load necessary managers
+//     */
+//    private void loadManagers() {
+//        gameCentre = new GameCentre(this);
+//        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
+//    }
 
     /**
      * Activate the save button.
@@ -172,26 +173,26 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
         }
         display();
         if (cardMatchingBoardManager.puzzleSolved()) {
-            gameCentre.gameManagerWin(cardMatchingBoardManager);
-            switchToWinActivity();
+//            gameCentre.gameManagerWin(cardMatchingBoardManager);
+            switchToWinActivity(this);
         }
     }
 
-    /**
-     * swaps activity to you win activity
-     */
-    private void switchToWinActivity() {
-        Intent win = new Intent(this, YouWinActivity.class);
-        startActivity(win);
-    }
+//    /**
+//     * swaps activity to you win activity
+//     */
+//    private void switchToWinActivity() {
+//        Intent win = new Intent(this, YouWinActivity.class);
+//        startActivity(win);
+//    }
 
     /**
      * sets the move count on screen
-     */
+     *//*
     private void setMoveCountText() {
         TextView moves = findViewById(R.id.MoveCount);
         moves.setText(String.format("%s", cardMatchingBoardManager.getMove()));
-    }
+    }*/
 
     @Override
     protected void onStart() {

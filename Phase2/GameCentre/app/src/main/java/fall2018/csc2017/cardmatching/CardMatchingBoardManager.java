@@ -234,7 +234,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      *
      * @return the current move
      */
-    int getMove() {
+    public int getMove() {
         return move;
     }
 }
