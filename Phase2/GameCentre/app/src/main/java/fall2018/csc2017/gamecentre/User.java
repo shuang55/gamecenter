@@ -55,7 +55,7 @@ public class User implements Serializable {
         return "username= " + username;
     }
 
-    public void addSavedGame(GameManager gameManager) {
+    void addSavedGame(GameManager gameManager) {
         GameManager gameToRemove = null;
         for (GameManager game: savedGames) {
             if (game.getGameName().equals(gameManager.getGameName())) {
@@ -68,7 +68,7 @@ public class User implements Serializable {
         savedGames.add(gameManager);
     }
 
-    public GameManager getSelectedGame(String gameName) {
+    GameManager getSelectedGame(String gameName) {
         for (GameManager game : savedGames) {
             if (game.getGameName().equals(gameName)) {
                 return game;
@@ -77,7 +77,7 @@ public class User implements Serializable {
         return null;
     }
 
-    public void removeSavedGame(String gameName) {
+    void removeSavedGame(String gameName) {
         for (GameManager game : savedGames) {
             if (game.getGameName().equals(gameName)) {
                 savedGames.remove(game);

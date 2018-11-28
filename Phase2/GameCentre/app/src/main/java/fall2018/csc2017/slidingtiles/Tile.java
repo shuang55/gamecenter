@@ -9,6 +9,7 @@ import fall2018.csc2017.R;
 /**
  * A Tile in a sliding tiles puzzle.
  */
+//Excluded from test because its a model class.
 public class Tile implements Comparable<Tile>, Serializable {
 
     /**

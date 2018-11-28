@@ -18,7 +18,7 @@ public class SudokuNumberSelectAdapter extends BaseAdapter {
     private Context context;
     private int[] numbers = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    public SudokuNumberSelectAdapter(Context context) {
+    SudokuNumberSelectAdapter(Context context) {
         this.context = context;
     }
 

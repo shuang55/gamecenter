@@ -208,7 +208,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     /**
      * Return the player's move.
      */
-    int getMove() {
+    public int getMove() {
         return move;
     }
 

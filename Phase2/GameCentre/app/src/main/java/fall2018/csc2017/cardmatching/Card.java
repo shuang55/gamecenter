@@ -118,17 +118,15 @@ public class Card implements Comparable<Card>, Serializable {
      * Get whether or not this card is isPaired.
      * @return true if card is isPaired, false otherwise
      */
-    boolean isPaired() {
+    boolean getIsPaired() {
         return isPaired;
     }
 
     /**
-     * Set the card to isPaired or not isPaired.
-     *
-     * @param paired whether the card is isPaired or not
+     * Set the card to isPaired.
      */
-    public void setPaired(boolean paired) {
-        this.isPaired = paired;
+     void setPaired() {
+        this.isPaired = true;
     }
 
     /**

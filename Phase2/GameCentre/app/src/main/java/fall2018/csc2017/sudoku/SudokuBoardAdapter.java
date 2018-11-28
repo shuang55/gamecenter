@@ -31,7 +31,7 @@ public class SudokuBoardAdapter extends BaseAdapter {
      */
     private Context context;
 
-    public SudokuBoardAdapter (SudokuBoardManager sudokuBoardManager, Context context) {
+    SudokuBoardAdapter (SudokuBoardManager sudokuBoardManager, Context context) {
         this.sudokuBoardManager = sudokuBoardManager;
         this.sudokuBoard = sudokuBoardManager.getActiveBoard();
         this.context = context;
