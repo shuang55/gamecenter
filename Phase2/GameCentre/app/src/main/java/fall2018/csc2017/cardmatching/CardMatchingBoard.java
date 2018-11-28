@@ -23,6 +23,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
      * number of cards per row
      */
     private int numCardPerRow;
+
     /**
      * number of cards per column
      */
@@ -55,10 +56,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
             case 12:
                 this.numCardPerRow = 6;
                 break;
-            default:
-                this.numCardPerRow = 4;
         }
-
         this.cards = new Card[numCardPerRow][numCardPerCol];
         Iterator<Card> iter = cards.iterator();
 
@@ -78,8 +76,12 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
      */
     void flipCard(int row, int col, int mode) {
         int[] operation = {row, col, mode};
+        boardUpdate(operation);
+    }
+
+    void boardUpdate(Object arg){
         setChanged();
-        notifyObservers(operation);
+        notifyObservers(arg);
     }
 
     /**

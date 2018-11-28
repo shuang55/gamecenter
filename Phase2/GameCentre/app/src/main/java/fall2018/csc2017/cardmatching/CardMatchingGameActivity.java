@@ -126,7 +126,7 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
             for (int col = 0; col != cardMatchingBoard.getNumCardPerCol(); col++) {
                 Button button = new Button(context);
                 Card currentCard = cardMatchingBoardManager.getCardMatchingBoard().getCard(row, col);
-                int mode = currentCard.isPaired() ? 1 : 0;
+                int mode = currentCard.getIsPaired() ? 1 : 0;
                 setCardBackGround(currentCard, mode, button);
                 cardMatchingBoardManager.setOpenPairExistsToFalse();
                 this.cardButtons.add(button);
@@ -167,7 +167,9 @@ public class CardMatchingGameActivity extends AppCompatActivity implements Obser
      */
     @Override
     public void update(Observable o, Object arg) {
-        changeCardDisplay((int[]) arg);
+        if(arg != null){
+            changeCardDisplay((int[]) arg);
+        }
         display();
         if (cardMatchingBoardManager.puzzleSolved()) {
             gameCentre.gameManagerWin(cardMatchingBoardManager);
