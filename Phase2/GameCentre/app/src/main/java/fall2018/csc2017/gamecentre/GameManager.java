@@ -18,34 +18,60 @@ public interface GameManager extends Serializable {
     String TEMP_SAVE_START = "temp_save_start.ser";
 
     /**
-     * Abstract method for calculating the score of a game
+     * Checks if the tap made is a valid tap.
+     *
+     * @param position the position of the tap
+     * @return whether or not the tap is valid
+     */
+    boolean isValidTap(int position);
+
+    /**
+     * Return if the board is solved.
+     *
+     * @return true if board is solved, false other wise
+     */
+    boolean puzzleSolved();
+
+    /**
+     * Makes the move if the tap is valid.
+     *
+     * @param position the position of the tap
+     */
+    void touchMove(int position);
+
+
+    /**
+     * Abstract method for calculating the score of a game.
+     *
      * @return the score
      */
     int getScore();
 
     /**
-     * Abstract method for getting the game's name
+     * Return move ocunt
+     *
+     * @return move count
+     */
+    int getMove();
+
+    /**
+     * Abstract method for getting the game's name.
+     *
      * @return name of the game
      */
     String getGameName();
 
     /**
-     * Abstract Method for getting the current time in game
+     * Abstract Method for getting the current time in game.
+     *
      * @return the time
      */
     String getTime() ;
 
     /**
-     * Abstract method for getting the game's difficulty
+     * Abstract method for getting the game's difficulty.
+     *
      * @return the game difficulty
      */
     String getGameDifficulty();
-
-    boolean isValidTap(int position);
-
-    boolean puzzleSolved();
-
-    void touchMove(int position);
-
-    int getMove();
 }

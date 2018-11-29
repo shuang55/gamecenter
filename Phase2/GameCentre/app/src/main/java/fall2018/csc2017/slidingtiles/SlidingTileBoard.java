@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import java.util.Observable;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -16,9 +15,9 @@ import java.util.Iterator;
 public class SlidingTileBoard extends Observable implements Serializable, Iterable<Tile> {
 
     /**
-     * The board size
+     * The board size.
      */
-    int boardSize;
+    private int boardSize;
 
     /**
      * The tiles on the board in row-major order.
@@ -44,27 +43,7 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
     }
 
     /**
-     * Return the tile at (row, col)
-     *
-     * @param row the tile row
-     * @param col the tile column
-     * @return the tile at (row, col)
-     */
-    Tile getTile(int row, int col) {
-        return tiles[row][col];
-    }
-
-    /**
-     * Return the tiles for this slidingTileBoard.
-     *
-     * @return the tiles for this slidingTileBoard
-     */
-    public Tile[][] getTiles() {
-        return tiles;
-    }
-
-    /**
-     * Swap the tiles at (row1, col1) and (row2, col2)
+     * Swap the tiles at (row1, col1) and (row2, col2).
      *
      * @param row1 the first tile row
      * @param col1 the first tile col
@@ -80,7 +59,7 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
     }
 
     /**
-     * Finds the tile with id tileID
+     * Finds the tile with id tileID.
      *
      * @param tileID the id of the tile
      * @return the position of the tile
@@ -100,9 +79,61 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
 
     @Override
     public String toString() {
-        return "SlidingTileBoard{" +
-                "tiles=" + Arrays.toString(tiles) +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SlidingTileBoard{tiles=[");
+        constructToString(stringBuilder);
+        stringBuilder.append("}");
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Create the string representation of tiles.
+     *
+     * @param stringBuilder the stringBuilder to be modified
+     */
+    private void constructToString(StringBuilder stringBuilder) {
+        int lastArray1 = boardSize - 1;
+        for(Tile[] t1: tiles){
+            int lastArray2 = boardSize - 1;
+            for (Tile t2: t1) {
+                stringBuilder.append(t2.toString());
+                if (lastArray2-- != 0 || lastArray1 != 0) {
+                    stringBuilder.append(", ");
+                }
+            }
+            if (lastArray1-- == 0){
+                stringBuilder.append("]");
+            }
+        }
+    }
+
+    /**
+     * Return the tile at (row, col).
+     *
+     * @param row the tile row
+     * @param col the tile column
+     * @return the tile at (row, col)
+     */
+    Tile getTile(int row, int col) {
+        return tiles[row][col];
+    }
+
+    /**
+     * Return the tiles for this slidingTileBoard.
+     *
+     * @return the tiles for this slidingTileBoard
+     */
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    /**
+     * Return the board size of this slidingTileBoard.
+     *
+     * @return the board size of this slidingTileBoard
+     */
+    int getBoardSize() {
+        return boardSize;
     }
 
     @NonNull
