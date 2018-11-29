@@ -86,7 +86,7 @@ public class SlidingTileBoardManagerTest {
 
     // Testing begins here
     /**
-     * Test whether isValidHelp works.
+     * Test whether isValidTap works.
      */
     @Test
     public void testIsValidTap() {
