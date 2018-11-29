@@ -113,7 +113,48 @@ public class SlidingTileBoardTest {
         assertEquals(0, slidingTileBoard.findTile(1));
         assertEquals(11, slidingTileBoard.findTile(12));
     }
-    
+
+    /**
+     * Test whether toString works.
+     */
+    @Test
+    public void testToString(){
+        setUpCorrect(3);
+        assertEquals("SlidingTileBoard{tiles=[Tile(1), Tile(2), Tile(3), " +
+                "Tile(4), Tile(5), Tile(6), Tile(7), Tile(8), Tile(25)]}",
+                slidingTileBoard.toString());
+    }
+
+    /**
+     * Test whether getBoardSize() work on board size 3.
+     */
+    @Test
+    public void testGetBoardSize3(){
+        setUpCorrect(3);
+        assertEquals(3, slidingTileBoard.getBoardSize());
+    }
+
+    /**
+     * Test whether getBoardSize() work on board size 4.
+     */
+    @Test
+    public void testGetBoardSize4(){
+        setUpCorrect(4);
+        assertEquals(4, slidingTileBoard.getBoardSize());
+    }
+
+    /**
+     * Test whether getBoardSize() work on board size 5.
+     */
+    @Test
+    public void testGetBoardSize5(){
+        setUpCorrect(5);
+        assertEquals(5, slidingTileBoard.getBoardSize());
+    }
+
+    /**
+     * Test whether Iterator works.
+     */
     @Test
     public void testIterator(){
         setUpCorrect(5);

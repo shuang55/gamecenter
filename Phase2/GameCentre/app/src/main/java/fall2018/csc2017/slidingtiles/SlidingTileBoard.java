@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import java.util.Observable;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -80,9 +79,32 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
 
     @Override
     public String toString() {
-        return "SlidingTileBoard{" +
-                "tiles=" + Arrays.toString(tiles) +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SlidingTileBoard{tiles=[");
+        constructToString(stringBuilder);
+        stringBuilder.append("}");
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Create the string representation of tiles.
+     *
+     * @param stringBuilder the stringBuilder to be modified
+     */
+    private void constructToString(StringBuilder stringBuilder) {
+        int lastArray1 = boardSize - 1;
+        for(Tile[] t1: tiles){
+            int lastArray2 = boardSize - 1;
+            for (Tile t2: t1) {
+                stringBuilder.append(t2.toString());
+                if (lastArray2-- != 0 || lastArray1 != 0) {
+                    stringBuilder.append(", ");
+                }
+            }
+            if (lastArray1-- == 0){
+                stringBuilder.append("]");
+            }
+        }
     }
 
     /**
