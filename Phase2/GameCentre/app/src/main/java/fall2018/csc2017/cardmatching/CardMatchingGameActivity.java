@@ -123,10 +123,10 @@ public class CardMatchingGameActivity extends GameAcitivity implements Observer 
                 Card currentCard = cardMatchingBoardManager.getCardMatchingBoard().getCard(row, col);
                 int mode = currentCard.getIsPaired() ? 1 : 0;
                 setCardBackGround(currentCard, mode, button);
-                cardMatchingBoardManager.setOpenPairExistsToFalse();
                 this.cardButtons.add(button);
             }
         }
+        cardMatchingBoardManager.setOpenPairExistsToFalse();
     }
 
     /**
