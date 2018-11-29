@@ -46,6 +46,24 @@ public class CardMatchingBoardManagerTest {
         }
         assertFalse(cardMatchingBoardManager.puzzleSolved());
     }
+    @Test
+    public void testIsValidTap(){
+        cardMatchingBoardManager.touchMove(2);
+        assertFalse(cardMatchingBoardManager.isValidTap(2));
+        assertTrue(cardMatchingBoardManager.isValidTap(3));
+    }
+    @Test
+    public void testGetScore(){
+        for (int i = 0; i <= 15; i++){
+            cardMatchingBoardManager.touchMove(i);
+        }
+        assertEquals(840, cardMatchingBoardManager.getScore());
+    }
+    @Test
+    public void testGetMove(){
+        cardMatchingBoardManager.touchMove(1);
+        assertEquals(1, cardMatchingBoardManager.getMove());
+    }
 
 
 }
