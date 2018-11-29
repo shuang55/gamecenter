@@ -16,7 +16,7 @@ import fall2018.csc2017.gamecentre.CustomAdapter;
 import fall2018.csc2017.gamecentre.GameAcitivity;
 import fall2018.csc2017.gamecentre.GestureDetectGridView;
 
-// Excluded from tests because it's a view class
+// Excluded from tests because it's a view class, there is no logic in this class
 public class CardMatchingGameActivity extends GameAcitivity implements Observer {
 
     /**
@@ -24,18 +24,18 @@ public class CardMatchingGameActivity extends GameAcitivity implements Observer 
      */
     private CardMatchingBoardManager cardMatchingBoardManager;
 
-//    /**
-//     * Gamecentre for managing files
-//     */
-//    private GameCentre gameCentre;
-
     /**
      * The buttons to display.
      */
     private ArrayList<Button> cardButtons;
 
-    // Grid View and calculated column height and width based on device size
+    /**
+     * The Grid View
+     */
     private GestureDetectGridView gridView;
+    /**
+     * Calculated column height and width based on device size
+     */
     private static int columnWidth, columnHeight;
 
     /**
@@ -79,14 +79,6 @@ public class CardMatchingGameActivity extends GameAcitivity implements Observer 
                     }
                 });
     }
-
-//    /**
-//     * Load necessary managers
-//     */
-//    private void loadManagers() {
-//        gameCentre = new GameCentre(this);
-//        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-//    }
 
     /**
      * Activate the save button.
@@ -133,7 +125,7 @@ public class CardMatchingGameActivity extends GameAcitivity implements Observer 
      * Update the backgrounds on the buttons to match the tiles.
      *
      * @param operation an array with 3 integers. Index 0 is row, 1 is col, and 2 is the mode.
-     * mode 0 is to close the card, mode 1 is to open the card.
+     *                  mode 0 is to close the card, mode 1 is to open the card.
      */
     private void changeCardDisplay(int[] operation) {
         CardMatchingBoard cardMatchingBoard = cardMatchingBoardManager.getCardMatchingBoard();
@@ -157,12 +149,13 @@ public class CardMatchingGameActivity extends GameAcitivity implements Observer 
 
     /**
      * updates the screen
+     *
      * @param o   observable
      * @param arg object
      */
     @Override
     public void update(Observable o, Object arg) {
-        if(arg != null){
+        if (arg != null) {
             changeCardDisplay((int[]) arg);
         }
         display();
@@ -171,22 +164,6 @@ public class CardMatchingGameActivity extends GameAcitivity implements Observer 
             switchToWinActivity(this);
         }
     }
-
-//    /**
-//     * swaps activity to you win activity
-//     */
-//    private void switchToWinActivity() {
-//        Intent win = new Intent(this, YouWinActivity.class);
-//        startActivity(win);
-//    }
-
-    /**
-     * sets the move count on screen
-     *//*
-    private void setMoveCountText() {
-        TextView moves = findViewById(R.id.MoveCount);
-        moves.setText(String.format("%s", cardMatchingBoardManager.getMove()));
-    }*/
 
     @Override
     protected void onStart() {
