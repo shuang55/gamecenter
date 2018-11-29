@@ -18,7 +18,7 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
     /**
      * The board size.
      */
-    int boardSize;
+    private int boardSize;
 
     /**
      * The tiles on the board in row-major order.
@@ -44,27 +44,7 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
     }
 
     /**
-     * Return the tile at (row, col)
-     *
-     * @param row the tile row
-     * @param col the tile column
-     * @return the tile at (row, col)
-     */
-    Tile getTile(int row, int col) {
-        return tiles[row][col];
-    }
-
-    /**
-     * Return the tiles for this slidingTileBoard.
-     *
-     * @return the tiles for this slidingTileBoard
-     */
-    public Tile[][] getTiles() {
-        return tiles;
-    }
-
-    /**
-     * Swap the tiles at (row1, col1) and (row2, col2)
+     * Swap the tiles at (row1, col1) and (row2, col2).
      *
      * @param row1 the first tile row
      * @param col1 the first tile col
@@ -80,7 +60,7 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
     }
 
     /**
-     * Finds the tile with id tileID
+     * Finds the tile with id tileID.
      *
      * @param tileID the id of the tile
      * @return the position of the tile
@@ -103,6 +83,35 @@ public class SlidingTileBoard extends Observable implements Serializable, Iterab
         return "SlidingTileBoard{" +
                 "tiles=" + Arrays.toString(tiles) +
                 '}';
+    }
+
+    /**
+     * Return the tile at (row, col).
+     *
+     * @param row the tile row
+     * @param col the tile column
+     * @return the tile at (row, col)
+     */
+    Tile getTile(int row, int col) {
+        return tiles[row][col];
+    }
+
+    /**
+     * Return the tiles for this slidingTileBoard.
+     *
+     * @return the tiles for this slidingTileBoard
+     */
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    /**
+     * Return the board size of this slidingTileBoard.
+     *
+     * @return the board size of this slidingTileBoard
+     */
+    int getBoardSize() {
+        return boardSize;
     }
 
     @NonNull

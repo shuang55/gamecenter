@@ -75,7 +75,7 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
 
         // Add View to activity
         gridView = findViewById(R.id.SlidingTileGrid);
-        gridView.setNumColumns(slidingTileBoardManager.getSlidingTileBoard().boardSize);
+        gridView.setNumColumns(slidingTileBoardManager.getSlidingTileBoard().getBoardSize());
         gridView.setGameManager(slidingTileBoardManager);
         slidingTileBoardManager.getSlidingTileBoard().addObserver(this);
 
@@ -87,8 +87,8 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
                         gridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
-                        columnWidth = displayWidth / slidingTileBoardManager.getSlidingTileBoard().boardSize;
-                        columnHeight = displayHeight / slidingTileBoardManager.getSlidingTileBoard().boardSize;
+                        columnWidth = displayWidth / slidingTileBoardManager.getSlidingTileBoard().getBoardSize();
+                        columnHeight = displayHeight / slidingTileBoardManager.getSlidingTileBoard().getBoardSize();
                         display();
                     }
                 });
@@ -151,8 +151,8 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
     private void createTileButtons(Context context) {
         SlidingTileBoard slidingTileBoard = slidingTileBoardManager.getSlidingTileBoard();
         tileButtons = new ArrayList<>();
-        for (int row = 0; row != slidingTileBoard.boardSize; row++) {
-            for (int col = 0; col != slidingTileBoard.boardSize; col++) {
+        for (int row = 0; row != slidingTileBoard.getBoardSize(); row++) {
+            for (int col = 0; col != slidingTileBoard.getBoardSize(); col++) {
                 Button tmp = new Button(context);
                 tmp.setBackgroundResource(slidingTileBoard.getTile(row, col).getBackground());
                 this.tileButtons.add(tmp);
@@ -167,8 +167,8 @@ public class SlidingTileGameActivity extends GameAcitivity implements Observer {
         SlidingTileBoard slidingTileBoard = slidingTileBoardManager.getSlidingTileBoard();
         int nextPos = 0;
         for (Button b : tileButtons) {
-            int row = nextPos / slidingTileBoardManager.getSlidingTileBoard().boardSize;
-            int col = nextPos % slidingTileBoardManager.getSlidingTileBoard().boardSize;
+            int row = nextPos / slidingTileBoardManager.getSlidingTileBoard().getBoardSize();
+            int col = nextPos % slidingTileBoardManager.getSlidingTileBoard().getBoardSize();
             b.setBackgroundResource(slidingTileBoard.getTile(row, col).getBackground());
             nextPos++;
         }

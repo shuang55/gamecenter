@@ -135,7 +135,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * Set the board to be one move away from winning.
      */
     void setBoardOneMoveWin(){
-        int boardSize = getSlidingTileBoard().boardSize;
+        int boardSize = getSlidingTileBoard().getBoardSize();
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = boardSize * boardSize;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
@@ -144,8 +144,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         tiles.remove(tiles.size() - 1);
         tiles.add(new Tile(24));
         slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        slidingTileBoard.swapTiles(slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 1,
-                slidingTileBoard.boardSize - 1, slidingTileBoard.boardSize - 2);
+        slidingTileBoard.swapTiles(slidingTileBoard.getBoardSize() - 1, slidingTileBoard.getBoardSize() - 1,
+                slidingTileBoard.getBoardSize() - 1, slidingTileBoard.getBoardSize() - 2);
     }
 
     @Override
@@ -163,14 +163,14 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
 
     @Override
     public boolean isValidTap(int position) {
-        int row = position / slidingTileBoard.boardSize;
-        int col = position % slidingTileBoard.boardSize;
+        int row = position / slidingTileBoard.getBoardSize();
+        int col = position % slidingTileBoard.getBoardSize();
         int blankId = 25;
 
         Tile above = row == 0 ? null : slidingTileBoard.getTile(row - 1, col);
-        Tile below = row == slidingTileBoard.boardSize - 1 ? null : slidingTileBoard.getTile(row + 1, col);
+        Tile below = row == slidingTileBoard.getBoardSize() - 1 ? null : slidingTileBoard.getTile(row + 1, col);
         Tile left = col == 0 ? null : slidingTileBoard.getTile(row, col - 1);
-        Tile right = col == slidingTileBoard.boardSize - 1 ? null : slidingTileBoard.getTile(row, col + 1);
+        Tile right = col == slidingTileBoard.getBoardSize() - 1 ? null : slidingTileBoard.getTile(row, col + 1);
         return (below != null && below.getId() == blankId)
                 || (above != null && above.getId() == blankId)
                 || (left != null && left.getId() == blankId)
@@ -179,11 +179,11 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
 
     @Override
     public void touchMove(int position) {
-        int row = position / slidingTileBoard.boardSize;
-        int col = position % slidingTileBoard.boardSize;
+        int row = position / slidingTileBoard.getBoardSize();
+        int col = position % slidingTileBoard.getBoardSize();
         int blankId = 25;
-        int blankRow = slidingTileBoard.findTile(blankId) / slidingTileBoard.boardSize;
-        int blankCol = slidingTileBoard.findTile(blankId) % slidingTileBoard.boardSize;
+        int blankRow = slidingTileBoard.findTile(blankId) / slidingTileBoard.getBoardSize();
+        int blankCol = slidingTileBoard.findTile(blankId) % slidingTileBoard.getBoardSize();
 
         if (isValidTap(position)) {
             ArrayList<Integer> undoMove = new ArrayList<>();
@@ -231,7 +231,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
 
     @Override
     public int getScore() {
-        int score = 1000 - (move * 3 * (6 - slidingTileBoard.boardSize));
+        int score = 1000 - (move * 3 * (6 - slidingTileBoard.getBoardSize()));
         if (score < 0) {
             return 0;
         }
@@ -252,6 +252,6 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
 
     @Override
     public String getGameDifficulty() {
-        return String.format("%s by %s", slidingTileBoard.boardSize, slidingTileBoard.boardSize);
+        return String.format("%s by %s", slidingTileBoard.getBoardSize(), slidingTileBoard.getBoardSize());
     }
 }
