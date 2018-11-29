@@ -38,7 +38,7 @@ public class GameCentre {
     /**
      * Keep track of all saved games.
      */
-    private SavedGames savedGames;
+    private SavedGamesManager savedGamesManager;
 
     /**
      * Initialize a Game Centre.
@@ -47,7 +47,7 @@ public class GameCentre {
      */
     public GameCentre(Context context) {
         this.context = context;
-        String[] fileList = {UserManager.USERS, ScoreBoard.SCOREBOARD, SavedGames.SAVEDGAMES};
+        String[] fileList = {UserManager.USERS, ScoreBoard.SCOREBOARD, SavedGamesManager.SAVEDGAMES};
         for (String s : fileList) {
             loadManager(s);
         }
@@ -79,8 +79,8 @@ public class GameCentre {
                 case ScoreBoard.SCOREBOARD:
                     outputStream.writeObject(new ScoreBoard());
                     break;
-                case SavedGames.SAVEDGAMES:
-                    outputStream.writeObject(new SavedGames());
+                case SavedGamesManager.SAVEDGAMES:
+                    outputStream.writeObject(new SavedGamesManager());
                     break;
                 default:
                     outputStream.writeObject(new UserManager());
@@ -134,8 +134,8 @@ public class GameCentre {
             case GameManager.TEMP_SAVE_WIN:
                 gameManager = (GameManager) input.readObject();
                 break;
-            case SavedGames.SAVEDGAMES:
-                savedGames = (SavedGames) input.readObject();
+            case SavedGamesManager.SAVEDGAMES:
+                savedGamesManager = (SavedGamesManager) input.readObject();
                 break;
             case GameManager.TEMP_SAVE_START:
                 gameManager = (GameManager) input.readObject();
@@ -159,14 +159,14 @@ public class GameCentre {
     }
 
     /**
-     * Add a gameManager to this.savedGames
+     * Add a gameManager to this.savedGamesManager
      *
      * @param gameManager the gameManager to be added
      */
     public void saveGame(GameManager gameManager) {
         GameToSave gameToSave = new GameToSave(gameManager);
-        savedGames.updateSavedGames(gameToSave, userManager.getCurrentUser().getUsername());
-        saveManager(SavedGames.SAVEDGAMES, savedGames);
+        savedGamesManager.updateSavedGames(gameToSave, userManager.getCurrentUser().getUsername());
+        saveManager(SavedGamesManager.SAVEDGAMES, savedGamesManager);
     }
 
     /**
@@ -213,12 +213,12 @@ public class GameCentre {
     }
 
     /**
-     * Get savedGames.
+     * Get savedGamesManager.
      *
-     * @return savedGames
+     * @return savedGamesManager
      */
-    public SavedGames getSavedGames() {
-        return savedGames;
+    SavedGamesManager getSavedGamesManager() {
+        return savedGamesManager;
     }
 
     /**

@@ -1,7 +1,11 @@
 package fall2018.csc2017.slidingtiles;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +18,6 @@ import static org.junit.Assert.*;
  */
 public class SlidingTileBoardManagerTest {
 
-    //Set up for testings.
     /** The board manager for testing. */
     private SlidingTileBoardManager slidingTileBoardManager;
 
@@ -22,21 +25,11 @@ public class SlidingTileBoardManagerTest {
      * Make a set of tiles that are in order.
      * @return a set of tiles that are in order
      */
-    private List<Tile> makeTiles(int boardSize) {
+    private List<Tile> makeTiles() {
         List<Tile> tiles = new ArrayList<>();
-        final int numTiles = boardSize * boardSize;
+        final int numTiles = 25;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
             tiles.add(new Tile(tileNum));
-        }
-        if (boardSize == 3) {
-            tiles.remove(8);
-            Tile blankTile = new Tile(24);
-            tiles.add(blankTile);
-        }
-        else if (boardSize == 4) {
-            tiles.remove(15);
-            Tile blankTile = new Tile(24);
-            tiles.add(blankTile);
         }
         return tiles;
     }
@@ -44,10 +37,19 @@ public class SlidingTileBoardManagerTest {
     /**
      * Make a solved Board.
      */
-    private void setUpCorrect(int boardSize) {
-        List<Tile> tiles = makeTiles(boardSize);
-        SlidingTileBoard slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
+    @Before
+    public void setUpCorrect() {
+        List<Tile> tiles = makeTiles();
+        SlidingTileBoard slidingTileBoard = new SlidingTileBoard(tiles, 5);
         slidingTileBoardManager = new SlidingTileBoardManager(slidingTileBoard);
+    }
+
+    /**
+     * Removed slidingTileBoardManager after use.
+     */
+    @After
+    public void tearDown() {
+        slidingTileBoardManager = null;
     }
 
     /**
@@ -81,15 +83,13 @@ public class SlidingTileBoardManagerTest {
         return inversionCount;
     }
 
-    // Testing begins here
     /**
      * Test whether isValidHelp works.
      */
     @Test
     public void testIsValidTap() {
-        setUpCorrect(4);
-        assertTrue(slidingTileBoardManager.isValidTap(11));
-        assertTrue(slidingTileBoardManager.isValidTap(14));
+        assertTrue(slidingTileBoardManager.isValidTap(19));
+        assertTrue(slidingTileBoardManager.isValidTap(23));
         assertFalse(slidingTileBoardManager.isValidTap(10));
     }
 
@@ -98,7 +98,6 @@ public class SlidingTileBoardManagerTest {
      */
     @Test
     public void testIsSolved() {
-        setUpCorrect(3);
         assertTrue(slidingTileBoardManager.puzzleSolved());
         slidingTileBoardManager.getSlidingTileBoard().swapTiles(0, 0, 0, 1);
         assertFalse(slidingTileBoardManager.puzzleSolved());
@@ -109,7 +108,6 @@ public class SlidingTileBoardManagerTest {
      */
     @Test
     public void testTouchMove(){
-        setUpCorrect(5);
         assertEquals(24, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 3).getId());
         assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 4).getId());
         slidingTileBoardManager.touchMove(23);
@@ -126,7 +124,6 @@ public class SlidingTileBoardManagerTest {
      */
     @Test
     public void testUndoMove(){
-        setUpCorrect(5);
         assertFalse(slidingTileBoardManager.undoMove());
         slidingTileBoardManager.touchMove(23);
         assertEquals(25, slidingTileBoardManager.getSlidingTileBoard().getTile(4, 3).getId());
@@ -213,10 +210,72 @@ public class SlidingTileBoardManagerTest {
      */
     @Test
     public void testEasyWinBoardSize5(){
-        slidingTileBoardManager = new SlidingTileBoardManager(5);
         slidingTileBoardManager.setBoardOneMoveWin();
         assertFalse(slidingTileBoardManager.puzzleSolved());
         slidingTileBoardManager.touchMove(24);
         assertTrue(slidingTileBoardManager.puzzleSolved());
+    }
+
+    /**
+     * Test whether getMove increments after player makes a valid move.
+     */
+    @Test
+    public void testGetMove(){
+        assertEquals(0, slidingTileBoardManager.getMove());
+        slidingTileBoardManager.touchMove(10);
+        assertEquals(0, slidingTileBoardManager.getMove());
+        slidingTileBoardManager.touchMove(23);
+        assertEquals(1, slidingTileBoardManager.getMove());
+    }
+
+    /**
+     * Test whether getScore changes after player makes a valid move.
+     */
+    @Test
+    public void testGetScore(){
+        assertEquals(1000, slidingTileBoardManager.getScore());
+        slidingTileBoardManager.touchMove(10);
+        assertEquals(1000, slidingTileBoardManager.getScore());
+        slidingTileBoardManager.touchMove(23);
+        assertEquals(997, slidingTileBoardManager.getScore());
+    }
+
+    /**
+     * Test whether score becomes negative or becomes 0, if too many moves were made.
+     */
+    @Test
+    public void testGetScoreWhenScoreBecomesNegative(){
+        assertEquals(1000, slidingTileBoardManager.getScore());
+        for (int i = 350; i != 0; i--){
+            slidingTileBoardManager.touchMove(19);
+            slidingTileBoardManager.touchMove(24);
+        }
+        assertEquals(0, slidingTileBoardManager.getScore());
+    }
+
+    /**
+     * Test whether getName returns the right name.
+     */
+    @Test
+    public void testGetName(){
+        assertEquals("Sliding Tile", slidingTileBoardManager.getGameName());
+    }
+
+    /**
+     * Test whether getTime returns the right time.
+     */
+    @Test
+    public void testGetTime(){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        assertEquals(dateTimeFormatter.format(now), slidingTileBoardManager.getTime());
+    }
+
+    /**
+     * Test whether getGameDifficulty returns the right string.
+     */
+    @Test
+    public void testGetGameDifficulty(){
+        assertEquals("5 by 5", slidingTileBoardManager.getGameDifficulty());
     }
 }

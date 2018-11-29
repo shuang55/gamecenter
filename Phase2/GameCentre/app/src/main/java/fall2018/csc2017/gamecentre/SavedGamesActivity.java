@@ -23,6 +23,7 @@ import fall2018.csc2017.sudoku.SudokuStartingActivity;
 /**
  * Activity for Saved Games.
  */
+//Excluded from test because this is a view class.
 public class SavedGamesActivity extends AppCompatActivity {
 
     /**
@@ -31,14 +32,17 @@ public class SavedGamesActivity extends AppCompatActivity {
     private User currentUser;
 
     /**
-     * Gamecentre for managing files
+     * GameCentre for managing files.
      */
     private GameCentre gameCentre;
 
-    private SavedGames savedGames;
+    /**
+     * Manager for saved games.
+     */
+    private SavedGamesManager savedGamesManager;
 
     /**
-     * The hashmap that contains all saved games for all users and all games.
+     * The hashMap that contains all saved games for all users and all games.
      */
     private Map<String, Map<String, ArrayList<GameToSave>>> savedGamesMap;
 
@@ -49,13 +53,30 @@ public class SavedGamesActivity extends AppCompatActivity {
     }
 
     /**
+     * Updates the screen on resume.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gameCentre = new GameCentre(this);
+        currentUser = gameCentre.getUserManager().getCurrentUser();
+        savedGamesManager = gameCentre.getSavedGamesManager();
+        savedGamesMap = savedGamesManager.getSavedGames();
+        addLoadGameSpinnerListener("Sliding Tile", R.id.SlidingTileSpinner);
+        addLoadGameSpinnerListener("Card Matching", R.id.cardMatchingSpinner);
+        addLoadGameSpinnerListener("Sudoku", R.id.sudokuSpinner);
+        addBackButtonListener();
+    }
+
+    /**
      * Activates the load game spinner.
      *
      * @param gameName the name of the game
+     * @param IdOfSpinner the id of the spinner
      */
-    private void addLoadGameSpinnerListener(String gameName, int IDofSpinner){
+    private void addLoadGameSpinnerListener(String gameName, int IdOfSpinner){
         final String GAMENAME = gameName;
-        Spinner Spinner = findViewById(IDofSpinner);
+        Spinner Spinner = findViewById(IdOfSpinner);
         Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -78,10 +99,7 @@ public class SavedGamesActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SavedGamesActivity.this,
-                android.R.layout.simple_spinner_dropdown_item, savedGames.constructNameArray(GAMENAME, currentUser));
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner.setAdapter(arrayAdapter);
+        createArrayAdapter(GAMENAME, Spinner);
     }
 
     /**
@@ -98,32 +116,30 @@ public class SavedGamesActivity extends AppCompatActivity {
     }
 
     /**
-     * Switch the view to GameCentre Activity.
+     * Create and set the array adapter for the given spinner.
+     *
+     * @param gameName name of the game of the spinner
+     * @param spinner Spinner of the given game
      */
-    private void switchToGameCentre() {
-        Intent gameCentre = new Intent(this, GameCentreActivity.class);
-        startActivity(gameCentre);
+    private void createArrayAdapter(String gameName, Spinner spinner) {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SavedGamesActivity.this,
+                android.R.layout.simple_spinner_dropdown_item,
+                savedGamesManager.constructNameArray(gameName, currentUser));
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
     }
 
     /**
-     * Set up which game to be loaded, and switch to that view.
+     * Switch to the game user selected.
      *
      * @param selected the game user choose to load
      * @param gameName the name of the game
      */
     private void switchToLoadGame(String selected, String gameName) {
-        int indexOfSelectedGame=0;
         String currentUserUsername = currentUser.getUsername();
-        ArrayList<GameToSave> listOfSavedGame = savedGamesMap.get(currentUserUsername).get(gameName);
-        for (int i = 0; i < listOfSavedGame.size(); i++) {
-            String gameDifficulty = listOfSavedGame.get(i).getGameDifficulty();
-            String nameOfSelectedGame = listOfSavedGame.get(i).getSavedTime() + " (" + gameDifficulty + ") ";
-            if (nameOfSelectedGame.equals(selected)){
-                indexOfSelectedGame = i;
-            }
-        }
-        GameToSave gameToSave = listOfSavedGame.get(indexOfSelectedGame);
-        startActivity(gameName, gameToSave.getGameManager());
+        ArrayList<GameToSave> savedGames = savedGamesMap.get(currentUserUsername).get(gameName);
+        GameManager gameManager = savedGamesManager.getSelectedGameToSave(selected, savedGames);
+        startActivity(gameName, gameManager);
     }
 
     /**
@@ -150,45 +166,34 @@ public class SavedGamesActivity extends AppCompatActivity {
     }
 
     /**
+     * Switch the view to GameCentre Activity.
+     */
+    private void switchToGameCentre() {
+        Intent gameCentre = new Intent(this, GameCentreActivity.class);
+        startActivity(gameCentre);
+    }
+
+    /**
      * Switch to view of Sliding tile game.
      */
     public void switchToSlidingTile() {
-        Intent tmp = new Intent(this, SlidingTileGameActivity.class);
-        startActivity(tmp);
+        Intent slidingTile = new Intent(this, SlidingTileGameActivity.class);
+        startActivity(slidingTile);
     }
 
     /**
      * Switch to view of Card Matching game.
      */
     public void switchToCardMatching() {
-        Intent tmp = new Intent(this, CardMatchingGameActivity.class);
-        startActivity(tmp);
+        Intent cardMatching = new Intent(this, CardMatchingGameActivity.class);
+        startActivity(cardMatching);
     }
 
     /**
      * Switch to view of Sudoku game.
      */
     public void switchToSudoku() {
-        Intent tmp = new Intent(this, SudokuGameActivity.class);
-        startActivity(tmp);
-    }
-
-    /**
-     * Updates the screen on resume.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        gameCentre = new GameCentre(this);
-        currentUser = gameCentre.getUserManager().getCurrentUser();
-        savedGames = gameCentre.getSavedGames();
-        savedGamesMap = savedGames.savedGames;
-        int slidingTileSpinnerID = R.id.SlidingTileSpinner;
-        int cardMatchingSpinnerID = R.id.cardMatchingSpinner;
-        int sudokuSpinnerID = R.id.sudokuSpinner;
-        addLoadGameSpinnerListener("Sliding Tile", slidingTileSpinnerID);
-        addLoadGameSpinnerListener("Card Matching", cardMatchingSpinnerID);
-        addLoadGameSpinnerListener("Sudoku", sudokuSpinnerID);
-        addBackButtonListener();
+        Intent sudoku = new Intent(this, SudokuGameActivity.class);
+        startActivity(sudoku);
     }
 }
