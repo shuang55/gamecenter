@@ -16,7 +16,7 @@ public class SavedGamesManager implements Serializable {
     static final String SAVEDGAMES = "savedgames.ser";
 
     /**
-     * Stores a Map(User: Map(TypeOfGame: ArrayList(game)))].
+     * Stores a Map(User: Map(TypeOfGame: ArrayList(game))).
      */
     private Map<String, Map<String, ArrayList<GameToSave>>> savedGames = new HashMap<>();
 

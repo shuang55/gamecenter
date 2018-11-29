@@ -18,7 +18,6 @@ import static org.junit.Assert.*;
  */
 public class SlidingTileBoardManagerTest {
 
-    //Set up for testings.
     /** The board manager for testing. */
     private SlidingTileBoardManager slidingTileBoardManager;
 
@@ -84,7 +83,6 @@ public class SlidingTileBoardManagerTest {
         return inversionCount;
     }
 
-    // Testing begins here
     /**
      * Test whether isValidHelp works.
      */
