@@ -40,13 +40,6 @@ public class CardMatchingBoardManagerTest {
         assertFalse(cardMatchingBoardManager.puzzleSolved());
     }
     @Test
-    public void testPuzzleSolvedTrue(){
-        for(int i = 0; i <= 15; i ++){
-            cardMatchingBoardManager.touchMove(i);
-        }
-        assertTrue(cardMatchingBoardManager.puzzleSolved());
-    }
-    @Test
     public void testPuzzleSolvedHalfFinished(){
         for (int i = 0; i <= 7; i++){
             cardMatchingBoardManager.touchMove(i);
