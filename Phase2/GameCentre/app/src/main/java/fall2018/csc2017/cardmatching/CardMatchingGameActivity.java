@@ -13,11 +13,11 @@ import java.util.Observer;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.CustomAdapter;
-import fall2018.csc2017.gamecentre.GameAcitivity;
+import fall2018.csc2017.gamecentre.GameActivity;
 import fall2018.csc2017.gamecentre.GestureDetectGridView;
 
 // Excluded from tests because it's a view class, there is no logic in this class
-public class CardMatchingGameActivity extends GameAcitivity implements Observer {
+public class CardMatchingGameActivity extends GameActivity implements Observer {
 
     /**
      * The board manager.

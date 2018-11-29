@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 // Excluded from tests because it's a view class
-public abstract class GameAcitivity extends AppCompatActivity {
+public abstract class GameActivity extends AppCompatActivity {
 
     protected GameCentre gameCentre;
 

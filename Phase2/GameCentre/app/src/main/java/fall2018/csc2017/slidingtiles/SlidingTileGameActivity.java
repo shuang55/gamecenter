@@ -1,38 +1,26 @@
 package fall2018.csc2017.slidingtiles;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import fall2018.csc2017.R;
 import fall2018.csc2017.gamecentre.CustomAdapter;
-import fall2018.csc2017.gamecentre.GameAcitivity;
-import fall2018.csc2017.gamecentre.GameCentre;
-import fall2018.csc2017.gamecentre.GameManager;
-import fall2018.csc2017.gamecentre.GameToSave;
+import fall2018.csc2017.gamecentre.GameActivity;
 import fall2018.csc2017.gamecentre.GestureDetectGridView;
-import fall2018.csc2017.gamecentre.SavedGames;
-import fall2018.csc2017.gamecentre.UserManager;
-import fall2018.csc2017.gamecentre.YouWinActivity;
 
 /**
  * The game activity for Sliding Tile.
  */
 // Excluded from tests because it's a view class
-public class SlidingTileGameActivity extends GameAcitivity implements Observer {
+public class SlidingTileGameActivity extends GameActivity implements Observer {
 
     /**
      * The board manager for current sliding tile game.

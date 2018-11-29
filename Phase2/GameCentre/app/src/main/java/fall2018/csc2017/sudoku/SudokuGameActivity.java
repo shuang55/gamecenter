@@ -1,26 +1,20 @@
 package fall2018.csc2017.sudoku;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import fall2018.csc2017.R;
-import fall2018.csc2017.gamecentre.GameAcitivity;
-import fall2018.csc2017.gamecentre.GameCentre;
-import fall2018.csc2017.gamecentre.GameManager;
-import fall2018.csc2017.gamecentre.YouWinActivity;
+import fall2018.csc2017.gamecentre.GameActivity;
 
 // Excluded from tests because it's a view class
-public class SudokuGameActivity extends GameAcitivity implements Observer {
+public class SudokuGameActivity extends GameActivity implements Observer {
 
     /**
      * SudokubBoardManager
