@@ -27,6 +27,7 @@ public class GameCentreActivity extends AppCompatActivity {
         addSavedGamesButtonListener();
         addCardMatchingButtonListener();
         addSudokuButtonListener();
+        addLogOutButtonListener();
     }
 
     /**
@@ -68,8 +69,6 @@ public class GameCentreActivity extends AppCompatActivity {
         });
     }
 
-
-
     /**
      * Activate the high score button.
      */
@@ -92,6 +91,19 @@ public class GameCentreActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switchToSavedGames();
+            }
+        });
+    }
+
+    /**
+     * Activate the log out button.
+     */
+    private void addLogOutButtonListener() {
+        Button logOut = findViewById(R.id.logOut);
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToLogIn();
             }
         });
     }
@@ -136,6 +148,11 @@ public class GameCentreActivity extends AppCompatActivity {
         startActivity(savedGame);
     }
 
-
-
+    /**
+     * Switch to the log in activity.
+     */
+    private void switchToLogIn() {
+        Intent logIn = new Intent(this, LogInActivity.class);
+        startActivity(logIn);
+    }
 }
