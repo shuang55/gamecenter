@@ -76,7 +76,6 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
      */
     void flipCard(int row, int col, int mode) {
         int[] operation = {row, col, mode};
-        getCard(row, col).setOpened(mode);
         boardUpdate(operation);
     }
 
