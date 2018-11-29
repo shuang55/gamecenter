@@ -27,7 +27,6 @@ public class GameCentreTest {
 
     private GameCentre gameCentre;
 
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -40,7 +39,7 @@ public class GameCentreTest {
     }
 
     private void instantiateGameCentre() {
-        String[] fileList = {UserManager.USERS, ScoreBoard.SCOREBOARD, SavedGames.SAVEDGAMES};
+        String[] fileList = {UserManager.USERS, ScoreBoard.SCOREBOARD, SavedGamesManager.SAVEDGAMES};
         for (String f : fileList) {
             when(fakeContext.getFileStreamPath(f)).thenReturn(fakeFile);
             when(fakeFile.exists()).thenReturn(true);
@@ -50,7 +49,7 @@ public class GameCentreTest {
 
     @Test
     public void loadManager() throws Exception {
-        String[] fileList = {UserManager.USERS, ScoreBoard.SCOREBOARD, SavedGames.SAVEDGAMES};
+        String[] fileList = {UserManager.USERS, ScoreBoard.SCOREBOARD, SavedGamesManager.SAVEDGAMES};
         for (String f : fileList) {
             when(fakeContext.getFileStreamPath(f)).thenReturn(fakeFile);
             when(fakeFile.exists()).thenReturn(false);

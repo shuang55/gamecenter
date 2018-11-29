@@ -112,6 +112,7 @@ public class Card implements Comparable<Card>, Serializable {
         }
         cardBackId = R.drawable.hearthstone_card13;
         isPaired = false;
+        opened = 0;
     }
 
     /**

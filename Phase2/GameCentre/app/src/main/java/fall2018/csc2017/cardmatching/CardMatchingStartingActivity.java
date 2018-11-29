@@ -18,8 +18,6 @@ import fall2018.csc2017.gamecentre.UserManager;
  * The initial activity for the sliding puzzle tile game.
  */
 public class CardMatchingStartingActivity extends AppCompatActivity {
-// https://www.vectorstock.com/royalty-free-vector/pink-star-with-a-smile-logo-vector-21368236
-// star photo
 
     /**
      * A temporary save file. (For Loading Games)
@@ -91,7 +89,8 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
 
     /**
      * Checks if a game has been autosaved, and transition into game if it has.
-     * @param tempBoard the sudokuBoardManager
+     *
+     * @param tempBoard the CardMatchingBoardManager
      */
     private void checkValidAutoSavedGame(CardMatchingBoardManager tempBoard) {
         if (tempBoard != null) {
@@ -147,6 +146,9 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * add a button that makes a game one move away from victory
+     */
     public void addOneMoveWinButton() {
         Button oneMoveToVictory = findViewById(R.id.OneMoveWin);
         oneMoveToVictory.setOnClickListener(new View.OnClickListener() {

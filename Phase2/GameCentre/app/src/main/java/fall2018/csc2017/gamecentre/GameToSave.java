@@ -5,7 +5,8 @@ import java.io.Serializable;
 /**
  * A class that contains information of a game to save.
  */
-public class GameToSave implements Serializable{
+//Excluded from test because its a model class.
+class GameToSave implements Serializable{
 
     /**
      * The time when the game is saved.
@@ -74,5 +75,4 @@ public class GameToSave implements Serializable{
     String getGameName() {
         return gameName;
     }
-
 }

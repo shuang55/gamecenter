@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Manages saved games.
  */
-public class SavedGames implements Serializable {
+public class SavedGamesManager implements Serializable {
 
     /**
      * File that contains all saved games for all users and all games.
@@ -16,12 +16,12 @@ public class SavedGames implements Serializable {
     static final String SAVEDGAMES = "savedgames.ser";
 
     /**
-     * Stores a HashMap(User: HashMap(TypeOfGame: ArrayList(game)))].
+     * Stores a Map(User: Map(TypeOfGame: ArrayList(game)))].
      */
-    public Map<String, Map<String, ArrayList<GameToSave>>> savedGames = new HashMap<>();
+    private Map<String, Map<String, ArrayList<GameToSave>>> savedGames = new HashMap<>();
 
     /**
-     * Updates the hashmap that stores all saved games with the new game to save.
+     * Updates the map that stores all saved games with the new game to save.
      *
      * @param gameToSave the new game to be saved
      * @param currentUser the current user
@@ -37,23 +37,6 @@ public class SavedGames implements Serializable {
     }
 
     /**
-     * Updates the array of gameToSaves
-     *
-     * @param gameToSave the input game to be saved
-     * @param gameToSaves the arraylist of previously saved games
-     */
-    private void updateSavedGamesArray(GameToSave gameToSave, ArrayList<GameToSave> gameToSaves) {
-        if (!containsSameBoard(gameToSave, gameToSaves)){
-            gameToSaves.add(0, gameToSave);
-        }
-        else if(containsSameBoard(gameToSave, gameToSaves)){
-            int indexOfSameBoard = getIndexSameBoard(gameToSave, gameToSaves);
-            gameToSaves.remove(indexOfSameBoard);
-            gameToSaves.add(0, gameToSave);
-        }
-    }
-
-    /**
      * Checks if the input is a valid key in savedGames, and create new key if it is null.
      *
      * @param currentUser input username
@@ -65,6 +48,22 @@ public class SavedGames implements Serializable {
         }
         if (!(savedGames.get(currentUser).containsKey(gameType))){
             savedGames.get(currentUser).put(gameType, new ArrayList<GameToSave>());
+        }
+    }
+
+    /**
+     * Updates the array of gameToSaves.
+     *
+     * @param gameToSave the input game to be saved
+     * @param gameToSaves the arraylist of previously saved games
+     */
+    private void updateSavedGamesArray(GameToSave gameToSave, ArrayList<GameToSave> gameToSaves) {
+        if (!containsSameBoard(gameToSave, gameToSaves)){
+            gameToSaves.add(0, gameToSave);
+        } else{
+            int indexOfSameBoard = getIndexSameBoard(gameToSave, gameToSaves);
+            gameToSaves.remove(indexOfSameBoard);
+            gameToSaves.add(0, gameToSave);
         }
     }
 
@@ -121,5 +120,28 @@ public class SavedGames implements Serializable {
             }
         }
         return -1;
+    }
+
+    /**
+     * Return the gameManager of the game user selected.
+     *
+     * @param selected the game user selected
+     * @param savedGames arrayList that contains saved games
+     * @return the gameManager that we are interested in
+     */
+     GameManager getSelectedGameToSave(String selected, ArrayList<GameToSave> savedGames) {
+        int indexOfSelectedGame=0;
+        for (int i = 0; i < savedGames.size(); i++) {
+            String gameDifficulty = savedGames.get(i).getGameDifficulty();
+            String nameOfSelectedGame = savedGames.get(i).getSavedTime() + " (" + gameDifficulty + ") ";
+            if (nameOfSelectedGame.equals(selected)){
+                indexOfSelectedGame = i;
+            }
+        }
+        return savedGames.get(indexOfSelectedGame).getGameManager();
+    }
+
+    public Map<String, Map<String, ArrayList<GameToSave>>> getSavedGames() {
+        return savedGames;
     }
 }
