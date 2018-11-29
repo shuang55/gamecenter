@@ -25,8 +25,12 @@ public class SudokuStartingActivity extends AppCompatActivity {
     /**
      * SudokuBoardManager to be used in game
      */
-    SudokuBoardManager sudokuBoardManager = new SudokuBoardManager();
+    private SudokuBoardManager sudokuBoardManager = new SudokuBoardManager();
 
+    /**
+     * onCreate method for SudokuStaringActivity
+     * @param savedInstanceState previous state of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +73,7 @@ public class SudokuStartingActivity extends AppCompatActivity {
 
     /**
      * Checks if a game has been autosaved, and transition into game if it has.
-     * @param tempBoard the sudokuBoardManager
+     * @param tempBoard the sudokuBoardManager loaded from gameCentre
      */
     private void checkValidAutoSavedGame(SudokuBoardManager tempBoard) {
         if (tempBoard != null) {

@@ -8,7 +8,8 @@ public class SudokuBoard implements Serializable {
     /**
      * array of ints in sudoku board
      */
-    Integer[][] sudokuBoard = new Integer[9][9];
+    private Integer[][] sudokuBoard = new Integer[9][9];
+
     /**
      * Constructor for sudokuboard
      */
@@ -128,11 +129,20 @@ public class SudokuBoard implements Serializable {
         return s.toString();
     }
 
+    /**
+     * Returns the hashcode of the sudokuBoard
+     * @return hashcode of the board
+     */
     @Override
     public int hashCode() {
         return sudokuBoard[0][0];
     }
 
+    /**
+     * Checks the equality between this and obj
+     * @param obj the obj to be checked
+     * @return whether this == obj
+     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof SudokuBoard)) {

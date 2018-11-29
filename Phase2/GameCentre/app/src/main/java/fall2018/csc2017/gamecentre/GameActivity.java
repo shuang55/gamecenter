@@ -8,8 +8,14 @@ import android.widget.TextView;
 // Excluded from tests because it's a view class
 public abstract class GameActivity extends AppCompatActivity {
 
+    /**
+     * gamCentre for loading, saving the game
+     */
     protected GameCentre gameCentre;
 
+    /**
+     * The gameManager responsible for the logic of the game
+     */
     protected GameManager gameManager;
 
     /**
