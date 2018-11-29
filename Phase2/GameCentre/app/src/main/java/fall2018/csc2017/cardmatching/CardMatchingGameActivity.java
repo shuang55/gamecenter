@@ -152,7 +152,6 @@ public class CardMatchingGameActivity extends GameAcitivity implements Observer 
         } else {
             button.setBackgroundResource(card.getCardFaceId());
         }
-        card.setOpened(mode);
     }
 
     /**
