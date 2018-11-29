@@ -49,4 +49,19 @@ public class SudokuBoardTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testEquality() {
+        SudokuBoard board1 = new SudokuBoard();
+        SudokuBoard board2 = new SudokuBoard();
+        Integer int1 = 9;
+        assertEquals(board1, board2);
+        assertNotEquals(board1, int1);
+    }
+
+    @Test
+    public void testHashCode() {
+        SudokuBoard board1 = new SudokuBoard();
+        SudokuBoard board2 = new SudokuBoard();
+        assertEquals(board1.hashCode(), board2.hashCode());
+    }
 }

@@ -1,14 +1,13 @@
 package fall2018.csc2017.sudoku;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class SudokuBoard implements Serializable {
 
     /**
      * array of ints in sudoku board
      */
-    private Integer[][] sudokuBoard = new Integer[9][9];
+    Integer[][] sudokuBoard = new Integer[9][9];
 
     /**
      * Constructor for sudokuboard
@@ -113,20 +112,6 @@ public class SudokuBoard implements Serializable {
         if (indexDouble != -1)
             return (indexDouble / 3 + row) * 9 + indexDouble % 3 + column;
         return indexDouble;
-    }
-
-    /**
-     * String representation of board for debugging purposes
-     *
-     * @return the string representation of the board
-     */
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < 9; i++) {
-            s.append(Arrays.toString(sudokuBoard[i]) + "\n");
-        }
-        return s.toString();
     }
 
     /**

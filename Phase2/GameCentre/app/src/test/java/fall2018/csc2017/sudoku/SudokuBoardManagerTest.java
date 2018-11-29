@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
@@ -23,28 +25,36 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void getScoreNoMove() {
+    public void testGetScoreNoMove() {
         int score = sudokuBoardManager.getScore();
         assertEquals(1072, score);
     }
 
     @Test
-    public void getGameName() {
+    public void testGetGameName() {
         assertEquals("Sudoku", sudokuBoardManager.getGameName());
     }
 
     @Test
-    public void getGameDifficulty() {
+    public void testGetTime() {
+        Pattern pattern = Pattern.compile("\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}");
+        String time = sudokuBoardManager.getTime();
+        Matcher matcher = pattern.matcher(time);
+        assertTrue(matcher.matches());
+
+    }
+    @Test
+    public void testGetGameDifficulty() {
         assertEquals("Normal", sudokuBoardManager.getGameDifficulty());
     }
 
     @Test
-    public void puzzleSolvedFalse() {
+    public void testPuzzleSolvedFalse() {
         assertFalse(sudokuBoardManager.puzzleSolved());
     }
 
     @Test
-    public void puzzleSolvedFalseCompleteBoard() {
+    public void testPuzzleSolvedFalseCompleteBoard() {
         for (Integer i : sudokuBoardManager.getActiveBoard().getRemovedNumbers()) {
             sudokuBoardManager.touchMove(i);
             sudokuBoardManager.updateNumber(9);
@@ -53,7 +63,7 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void puzzleSolvedTrue() {
+    public void testPuzzleSolvedTrue() {
         for (int i = 0; i < 36; i++) {
             sudokuBoardManager.provideHint();
         }
@@ -61,14 +71,14 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void touchMove() {
+    public void testTouchMove() {
         sudokuBoardManager.touchMove(10);
         assertEquals(10, sudokuBoardManager.getPositionSelected());
 
     }
 
     @Test
-    public void updateNumberUpdate() {
+    public void testUpdateNumber() {
         ArrayList<Integer> list = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
         sudokuBoardManager.touchMove(list.get(0));
         sudokuBoardManager.updateNumber(9);
@@ -80,13 +90,13 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void getPositionSelected() {
+    public void testGetPositionSelected() {
         sudokuBoardManager.touchMove(10);
         assertEquals(10, sudokuBoardManager.getPositionSelected());
     }
 
     @Test
-    public void isValidTap() {
+    public void testIsValidTap() {
         ArrayList<Integer> list = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
         assertTrue(sudokuBoardManager.isValidTap(list.get(0)));
         for (int i = 0; i < 80; i++) {
@@ -98,7 +108,7 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void erase() {
+    public void testErase() {
         int position = sudokuBoardManager.getActiveBoard().getRemovedNumbers().get(0);
         Integer[] number = {9, 0};
         sudokuBoardManager.touchMove(position);
@@ -111,7 +121,7 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void provideHint() {
+    public void testProvideHint() {
         Integer[][] before = sudokuBoardManager.getActiveBoard().getSudokuBoard().clone();
         sudokuBoardManager.provideHint();
         Integer[][] after = sudokuBoardManager.getActiveBoard().getSudokuBoard();
@@ -121,7 +131,7 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void undoNoMoves() {
+    public void testUndoNoMoves() {
         int numUndo = sudokuBoardManager.getUndo().size();
         Object before = sudokuBoardManager.getActiveBoard().getRemovedNumbers().clone();
         sudokuBoardManager.undo();
@@ -134,7 +144,7 @@ public class SudokuBoardManagerTest {
     }
 
     @Test
-    public void undoOneMove() {
+    public void testUndoOneMove() {
         int position = sudokuBoardManager.getActiveBoard().getRemovedNumbers().get(0);
         SudokuPlayBoard oldBoard = sudokuBoardManager.getActiveBoard().copy();
         sudokuBoardManager.touchMove(position);
