@@ -19,8 +19,10 @@ public class YouWinActivity extends AppCompatActivity {
      */
     private GameManager gameManager;
 
-
-
+    /**
+     * Oncreate for YouWinActivity
+     * @param savedInstanceState previous state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

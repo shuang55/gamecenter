@@ -19,18 +19,12 @@ import fall2018.csc2017.gamecentre.GestureDetectGridView;
 /**
  * The game activity for Sliding Tile.
  */
-// Excluded from tests because it's a view class
 public class SlidingTileGameActivity extends GameActivity implements Observer {
 
     /**
      * The board manager for current sliding tile game.
      */
     private SlidingTileBoardManager slidingTileBoardManager;
-
-//    /**
-//     * Gamecentre for managing files
-//     */
-//    private GameCentre gameCentre;
 
     /**
      * The buttons to display.
@@ -42,7 +36,6 @@ public class SlidingTileGameActivity extends GameActivity implements Observer {
      * Grid for sliding tile game.
      */
     private GestureDetectGridView gridView;
-
 
     /**
      * The columnWidth and columnHeight for the grids.
@@ -81,14 +74,6 @@ public class SlidingTileGameActivity extends GameActivity implements Observer {
                     }
                 });
     }
-
-//    /**
-//     * Load necessary managers
-//     */
-//    private void loadManagers() {
-//        gameCentre = new GameCentre(this);
-//        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-//    }
 
     /**
      * Activate the save button.
@@ -175,18 +160,9 @@ public class SlidingTileGameActivity extends GameActivity implements Observer {
             display();
         }
         else {
-//            gameCentre.gameManagerWin(slidingTileBoardManager);
             switchToWinActivity(this);
         }
     }
-
-//    /**
-//     * swaps activity to you win activity
-//     */
-//    private void switchToWinActivity() {
-//        Intent win = new Intent(this, YouWinActivity.class);
-//        startActivity(win);
-//    }
 
     /**
      * Give the text no more moves are available.
@@ -202,11 +178,4 @@ public class SlidingTileGameActivity extends GameActivity implements Observer {
         Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
     }
 
-//    /**
-//     * sets the move count on screen
-//     */
-//    private void setMoveCountText() {
-//        TextView moves = findViewById(R.id.MoveCount);
-//        moves.setText(String.format("%s", slidingTileBoardManager.getMove()));
-//    }
 }

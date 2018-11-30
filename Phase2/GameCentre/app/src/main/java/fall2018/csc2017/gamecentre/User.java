@@ -50,11 +50,19 @@ public class User implements Serializable {
         return password.equals(this.password);
     }
 
+    /**
+     * Getter for username
+     * @return the username
+     */
     @Override
     public String toString() {
         return "username= " + username;
     }
 
+    /**
+     * Adds a gameManager to the list of temporary autosaves
+     * @param gameManager the gameManager to be added
+     */
     void addSavedGame(GameManager gameManager) {
         GameManager gameToRemove = null;
         for (GameManager game: savedGames) {
@@ -68,6 +76,11 @@ public class User implements Serializable {
         savedGames.add(gameManager);
     }
 
+    /**
+     * Returns the gameManager with gameName
+     * @param gameName the gameName of gameManager to be returned
+     * @return a gameManager
+     */
     GameManager getSelectedGame(String gameName) {
         for (GameManager game : savedGames) {
             if (game.getGameName().equals(gameName)) {
@@ -77,6 +90,10 @@ public class User implements Serializable {
         return null;
     }
 
+    /**
+     * Removes a savedGame from the list of temporary savedGames
+     * @param gameName gameName of gameManager to be removed
+     */
     void removeSavedGame(String gameName) {
         for (GameManager game : savedGames) {
             if (game.getGameName().equals(gameName)) {

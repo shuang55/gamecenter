@@ -25,7 +25,10 @@ class ScoreBoard implements Serializable {
      */
     private Map<String, ArrayList<Score>> byUser = new HashMap<>();
 
-
+    /**
+     * Updates byGame and byUser with a new score
+     * @param score the score to be updated
+     */
     void updateScore(Score score) {
         if (!byGame.containsKey(score.getGame())) {
             byGame.put(score.getGame(), new ArrayList<Score>());

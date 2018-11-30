@@ -51,7 +51,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         List<Tile> tiles = createTiles(boardSize);
         Collections.shuffle(tiles);
         slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
-        if (!checkSolvability(tiles, boardSize)){
+        if (!checkSolvability(tiles, boardSize)) {
             makeSolvableBoard(tiles);
             slidingTileBoard = new SlidingTileBoard(tiles, boardSize);
         }
@@ -70,18 +70,11 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
             tiles.add(new Tile(tileNum));
         }
-        if (boardSize == 3) {
-            Collections.sort(tiles);
-            tiles.remove(0);
-            Tile blankTile = new Tile(24);
-            tiles.add(blankTile);
-        }
-        else if (boardSize == 4) {
-            Collections.sort(tiles);
-            tiles.remove(0);
-            Tile blankTile = new Tile(24);
-            tiles.add(blankTile);
-        }
+        Collections.sort(tiles);
+        tiles.remove(0);
+        Tile blankTile = new Tile(24);
+        tiles.add(blankTile);
+
         return tiles;
     }
 
@@ -89,9 +82,9 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * Checks if the current sliding tile board is solvable. If it is not solvable, make it solvable.
      *
      * @param boardSize size of the board
-     * @param tiles a list containing tiles for sliding tile game
-     * reference: https://www.sitepoint.com/randomizing-sliding-puzzle-tiles/
-     * reference: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
+     * @param tiles     a list containing tiles for sliding tile game
+     *                  reference: https://www.sitepoint.com/randomizing-sliding-puzzle-tiles/
+     *                  reference: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
      */
     private boolean checkSolvability(List<Tile> tiles, int boardSize) {
         int blankId = 25;
@@ -123,18 +116,17 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * @param tiles a list containing tiles for sliding tile game
      */
     private void makeSolvableBoard(List<Tile> tiles) {
-        if (tiles.get(0).getId() == 25 || tiles.get(1).getId() == 25){
+        if (tiles.get(0).getId() == 25 || tiles.get(1).getId() == 25) {
             Collections.swap(tiles, tiles.size() - 1, tiles.size() - 2);
-        }
-        else{
-            Collections.swap(tiles, 0, 1 );
+        } else {
+            Collections.swap(tiles, 0, 1);
         }
     }
 
     /**
      * Set the board to be one move away from winning.
      */
-    void setBoardOneMoveWin(){
+    void setBoardOneMoveWin() {
         int boardSize = getSlidingTileBoard().getBoardSize();
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = boardSize * boardSize;
@@ -161,6 +153,11 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         return solved;
     }
 
+    /**
+     * Checks whether position is a valid tap
+     * @param position the position of the tap
+     * @return boolean whether position is valid
+     */
     @Override
     public boolean isValidTap(int position) {
         int row = position / slidingTileBoard.getBoardSize();
@@ -177,6 +174,10 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
                 || (right != null && right.getId() == blankId);
     }
 
+    /**
+     * Makes a move at position if position is valid
+     * @param position the position of the tap
+     */
     @Override
     public void touchMove(int position) {
         int row = position / slidingTileBoard.getBoardSize();
@@ -224,11 +225,19 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         return slidingTileBoard;
     }
 
+    /**
+     * Getter for move
+     * @return number of moves
+     */
     @Override
     public int getMove() {
         return move;
     }
 
+    /**
+     * Getter for score
+     * @return the score
+     */
     @Override
     public int getScore() {
         int score = 1000 - (move * 3 * (6 - slidingTileBoard.getBoardSize()));
@@ -238,11 +247,19 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         return score;
     }
 
+    /**
+     * Getter for gameName
+     * @return the gamename
+     */
     @Override
     public String getGameName() {
         return "Sliding Tile";
     }
 
+    /**
+     * Getter for current time
+     * @return the current time
+     */
     @Override
     public String getTime() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -250,6 +267,10 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
         return dateTimeFormatter.format(now);
     }
 
+    /**
+     * Getter for game difficulty
+     * @return the difficulty
+     */
     @Override
     public String getGameDifficulty() {
         return String.format("%s by %s", slidingTileBoard.getBoardSize(), slidingTileBoard.getBoardSize());
