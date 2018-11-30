@@ -46,6 +46,7 @@ public class SlidingTileBoardTest {
         slidingTileBoard = new SlidingTileBoard(tiles, 3);
     }
 
+
     /**
      * Make the slidingTileBoard = null after finishing testing.
      */
@@ -98,13 +99,13 @@ public class SlidingTileBoardTest {
                 slidingTileBoard.toString());
     }
 
+
+
     /**
-     * Test whether getBoardSize() work on board size 3.
+     * Test whether getBoardSize work on board size 3.
      */
     @Test
-    public void testGetBoardSize3(){
-        assertEquals(3, slidingTileBoard.getBoardSize());
-    }
+    public void testGetBoardSize3() { assertEquals(3, slidingTileBoard.getBoardSize()); }
 
     /**
      * Test whether getTile returns the right tile.
