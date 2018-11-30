@@ -74,4 +74,7 @@ public interface GameManager extends Serializable {
      * @return the game difficulty
      */
     String getGameDifficulty();
+
+    @Override
+    String toString();
 }
