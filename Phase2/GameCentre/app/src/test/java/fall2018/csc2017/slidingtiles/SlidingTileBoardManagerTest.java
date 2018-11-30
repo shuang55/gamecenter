@@ -194,7 +194,7 @@ public class SlidingTileBoardManagerTest {
     }
 
     /**
-     * Test whether One move away board is actually one move away for board size 3.
+     * Test whether One move away board is actually one move away for board size 4.
      */
     @Test
     public void testEasyWinBoardSize4(){
@@ -206,7 +206,7 @@ public class SlidingTileBoardManagerTest {
     }
 
     /**
-     * Test whether One move away board is actually one move away for board size 3.
+     * Test whether One move away board is actually one move away for board size 5.
      */
     @Test
     public void testEasyWinBoardSize5(){
