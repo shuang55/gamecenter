@@ -98,32 +98,9 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("SlidingTileBoard{tiles=[");
-        constructToString(stringBuilder);
-        stringBuilder.append("}");
-        return stringBuilder.toString();
-    }
-
-    /**
-     * Create the string representation of tiles.
-     *
-     * @param stringBuilder the stringBuilder to be modified
-     */
-    private void constructToString(StringBuilder stringBuilder) {
-        int lastArray1 = numCardPerRow - 1;
-        for(Card[] t1: cards){
-            int lastArray2 = numCardPerCol - 1;
-            for (Card t2: t1) {
-                stringBuilder.append(t2.toString());
-                if (lastArray2-- != 0 || lastArray1 != 0) {
-                    stringBuilder.append(", ");
-                }
-            }
-            if (lastArray1-- == 0){
-                stringBuilder.append("]");
-            }
-        }
+        return "CardMatchingBoard{" +
+                "cards=" + Arrays.toString(cards) +
+                '}';
     }
 
     @NonNull
