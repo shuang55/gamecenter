@@ -44,8 +44,9 @@ public class SlidingTileBoardTest {
     @Before
     public void setUpCorrect() {
         List<Tile> tiles = makeTiles();
-        slidingTileBoard = new SlidingTileBoard(tiles, 3);
+        slidingTileBoard = new SlidingTileBoard(tiles, 5);
     }
+
 
     /**
      * Make the slidingTileBoard = null after finishing testing.
