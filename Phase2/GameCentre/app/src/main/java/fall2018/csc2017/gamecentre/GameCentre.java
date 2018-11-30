@@ -232,6 +232,10 @@ public class GameCentre {
         return gameManager;
     }
 
+    /**
+     * Getter for scoreboard
+     * @return the scoreboard
+     */
     ScoreBoard getScoreBoard() {
         return scoreBoard;
     }

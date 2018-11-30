@@ -22,10 +22,17 @@ public class SavedGamesManager implements Serializable {
      */
     private Map<String, Map<String, ArrayList<GameToSave>>> savedGames;
 
+    /**
+     * Constructor without arguments
+     */
     SavedGamesManager(){
         savedGames = new HashMap<>();
     }
 
+    /**
+     * Constructor with one argument
+     * @param savedGames a Map to be used as savedGames
+     */
     SavedGamesManager(Map<String, Map<String, ArrayList<GameToSave>>> savedGames) {
         this.savedGames = savedGames;
     }
@@ -153,6 +160,10 @@ public class SavedGamesManager implements Serializable {
         return savedGames.get(indexOfSelectedGame).getGameManager();
     }
 
+    /**
+     * getter for savedGames
+     * @return savedGames
+     */
     public Map<String, Map<String, ArrayList<GameToSave>>> getSavedGames() {
         return savedGames;
     }

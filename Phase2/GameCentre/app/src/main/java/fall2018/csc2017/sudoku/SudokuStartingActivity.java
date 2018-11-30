@@ -12,6 +12,7 @@ import fall2018.csc2017.gamecentre.GameCentre;
 import fall2018.csc2017.gamecentre.GameManager;
 import fall2018.csc2017.gamecentre.UserManager;
 
+// Excluded from unit tests because its a view class
 public class SudokuStartingActivity extends AppCompatActivity {
 
     /**

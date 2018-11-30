@@ -125,7 +125,7 @@ public class Card implements Comparable<Card>, Serializable {
     }
 
     /**
-     * Set the card to isPaired.
+     * Set isPaired to True
      */
      void setPaired() {
         this.isPaired = true;
@@ -135,7 +135,7 @@ public class Card implements Comparable<Card>, Serializable {
      * Set the card to opened or not opened;
      * 1 means card is opened, 0 means card is covered.
      *
-     * @param opened whether the card is opened or not
+     * @param opened what to set opened to
      */
     void setOpened(int opened) {
         this.opened = opened;
@@ -146,6 +146,7 @@ public class Card implements Comparable<Card>, Serializable {
      * 1 means card is opened, 0 means card is covered.
      *
      * @return true if card is opened, false otherwise
+     * @return 1 if card is opened, 0 otherwise
      */
     int isOpen() {
         return opened;
