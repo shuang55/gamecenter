@@ -24,7 +24,7 @@ public class ScoreTest {
     }
 
     /**
-     * test whether getGame works
+     * test whether getGame works on score 2
      */
     @Test
     public void getGame() {
@@ -32,13 +32,16 @@ public class ScoreTest {
     }
 
     /**
-     * test whether getUser works
+     * test whether getUser works on score 3
      */
     @Test
     public void getUser() {
         assertEquals(score3.getUser(), "user2");
     }
 
+    /**
+     * test whether getScore works on score 1
+     */
     @Test
     public void getScore() {
         assertEquals(score1.getScore(), 0);
