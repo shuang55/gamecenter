@@ -26,7 +26,7 @@ public class SavedGamesManager implements Serializable {
         savedGames = new HashMap<>();
     }
 
-    public SavedGamesManager(Map<String, Map<String, ArrayList<GameToSave>>> savedGames) {
+    SavedGamesManager(Map<String, Map<String, ArrayList<GameToSave>>> savedGames) {
         this.savedGames = savedGames;
     }
 
@@ -125,12 +125,13 @@ public class SavedGamesManager implements Serializable {
      */
     private int getIndexSameBoard(GameToSave gameToSave, ArrayList<GameToSave> gameToSaves)
             throws NoSuchElementException{
+        int indexOfSameBoard = 0;
         for (int i = 0; i < gameToSaves.size(); i++) {
             if (gameToSaves.get(i).getGameManager() == gameToSave.getGameManager()) {
-                return i;
+                indexOfSameBoard = i;
             }
         }
-        throw new NoSuchElementException();
+        return indexOfSameBoard;
     }
 
     /**

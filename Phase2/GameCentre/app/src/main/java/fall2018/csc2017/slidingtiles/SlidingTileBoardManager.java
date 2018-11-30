@@ -123,8 +123,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
      * @param tiles a list containing tiles for sliding tile game
      */
     private void makeSolvableBoard(List<Tile> tiles) {
-        if (tiles.get(0).getId() ==25 || tiles.get(1).getId() ==25){
-            Collections.swap(tiles, tiles.size()-1, tiles.size()-2);
+        if (tiles.get(0).getId() == 25 || tiles.get(1).getId() == 25){
+            Collections.swap(tiles, tiles.size() - 1, tiles.size() - 2);
         }
         else{
             Collections.swap(tiles, 0, 1 );
