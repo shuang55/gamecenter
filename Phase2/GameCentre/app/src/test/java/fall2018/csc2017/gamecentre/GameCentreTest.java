@@ -38,6 +38,9 @@ public class GameCentreTest {
         gameCentre = null;
     }
 
+    /**
+     * Set up GameCentre
+     */
     private void instantiateGameCentre() {
         String[] fileList = {UserManager.USERS, ScoreBoard.SCOREBOARD, SavedGamesManager.SAVEDGAMES};
         for (String f : fileList) {
@@ -47,6 +50,10 @@ public class GameCentreTest {
         gameCentre = new GameCentre(fakeContext);
     }
 
+    /**
+     * Test to see if reading from file crashes
+     * @throws Exception IOException
+     */
     @Test
     public void loadManager() throws Exception {
         String[] fileList = {UserManager.USERS, ScoreBoard.SCOREBOARD, SavedGamesManager.SAVEDGAMES};
@@ -58,6 +65,10 @@ public class GameCentreTest {
         }
     }
 
+    /**
+     * Test to see if writing a file crashes
+     * @throws Exception IOException
+     */
     @Test
     public void saveManager() throws Exception {
         UserManager userManager = new UserManager();

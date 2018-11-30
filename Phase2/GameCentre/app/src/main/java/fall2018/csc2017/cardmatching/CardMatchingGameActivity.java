@@ -138,6 +138,14 @@ public class CardMatchingGameActivity extends GameActivity implements Observer {
         setCardBackGround(card, mode, button);
     }
 
+
+    /**
+     * Changes card's backGround.
+     *
+     * @param card the card on the button
+     * @param mode the mode, 0 for cover, 1 for open
+     * @param button the button to set image
+     */
     private void setCardBackGround(Card card, int mode, Button button) {
         if (mode == 0) {
             button.setBackgroundResource(card.getCardBackId());
@@ -148,7 +156,7 @@ public class CardMatchingGameActivity extends GameActivity implements Observer {
     }
 
     /**
-     * updates the screen
+     * Updates the screen.
      *
      * @param o   observable
      * @param arg object

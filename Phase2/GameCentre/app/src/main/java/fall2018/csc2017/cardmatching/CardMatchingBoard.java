@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class CardMatchingBoard extends Observable implements Serializable, Iterable<Card> {
 
     /**
-     * The board size - number of card pairs
+     * The number of card pairs
      */
     private int numCardPair;
 
@@ -86,7 +86,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * Return the tile at (row, col)
+     * Return the tile at (row, col).
      *
      * @param row the tile row
      * @param col the tile column
@@ -98,9 +98,32 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
 
     @Override
     public String toString() {
-        return "CardMatchingBoard{" +
-                "cards=" + Arrays.toString(cards) +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SlidingTileBoard{tiles=[");
+        constructToString(stringBuilder);
+        stringBuilder.append("}");
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Create the string representation of tiles.
+     *
+     * @param stringBuilder the stringBuilder to be modified
+     */
+    private void constructToString(StringBuilder stringBuilder) {
+        int lastArray1 = numCardPerRow - 1;
+        for(Card[] t1: cards){
+            int lastArray2 = numCardPerCol - 1;
+            for (Card t2: t1) {
+                stringBuilder.append(t2.toString());
+                if (lastArray2-- != 0 || lastArray1 != 0) {
+                    stringBuilder.append(", ");
+                }
+            }
+            if (lastArray1-- == 0){
+                stringBuilder.append("]");
+            }
+        }
     }
 
     @NonNull
@@ -110,7 +133,8 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * get numCardPair
+     * Get numCardPair.
+     *
      * @return the number of card pairs
      */
     int getNumCardPair() {
@@ -118,7 +142,8 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * get NumCardPerRow
+     * Get NumCardPerRow.
+     *
      * @return number of cards per row
      */
     int getNumCardPerRow() {
@@ -126,7 +151,8 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * get numCardPerCol
+     * Get numCardPerCol.
+     *
      * @return the number of cards per column
      */
     int getNumCardPerCol() {
@@ -134,7 +160,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * An iterator that iterates through CardMatchingBoard
+     * An iterator that iterates through CardMatchingBoard.
      */
     private class BoardIterator implements Iterator<Card> {
 

@@ -56,6 +56,7 @@ public class GameCentre {
     /**
      * Check if the file exists.
      *
+     * @param filename the file name to check
      * @return whether file exists
      */
     private boolean checkFile(String filename) {
@@ -194,6 +195,7 @@ public class GameCentre {
 
     /**
      * Writes the score from gameManager to scoreBoard
+     *
      * @param gameManager the gameManager with score to be updated
      */
     private void writeScoreToFile(GameManager gameManager) {
@@ -230,6 +232,10 @@ public class GameCentre {
         return gameManager;
     }
 
+    /**
+     * Getter for scoreboard
+     * @return the scoreboard
+     */
     ScoreBoard getScoreBoard() {
         return scoreBoard;
     }

@@ -137,7 +137,7 @@ public class SlidingTileBoardManagerTest {
      * Test whether board is solvable for board size 3.
      */
     @Test
-    public void testSolvabilityBoardSize3(){
+    public void testSolveAbilityBoardSize3(){
         slidingTileBoardManager = new SlidingTileBoardManager(3);
         Tile[][] tiles = slidingTileBoardManager.getSlidingTileBoard().getTiles();
         List<Tile> tilesList = new ArrayList<>();
@@ -153,7 +153,7 @@ public class SlidingTileBoardManagerTest {
      * Test whether board is solvable for board size 4.
      */
     @Test
-    public void testSolvabilityBoardSize4(){
+    public void testSolveAbilityBoardSize4(){
         slidingTileBoardManager = new SlidingTileBoardManager(4);
         Tile[][] tiles = slidingTileBoardManager.getSlidingTileBoard().getTiles();
         List<Tile> tilesList = new ArrayList<>();
@@ -169,7 +169,7 @@ public class SlidingTileBoardManagerTest {
      * Test whether board is solvable for board size 5.
      */
     @Test
-    public void testSolvabilityBoardSize5(){
+    public void testSolveAbilityBoardSize5(){
         slidingTileBoardManager = new SlidingTileBoardManager(5);
         Tile[][] tiles = slidingTileBoardManager.getSlidingTileBoard().getTiles();
         List<Tile> tilesList = new ArrayList<>();
