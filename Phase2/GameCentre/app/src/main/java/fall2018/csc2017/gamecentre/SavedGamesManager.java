@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.NoSuchElementException;
+
 /**
  * Manages saved games.
  */
@@ -18,7 +20,15 @@ public class SavedGamesManager implements Serializable {
     /**
      * Stores a Map(User: Map(TypeOfGame: ArrayList(game))).
      */
-    private Map<String, Map<String, ArrayList<GameToSave>>> savedGames = new HashMap<>();
+    private Map<String, Map<String, ArrayList<GameToSave>>> savedGames;
+
+    SavedGamesManager(){
+        savedGames = new HashMap<>();
+    }
+
+    public SavedGamesManager(Map<String, Map<String, ArrayList<GameToSave>>> savedGames) {
+        this.savedGames = savedGames;
+    }
 
     /**
      * Updates the map that stores all saved games with the new game to save.
@@ -31,8 +41,8 @@ public class SavedGamesManager implements Serializable {
         checkNullKey(currentUser, gameType);
         ArrayList<GameToSave> gameToSaves = savedGames.get(currentUser).get(gameType);
         updateSavedGamesArray(gameToSave, gameToSaves);
-        if (savedGames.get(currentUser).get(gameType).size() == 4) {
-            savedGames.get(currentUser).get(gameType).remove(3);
+        if(gameToSaves.size() == 4){
+            gameToSaves.remove(3);
         }
     }
 
@@ -113,13 +123,14 @@ public class SavedGamesManager implements Serializable {
      * @param gameToSaves the list of game states
      * @return the index of the game states found, return -1 if not found.
      */
-    private int getIndexSameBoard(GameToSave gameToSave, ArrayList<GameToSave> gameToSaves){
+    private int getIndexSameBoard(GameToSave gameToSave, ArrayList<GameToSave> gameToSaves)
+            throws NoSuchElementException{
         for (int i = 0; i < gameToSaves.size(); i++) {
             if (gameToSaves.get(i).getGameManager() == gameToSave.getGameManager()) {
                 return i;
             }
         }
-        return -1;
+        throw new NoSuchElementException();
     }
 
     /**
