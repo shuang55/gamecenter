@@ -170,6 +170,7 @@ public class SlidingTileBoardManagerTest {
      */
     @Test
     public void testSolveAbilityBoardSize5(){
+        slidingTileBoardManager = new SlidingTileBoardManager(5);
         Tile[][] tiles = slidingTileBoardManager.getSlidingTileBoard().getTiles();
         List<Tile> tilesList = new ArrayList<>();
         for(int i = 0; i != 5; i++){

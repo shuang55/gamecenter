@@ -118,7 +118,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     private void makeSolvableBoard(List<Tile> tiles) {
         if (tiles.get(0).getId() == 25 || tiles.get(1).getId() == 25) {
             Collections.swap(tiles, tiles.size() - 1, tiles.size() - 2);
-        } else {
+        }
+        else{
             Collections.swap(tiles, 0, 1);
         }
     }
@@ -140,6 +141,10 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
                 slidingTileBoard.getBoardSize() - 1, slidingTileBoard.getBoardSize() - 2);
     }
 
+    /**
+     * Check to see if puzzle is solved
+     * @return whether it is solved
+     */
     @Override
     public boolean puzzleSolved() {
         boolean solved = true;
