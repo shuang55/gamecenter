@@ -145,7 +145,6 @@ public class Card implements Comparable<Card>, Serializable {
      * Get whether or not this card is opened.
      * 1 means card is opened, 0 means card is covered.
      *
-     * @return true if card is opened, false otherwise
      * @return 1 if card is opened, 0 otherwise
      */
     int isOpen() {
