@@ -58,7 +58,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
      * @param numCardPair the size of the cardMatchingBoard.
      * @param easyBoard   whether or not to generate an easy board
      */
-    CardMatchingBoardManager(int numCardPair, boolean easyBoard) {
+    public CardMatchingBoardManager(int numCardPair, boolean easyBoard) {
         List<Card> cards = new ArrayList<>();
         final int NUMCARDS = numCardPair * 2;
         for (int cardNum = 0; cardNum != NUMCARDS; cardNum++) {
