@@ -13,6 +13,9 @@ public class ScoreTest {
     private Score score2 = new Score("game1", "user1", 2);
     private Score score3 = new Score("game2", "user2", 2);
 
+    /**
+     * test the difference between score 1 and score 2, score 2 and score 1, soore 2 and score 3
+     */
     @Test
     public void compareTo() {
         assertEquals(score1.compareTo(score2), -1);
@@ -20,11 +23,17 @@ public class ScoreTest {
         assertEquals(score2.compareTo(score3), 0);
     }
 
+    /**
+     * test whether getGame works
+     */
     @Test
     public void getGame() {
         assertEquals(score2.getGame(), "game1");
     }
 
+    /**
+     * test whether getUser works
+     */
     @Test
     public void getUser() {
         assertEquals(score3.getUser(), "user2");
