@@ -111,7 +111,12 @@ public class SlidingTileBoardTest {
     /**
      * Test whether getBoardSize() work on board size 4.
      */
-    public void testGetBoardSize4() {assertEquals(4, slidingTileBoard.getBoardSize());}
+    public void testGetBoardSize4() { assertEquals(4, slidingTileBoard.getBoardSize()); }
+
+    /**
+     * Test whether getBoardSize work on board size 5.
+     */
+    public void testGetBoardSize5() { assertEquals(5, slidingTileBoard.getBoardSize()); }
 
     /**
      * Test whether getTile returns the right tile.
