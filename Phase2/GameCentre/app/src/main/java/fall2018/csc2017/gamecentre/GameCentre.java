@@ -217,7 +217,7 @@ public class GameCentre {
      *
      * @return savedGamesManager
      */
-    public SavedGamesManager getSavedGamesManager() {
+    SavedGamesManager getSavedGamesManager() {
         return savedGamesManager;
     }
 

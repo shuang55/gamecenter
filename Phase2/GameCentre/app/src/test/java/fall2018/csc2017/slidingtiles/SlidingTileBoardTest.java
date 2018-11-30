@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
  */
 public class SlidingTileBoardTest {
 
-    //Set up for testings.
     /** The board manager for testing. */
     private SlidingTileBoard slidingTileBoard;
 
@@ -56,7 +55,6 @@ public class SlidingTileBoardTest {
         slidingTileBoard = null;
     }
 
-    //Testing begins here
     /**
      * Test whether swapping the first two tiles works.
      */

@@ -30,11 +30,10 @@ public class SudokuGameActivity extends GameActivity implements Observer {
      */
     private GridView numberSelectGridView;
 
-//    /**
-//     * Gamecentre for managing files
-//     */
-//    private GameCentre gameCentre;
-
+    /**
+     * onCreate method of sudokuGameActivity
+     * @param savedInstanceState previous state of activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,14 +59,6 @@ public class SudokuGameActivity extends GameActivity implements Observer {
         addSaveButtonListener();
     }
 
-//    /**
-//     * Load necessary managers
-//     */
-//    private void loadManagers() {
-//        gameCentre = new GameCentre(this);
-//        gameCentre.loadManager(GameManager.TEMP_SAVE_START);
-//    }
-
     /**
      * Updates the gridview display
      */
@@ -79,17 +70,13 @@ public class SudokuGameActivity extends GameActivity implements Observer {
         gameCentre.autoSave(sudokuBoardManager);
     }
 
-//    /**
-//     * sets the move count on screen
-//     */
-//    private void setMoveCountText() {
-//        TextView textView = findViewById(R.id.sudoku_moves);
-//        textView.setText(String.format("Moves: %s", sudokuBoardManager.getMove()));
-//    }
-
+    /**
+     * Updates the Activity on whether the sudokuBoard is solved
+     * @param o the observable calling notify, in this case sudokuBoardManager
+     * @param arg optional arugment, not used
+     */
     @Override
     public void update(Observable o, Object arg) {
-//        gameCentre.gameManagerWin(sudokuBoardManager);
         switchToWinActivity(this);
     }
 
@@ -105,14 +92,6 @@ public class SudokuGameActivity extends GameActivity implements Observer {
             }
         });
     }
-
-//    /**
-//     * Transitions to YouWinActivity
-//     */
-//    private void switchToWinActivity() {
-//        Intent youWin = new Intent(this, YouWinActivity.class);
-//        startActivity(youWin);
-//    }
 
     /**
      * Activates number select clicks in gridview
@@ -192,7 +171,6 @@ public class SudokuGameActivity extends GameActivity implements Observer {
     private void makeToastSavedText() {
         Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
     }
-
 
     /**
      * Creates toast with msg "no more move"
