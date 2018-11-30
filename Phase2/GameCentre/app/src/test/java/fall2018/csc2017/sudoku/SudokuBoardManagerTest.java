@@ -24,17 +24,37 @@ public class SudokuBoardManagerTest {
         sudokuBoardManager = null;
     }
 
+    /**
+     * Test for getScore with no moves
+     */
     @Test
     public void testGetScoreNoMove() {
         int score = sudokuBoardManager.getScore();
         assertEquals(1072, score);
     }
 
+    /**
+     * Test for getScore with 10 provideHint moves
+     */
+    @Test
+    public void testGetScoreTenMoves() {
+        for (int i = 0; i < 10; i++) {
+            sudokuBoardManager.provideHint();
+        }
+        assertEquals(sudokuBoardManager.getScore(), 972);
+    }
+
+    /**
+     * Test for game name getter
+     */
     @Test
     public void testGetGameName() {
         assertEquals("Sudoku", sudokuBoardManager.getGameName());
     }
 
+    /**
+     * Test for time getter
+     */
     @Test
     public void testGetTime() {
         Pattern pattern = Pattern.compile("\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}");
@@ -43,16 +63,26 @@ public class SudokuBoardManagerTest {
         assertTrue(matcher.matches());
 
     }
+
+    /**
+     * Test for game difficulty getter
+     */
     @Test
     public void testGetGameDifficulty() {
         assertEquals("Normal", sudokuBoardManager.getGameDifficulty());
     }
 
+    /**
+     * Test for puzzleSolved when it is not solved
+     */
     @Test
     public void testPuzzleSolvedFalse() {
         assertFalse(sudokuBoardManager.puzzleSolved());
     }
 
+    /**
+     * Test for puzzleSolved when board is complete, but not solved
+     */
     @Test
     public void testPuzzleSolvedFalseCompleteBoard() {
         for (Integer i : sudokuBoardManager.getActiveBoard().getRemovedNumbers()) {
@@ -62,6 +92,9 @@ public class SudokuBoardManagerTest {
         assertFalse(sudokuBoardManager.puzzleSolved());
     }
 
+    /**
+     * Test for puzzleSolved when it is solved
+     */
     @Test
     public void testPuzzleSolvedTrue() {
         for (int i = 0; i < 36; i++) {
@@ -70,6 +103,9 @@ public class SudokuBoardManagerTest {
         assertTrue(sudokuBoardManager.puzzleSolved());
     }
 
+    /**
+     * Test to see if touchMove updates currently selected position
+     */
     @Test
     public void testTouchMove() {
         sudokuBoardManager.touchMove(10);
@@ -77,6 +113,9 @@ public class SudokuBoardManagerTest {
 
     }
 
+    /**
+     * Test to see if updateNumber correctly updates the number
+     */
     @Test
     public void testUpdateNumber() {
         ArrayList<Integer> list = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
@@ -89,12 +128,18 @@ public class SudokuBoardManagerTest {
 
     }
 
+    /**
+     * Test for getter for positionSelected
+     */
     @Test
     public void testGetPositionSelected() {
         sudokuBoardManager.touchMove(10);
         assertEquals(10, sudokuBoardManager.getPositionSelected());
     }
 
+    /**
+     * Test for checking whether isValidTap returns a updatable grid
+     */
     @Test
     public void testIsValidTap() {
         ArrayList<Integer> list = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
@@ -107,6 +152,9 @@ public class SudokuBoardManagerTest {
         }
     }
 
+    /**
+     * Test for checking erase actually erasing a number
+     */
     @Test
     public void testErase() {
         int position = sudokuBoardManager.getActiveBoard().getRemovedNumbers().get(0);
@@ -120,29 +168,38 @@ public class SudokuBoardManagerTest {
                 getSudokuBoard()[position / 9][position % 9], number[1]);
     }
 
+    /**
+     * Test to see if provideHint gives an unchangeable hint
+     */
     @Test
     public void testProvideHint() {
         Integer[][] before = sudokuBoardManager.getActiveBoard().getSudokuBoard().clone();
         sudokuBoardManager.provideHint();
         Integer[][] after = sudokuBoardManager.getActiveBoard().getSudokuBoard();
-        if(sudokuBoardManager.getActiveBoard().getRemovedNumbers().size() != 0) {
+        if (sudokuBoardManager.getActiveBoard().getRemovedNumbers().size() != 0) {
             assertNotEquals(before, after);
         }
     }
 
+    /**
+     * Test undo when no moves are available
+     */
     @Test
     public void testUndoNoMoves() {
         int numUndo = sudokuBoardManager.getUndo().size();
         Object before = sudokuBoardManager.getActiveBoard().getRemovedNumbers().clone();
         sudokuBoardManager.undo();
         ArrayList<Integer> after = sudokuBoardManager.getActiveBoard().getRemovedNumbers();
-        if(numUndo != 0) {
+        if (numUndo != 0) {
             assertNotEquals(before, after);
         } else {
             assertEquals(before, after);
         }
     }
 
+    /**
+     * Test undo when one move is available for undo
+     */
     @Test
     public void testUndoOneMove() {
         int position = sudokuBoardManager.getActiveBoard().getRemovedNumbers().get(0);
