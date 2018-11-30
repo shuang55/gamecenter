@@ -27,17 +27,17 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     private int move = 0;
 
     /**
-     * the most recent move that the player has made
+     * The most recent move that the player has made.
      */
     private int[] lastMove = new int[4];
 
     /**
-     * whether or not an open pair exists
+     * Whether or not an open pair exists.
      */
     private boolean openPairExists;
 
     /**
-     * Set openPairExists to False
+     * Set openPairExists to False.
      */
     void setOpenPairExistsToFalse() {
         this.openPairExists = false;
@@ -86,7 +86,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * return the number of unopened cards
+     * Return the number of unopened cards.
      *
      * @return the number of unopened cards
      */
@@ -154,7 +154,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * covers or pairs card1 and card2, depending on if cardsMatch
+     * Covers or pairs card1 and card2, depending on if cardsMatch.
      *
      * @param card1      the first card
      * @param card2      the second card
@@ -185,7 +185,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * covers the cards in the past two turns, after 1000 ms
+     * Covers the cards in the past two turns, after 1000 ms.
      */
     private void coverCardAfterFixedDelay() {
         final int rowOfCard = lastMove[2];
@@ -221,7 +221,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * return the game difficulty.
+     * Return the game difficulty.
      *
      * @return the game difficulty
      */
@@ -230,7 +230,7 @@ public class CardMatchingBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * return the current move
+     * Return the current move.
      *
      * @return the current move
      */
