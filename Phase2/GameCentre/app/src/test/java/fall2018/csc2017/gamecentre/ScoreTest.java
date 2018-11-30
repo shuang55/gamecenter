@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 public class ScoreTest {
 
     /**
-     * Create scores to test.
+     * Create random scores to test.
      */
     private Score score1 = new Score();
     private Score score2 = new Score("game1", "user1", 2);
@@ -15,6 +15,7 @@ public class ScoreTest {
 
     /**
      * test the difference between score 1 and score 2, score 2 and score 1, soore 2 and score 3
+     * to see if it behaves properly
      */
     @Test
     public void compareTo() {
