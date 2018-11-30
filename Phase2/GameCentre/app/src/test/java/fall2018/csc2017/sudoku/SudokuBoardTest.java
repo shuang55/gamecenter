@@ -12,12 +12,12 @@ public class SudokuBoardTest {
     private SudokuBoard board = new SudokuBoard();
 
     @Test
-    public void getSudokuBoard() {
+    public void testGetSudokuBoard() {
         assertArrayEquals(board.sudokuBoard, board.getSudokuBoard());
     }
 
     @Test
-    public void doubleInRow() {
+    public void testDoubleInRow() {
         int expected = board.doubleInRow(5);
         int actual = -1;
         assertEquals(expected, actual);
@@ -28,7 +28,7 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void doubleInColumn() {
+    public void testDoubleInColumn() {
         int expected = board.doubleInColumn(25);
         int actual = -1;
         assertEquals(expected, actual);
@@ -39,7 +39,7 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void doubleInBox() {
+    public void testDoubleInBox() {
         int expected = board.doubleInBox(68);
         int actual = -1;
         assertEquals(expected, actual);
@@ -49,4 +49,19 @@ public class SudokuBoardTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testEquality() {
+        SudokuBoard board1 = new SudokuBoard();
+        SudokuBoard board2 = new SudokuBoard();
+        Integer int1 = 9;
+        assertEquals(board1, board2);
+        assertNotEquals(board1, int1);
+    }
+
+    @Test
+    public void testHashCode() {
+        SudokuBoard board1 = new SudokuBoard();
+        SudokuBoard board2 = new SudokuBoard();
+        assertEquals(board1.hashCode(), board2.hashCode());
+    }
 }

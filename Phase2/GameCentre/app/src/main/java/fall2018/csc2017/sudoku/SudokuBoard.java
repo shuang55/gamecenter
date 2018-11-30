@@ -1,7 +1,6 @@
 package fall2018.csc2017.sudoku;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class SudokuBoard implements Serializable {
 
@@ -9,6 +8,7 @@ public class SudokuBoard implements Serializable {
      * array of ints in sudoku board
      */
     Integer[][] sudokuBoard = new Integer[9][9];
+
     /**
      * Constructor for sudokuboard
      */
@@ -115,24 +115,19 @@ public class SudokuBoard implements Serializable {
     }
 
     /**
-     * String representation of board for debugging purposes
-     *
-     * @return the string representation of the board
+     * Returns the hashcode of the sudokuBoard
+     * @return hashcode of the board
      */
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < 9; i++) {
-            s.append(Arrays.toString(sudokuBoard[i]) + "\n");
-        }
-        return s.toString();
-    }
-
     @Override
     public int hashCode() {
         return sudokuBoard[0][0];
     }
 
+    /**
+     * Checks the equality between this and obj
+     * @param obj the obj to be checked
+     * @return whether this == obj
+     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof SudokuBoard)) {
