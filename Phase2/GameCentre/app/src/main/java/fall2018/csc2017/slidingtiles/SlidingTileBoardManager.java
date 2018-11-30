@@ -127,7 +127,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
             Collections.swap(tiles, tiles.size() - 1, tiles.size() - 2);
         }
         else{
-            Collections.swap(tiles, 0, 1 );
+            Collections.swap(tiles, 0, 1);
         }
     }
 
