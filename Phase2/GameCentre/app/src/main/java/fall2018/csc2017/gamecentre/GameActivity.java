@@ -5,21 +5,24 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+/**
+ * Abstract class for all GameActivity to extend.
+ */
 // Excluded from tests because it's a view class
 public abstract class GameActivity extends AppCompatActivity {
 
     /**
-     * gamCentre for loading, saving the game
+     * GamCentre for loading, saving the game.
      */
     protected GameCentre gameCentre;
 
     /**
-     * The gameManager responsible for the logic of the game
+     * The gameManager responsible for the logic of the game.
      */
     protected GameManager gameManager;
 
     /**
-     * Load necessary managers
+     * Load necessary managers.
      */
     protected void loadManagers(Context context) {
         gameCentre = new GameCentre(context);
@@ -28,7 +31,7 @@ public abstract class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * swaps activity to you win activity
+     * Swaps activity to you win activity.
      */
     protected void switchToWinActivity(Context context) {
         gameCentre.gameManagerWin(gameManager);
@@ -37,7 +40,7 @@ public abstract class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * sets the move count on screen
+     * Sets the move count on screen.
      */
     protected void setMoveCountText(int moveCountTextID) {
         TextView moves = findViewById(moveCountTextID);

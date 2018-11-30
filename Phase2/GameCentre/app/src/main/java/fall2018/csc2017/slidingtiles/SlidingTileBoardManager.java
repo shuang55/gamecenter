@@ -142,7 +142,7 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Check to see if puzzle is solved
+     * Check to see if puzzle is solved.
      * @return whether it is solved
      */
     @Override
@@ -159,7 +159,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Checks whether position is a valid tap
+     * Checks whether position is a valid tap.
+     *
      * @param position the position of the tap
      * @return boolean whether position is valid
      */
@@ -180,7 +181,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Makes a move at position if position is valid
+     * Makes a move at position if position is valid.
+     *
      * @param position the position of the tap
      */
     @Override
@@ -231,7 +233,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Getter for move
+     * Getter for move.
+     *
      * @return number of moves
      */
     @Override
@@ -240,7 +243,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Getter for score
+     * Getter for score.
+     *
      * @return the score
      */
     @Override
@@ -253,7 +257,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Getter for gameName
+     * Getter for gameName.
+     *
      * @return the gamename
      */
     @Override
@@ -262,7 +267,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Getter for current time
+     * Getter for current time.
+     *
      * @return the current time
      */
     @Override
@@ -273,7 +279,8 @@ public class SlidingTileBoardManager implements Serializable, GameManager {
     }
 
     /**
-     * Getter for game difficulty
+     * Getter for game difficulty.
+     *
      * @return the difficulty
      */
     @Override
