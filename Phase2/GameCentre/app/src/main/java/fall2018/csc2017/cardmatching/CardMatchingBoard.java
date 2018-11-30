@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class CardMatchingBoard extends Observable implements Serializable, Iterable<Card> {
 
     /**
-     * The board size - number of card pairs
+     * The number of card pairs
      */
     private int numCardPair;
 
@@ -86,7 +86,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * Return the tile at (row, col)
+     * Return the tile at (row, col).
      *
      * @param row the tile row
      * @param col the tile column
@@ -110,7 +110,8 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * get numCardPair
+     * Get numCardPair.
+     *
      * @return the number of card pairs
      */
     int getNumCardPair() {
@@ -118,7 +119,8 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * get NumCardPerRow
+     * Get NumCardPerRow.
+     *
      * @return number of cards per row
      */
     int getNumCardPerRow() {
@@ -126,7 +128,8 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * get numCardPerCol
+     * Get numCardPerCol.
+     *
      * @return the number of cards per column
      */
     int getNumCardPerCol() {
@@ -134,7 +137,7 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
     }
 
     /**
-     * An iterator that iterates through CardMatchingBoard
+     * An iterator that iterates through CardMatchingBoard.
      */
     private class BoardIterator implements Iterator<Card> {
 

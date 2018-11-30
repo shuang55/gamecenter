@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * Interface for every game added to GameCentre.
  */
+//Excluded from test because its an interface.
 public interface GameManager extends Serializable {
 
     /**
@@ -38,7 +39,6 @@ public interface GameManager extends Serializable {
      * @param position the position of the tap
      */
     void touchMove(int position);
-
 
     /**
      * Abstract method for calculating the score of a game.

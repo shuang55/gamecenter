@@ -34,7 +34,7 @@ public class SudokuBoardManager extends Observable implements GameManager, Seria
     /**
      * Constructor for SudokuBoardManager
      */
-    SudokuBoardManager() {
+    public SudokuBoardManager() {
         SudokuBoardRandomizer randomizer = new SudokuBoardRandomizer(new SudokuBoard());
         this.hiddenBoard = randomizer.generateRandomBoard();
         this.activeBoard = new SudokuPlayBoard(hiddenBoard.getSudokuBoard());

@@ -22,17 +22,17 @@ public class Card implements Comparable<Card>, Serializable {
     private int cardFaceId;
 
     /**
-     * The unique id.
+     * The unique id of card.
      */
-    public int id;
+    private int id;
 
     /**
-     * 1 if card is opened, 0 otherwise
+     * 1 if card is opened, 0 otherwise.
      */
     private int opened;
 
     /**
-     * If the card is paired.
+     * Whether the card is paired.
      */
     private boolean isPaired;
 
@@ -117,6 +117,7 @@ public class Card implements Comparable<Card>, Serializable {
 
     /**
      * Get whether or not this card is isPaired.
+     *
      * @return true if card is isPaired, false otherwise
      */
     boolean getIsPaired() {
@@ -143,6 +144,7 @@ public class Card implements Comparable<Card>, Serializable {
     /**
      * Get whether or not this card is opened.
      * 1 means card is opened, 0 means card is covered.
+     *
      * @return 1 if card is opened, 0 otherwise
      */
     int isOpen() {

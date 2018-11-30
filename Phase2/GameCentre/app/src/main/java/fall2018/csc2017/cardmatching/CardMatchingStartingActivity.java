@@ -72,7 +72,7 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
     }
 
     /**
-     * Activates LoadAutoSaveButton
+     * Activates LoadAutoSaveButton.
      */
     private void addLoadAutoSaveButtonListener() {
         Button slidingTileAutoSave = findViewById(R.id.CardMatchingAutoSave);
@@ -147,7 +147,7 @@ public class CardMatchingStartingActivity extends AppCompatActivity {
     }
 
     /**
-     * add a button that makes a game one move away from victory
+     * Add a button that makes a game one move away from victory.
      */
     public void addOneMoveWinButton() {
         Button oneMoveToVictory = findViewById(R.id.OneMoveWin);
