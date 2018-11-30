@@ -44,7 +44,7 @@ public class SlidingTileBoardTest {
     @Before
     public void setUpCorrect() {
         List<Tile> tiles = makeTiles();
-        slidingTileBoard = new SlidingTileBoard(tiles, 5);
+        slidingTileBoard = new SlidingTileBoard(tiles, 3);
     }
 
 
@@ -101,25 +101,13 @@ public class SlidingTileBoardTest {
                 slidingTileBoard.toString());
     }
 
-    /**
-     * Test whether getBoardSize() work on board size 3.
-     */
-    @Test
-    public void testGetBoardSize3(){
-        assertEquals(3, slidingTileBoard.getBoardSize());
-    }
+
 
     /**
-     * Test whether getBoardSize() work on board size 4.
+     * Test whether getBoardSize work on board size 3.
      */
     @Test
-    public void testGetBoardSize4() { assertEquals(4, slidingTileBoard.getBoardSize()); }
-
-    /**
-     * Test whether getBoardSize work on board size 5.
-     */
-    @Test
-    public void testGetBoardSize5() { assertEquals(5, slidingTileBoard.getBoardSize()); }
+    public void testGetBoardSize3() { assertEquals(3, slidingTileBoard.getBoardSize()); }
 
     /**
      * Test whether getTile returns the right tile.
