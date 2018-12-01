@@ -14,7 +14,7 @@ First, you need to sign up for an account. To sign up, simply input a username a
 appear on whether the sign up was successful or unsuccessful. If the sign up failed, then either
 the username has been taken or the input username/password wasn't at least 1 character. If the sign
 up is successful, then you can now click log in enter the game centre. A user is automatically
-logged out every time the app is closed.
+logged out every time the app is closed. To log out, click logout button.
 
 # Game Centre
 In game centre, you can choose to start a new game (currently there is only one - Sliding Tiles),
@@ -56,3 +56,11 @@ games that the user has played (currently there is only one game). If Sliding Ti
 it will display the top 10 scores for sliding tiles for the user that is currently logged in. If
 Sliding Tile (All) is selected, then it will display the top 10 scores for all the users that have
 played sliding tiles on that device (i.e. scores of users not currently logged in will also show up)
+
+#CardMatching:
+**Card photos taken from hearthstone game.
+A card matching game where you can choose between 8, 10 or 12 pairs to match.
+You must match all the pairs successfully to win. If an incorrect pair is opened, the pair will
+automatically be closed again after 1 second. The game continues until all cards are open.
+
+#Sudoku:
