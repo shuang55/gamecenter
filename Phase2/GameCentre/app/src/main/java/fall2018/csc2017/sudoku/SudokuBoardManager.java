@@ -180,6 +180,7 @@ public class SudokuBoardManager extends Observable implements GameManager, Seria
      */
     void provideHint() {
         if (activeBoard.getRemovedNumbers().size() != 0) {
+            undoStack.add(0, activeBoard.copy());
             int position = activeBoard.popRemovedNumber();
             activeBoard.setSudokuBoardNumber(position,
                     hiddenBoard.getSudokuBoard()[position / 9][position % 9]);

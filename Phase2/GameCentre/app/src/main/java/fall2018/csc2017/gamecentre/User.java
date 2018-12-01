@@ -95,10 +95,12 @@ public class User implements Serializable {
      * @param gameName gameName of gameManager to be removed
      */
     void removeSavedGame(String gameName) {
+        ArrayList<GameManager> copy = new ArrayList<>();
         for (GameManager game : savedGames) {
-            if (game.getGameName().equals(gameName)) {
-                savedGames.remove(game);
+            if (!game.getGameName().equals(gameName)) {
+                copy.add(game);
             }
         }
+        savedGames = copy;
     }
 }
