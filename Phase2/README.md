@@ -3,7 +3,7 @@
 2. Open android studio and "check out from version control"
 3. Enter the repo URL, and clone the project
 4. Import project from gradle
-5. Select "/Phase1/GameCenter" in the "Gradle project" pane
+5. Select "/Phase2" in the "Gradle project" pane
 6. Use default gradle wrapper
 7. If unregistered VCS root message pops up, click add root
 8. Open emulator (select Pixel 2, Android 8.1 Oreo 27) and run the app
