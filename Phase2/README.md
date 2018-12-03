@@ -64,3 +64,8 @@ You must match all the pairs successfully to win. If an incorrect pair is opened
 automatically be closed again after 1 second. The game continues until all cards are open.
 
 #Sudoku:
+Sudoku is a puzzle game where you fill in the blank spaces with numbers. Each row, column, and 3x3
+square section must have each number from 1-9 once. If you enter a number in an empty space
+that violates the criteria, the space will be highlighted and you have to enter a correct
+number in the space or erase the incorrect number to remove the highlight. You must fill in all the
+empty spaces with the correct numbers to finish the game.
