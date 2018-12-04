@@ -58,7 +58,7 @@ Sliding Tile (All) is selected, then it will display the top 10 scores for all t
 played sliding tiles on that device (i.e. scores of users not currently logged in will also show up)
 
 #CardMatching:
-**Card photos taken from hearthstone game.
+All Card Image taken from https://imgur.com/a/wWST6#0
 A card matching game where you can choose between 8, 10 or 12 pairs to match.
 You must match all the pairs successfully to win. If an incorrect pair is opened, the pair will
 automatically be closed again after 1 second. The game continues until all cards are open.
