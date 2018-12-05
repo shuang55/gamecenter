@@ -80,6 +80,11 @@ public class CardMatchingBoard extends Observable implements Serializable, Itera
         boardUpdate(operation);
     }
 
+    /**
+     * Calls CardMatchingGameActivity to update the view.
+     *
+     * @param arg Object to be updated
+     */
     void boardUpdate(Object arg){
         setChanged();
         notifyObservers(arg);

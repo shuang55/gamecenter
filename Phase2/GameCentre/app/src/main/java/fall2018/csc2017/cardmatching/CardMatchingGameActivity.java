@@ -168,7 +168,6 @@ public class CardMatchingGameActivity extends GameActivity implements Observer {
         }
         display();
         if (cardMatchingBoardManager.puzzleSolved()) {
-//            gameCentre.gameManagerWin(cardMatchingBoardManager);
             switchToWinActivity(this);
         }
     }
